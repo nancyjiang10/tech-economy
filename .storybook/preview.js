@@ -27,6 +27,13 @@ const preview = {
       ],
     },
 
+    // Sort stories so the Introduction page appears first (default homepage)
+    options: {
+      storySort: {
+        order: ['Introduction', '*'],
+      },
+    },
+
     // Viewport presets for testing responsive layouts.
     // Use the toolbar icon (or keyboard shortcut) to switch between sizes.
     viewport: {

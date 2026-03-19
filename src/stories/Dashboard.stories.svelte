@@ -40,13 +40,12 @@
   </Dashboard>
 </Story>
 
-<!-- Four Stats: four-card layout that wraps on small screens -->
-<Story name="Four Stats">
+<!-- Three Stats: three-card layout -->
+<Story name="Three Stats">
   <Dashboard>
     <BigNumber number="151 ft" label="Statue Height" />
     <BigNumber number="25" label="Crown Windows" />
     <BigNumber number="7" label="Crown Rays" />
-    <BigNumber number="1984" label="UNESCO Designation" footnote="World Heritage Site" />
   </Dashboard>
 </Story>
 
