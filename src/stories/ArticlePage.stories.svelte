@@ -16,8 +16,9 @@
   import Image        from '$lib/components/Image.svelte';
   import Dashboard    from '$lib/components/Dashboard.svelte';
   import BigNumber    from '$lib/components/BigNumber.svelte';
-  import RelatedLinks from '$lib/components/RelatedLinks.svelte';
-  import SiteFooter   from '$lib/components/SiteFooter.svelte';
+  import RelatedLinks   from '$lib/components/RelatedLinks.svelte';
+  import MethodologyBox from '$lib/components/MethodologyBox.svelte';
+  import SiteFooter     from '$lib/components/SiteFooter.svelte';
 
   // Freely-licensed Statue of Liberty image from Wikimedia Commons
   const LEAD_IMAGE =
@@ -104,6 +105,18 @@
         was assembled on an iron skeleton engineered by Alexandre Gustave Eiffel.
       </p>
     </ArticleBody>
+
+    <MethodologyBox>
+      <p>
+        Historical records referenced in this article were obtained from the National Park
+        Service archives and the Statue of Liberty–Ellis Island Foundation. Date and visitor
+        data were verified against annual reports published by the U.S. Department of the Interior.
+      </p>
+      <p>
+        If you find an error, please contact us at
+        <a href="mailto:data@nycitynewsservice.com">data@nycitynewsservice.com</a>.
+      </p>
+    </MethodologyBox>
 
     <RelatedLinks
       title="RELATED STORIES"
@@ -194,6 +207,14 @@
         staircase, every element has been measured and catalogued.
       </p>
     </ArticleBody>
+
+    <MethodologyBox title="About the Data">
+      <p>
+        All measurements were sourced from the National Park Service's official Statue of Liberty
+        fact sheet, last updated in 2023. Visitor counts reflect annual averages reported by the
+        Statue of Liberty–Ellis Island Foundation.
+      </p>
+    </MethodologyBox>
   </div>
 
   <SiteFooter />
