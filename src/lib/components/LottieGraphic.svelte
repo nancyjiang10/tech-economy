@@ -5,7 +5,6 @@ Uses the lottie-web library for high-quality vector animations.
 -->
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import lottie from 'lottie-web';
 
   let {
     src = '',
@@ -18,7 +17,9 @@ Uses the lottie-web library for high-quality vector animations.
   let containerEl;
   let animationInstance;
 
-  onMount(() => {
+  onMount(async () => {
+    const lottie = (await import('lottie-web')).default;
+
     const options = {
       container: containerEl,
       renderer: 'svg',

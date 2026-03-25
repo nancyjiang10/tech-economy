@@ -242,103 +242,6 @@
   <SiteFooter />
 </Story>
 
-<!-- Dark Theme: same layout with a dark background and white text -->
-<Story name="Dark Theme">
-  <SiteHeader
-    navLinks={[
-      { href: '/data',   label: 'Data' },
-      { href: '/about',  label: 'About' },
-    ]}
-  />
-
-  <section class="hero hero-dark" style:background-color="#1a1a1a">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1 class="hero-headline">NYC School Safety Reports</h1>
-        <p class="hero-byline">
-          By <strong>The NYCity News Service Investigations Desk</strong>
-        </p>
-        <p class="hero-date">Updated January 2026</p>
-        <p class="hero-description">
-          An exclusive database of safety inspection reports from every public
-          school in New York City. Search by school name, district, or violation
-          type to see what inspectors found.
-        </p>
-
-        <div class="hero-controls">
-          <SearchInput
-            label="Search Schools"
-            placeholder="Type a school name or district…"
-          />
-          <DropdownInput
-            label="Violation Type"
-            placeholder="All types…"
-            options={[
-              { value: 'fire',        label: 'Fire Safety' },
-              { value: 'structural',  label: 'Structural' },
-              { value: 'environmental', label: 'Environmental' },
-              { value: 'electrical',  label: 'Electrical' },
-            ]}
-          />
-        </div>
-      </div>
-
-      <div class="hero-graphic">
-        <LottieGraphic
-          animationData={DATA_ANIMATION}
-          ariaLabel="Animated data visualization"
-        />
-      </div>
-    </div>
-  </section>
-
-  <SiteFooter />
-</Story>
-
-<!-- CUNY Blue: brand-colored hero -->
-<Story name="CUNY Blue">
-  <SiteHeader
-    navLinks={[
-      { href: '/data',   label: 'Data' },
-      { href: '/about',  label: 'About' },
-      { href: '/faq',    label: 'FAQ' },
-    ]}
-  />
-
-  <section class="hero hero-dark" style:background="linear-gradient(135deg, var(--color-cuny-blue-dark) 0%, var(--color-accent) 50%, var(--color-cuny-blue-light) 100%)">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1 class="hero-headline">Immigration Court Records</h1>
-        <p class="hero-byline">
-          By <strong>Sarah Chen</strong> and <strong>Michael Rivera</strong>
-        </p>
-        <p class="hero-date">Updated February 2026</p>
-        <p class="hero-description">
-          Search immigration court outcomes across the New York metro area.
-          This database includes case dispositions, wait times, and
-          representation rates compiled from DOJ data.
-        </p>
-
-        <div class="hero-controls">
-          <SearchInput
-            label="Search Cases"
-            placeholder="Search by case number, nationality, or court…"
-          />
-        </div>
-      </div>
-
-      <div class="hero-graphic">
-        <LottieGraphic
-          animationData={DATA_ANIMATION}
-          ariaLabel="Animated data visualization"
-        />
-      </div>
-    </div>
-  </section>
-
-  <SiteFooter />
-</Story>
-
 <style lang="scss">
   @use '$lib/styles' as *;
 
@@ -415,24 +318,6 @@
     justify-content: center;
     max-width: 400px;
     margin: 0 auto;
-  }
-
-  /* ---- Dark theme overrides ---- */
-  .hero-dark .hero-headline {
-    color: var(--color-white);
-  }
-
-  .hero-dark .hero-byline,
-  .hero-dark .hero-date {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .hero-dark .hero-byline :global(strong) {
-    color: var(--color-white);
-  }
-
-  .hero-dark .hero-description {
-    color: rgba(255, 255, 255, 0.85);
   }
 
   /* ---- Responsive: side-by-side on tablet+ ---- */
