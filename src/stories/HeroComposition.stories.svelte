@@ -13,6 +13,7 @@
   import SearchInput   from '$lib/components/SearchInput.svelte';
   import DropdownInput from '$lib/components/DropdownInput.svelte';
   import LottieGraphic from '$lib/components/LottieGraphic.svelte';
+  import MethodologyBox from '$lib/components/MethodologyBox.svelte';
   import SiteHeader    from '$lib/components/SiteHeader.svelte';
   import SiteFooter    from '$lib/components/SiteFooter.svelte';
 
@@ -223,6 +224,21 @@
     </div>
   </section>
 
+  <div class="methodology-container">
+    <MethodologyBox title="About This Database">
+      <p>
+        This database was compiled by the NYCity News Service Data Team from public records
+        obtained through Freedom of Information Law requests to more than 30 city agencies.
+        Records were cleaned, deduplicated, and standardized using Python. The database is
+        updated weekly as new records become available.
+      </p>
+      <p>
+        Have a tip or found an error? Contact us at
+        <a href="mailto:data@nycitynewsservice.com">data@nycitynewsservice.com</a>.
+      </p>
+    </MethodologyBox>
+  </div>
+
   <SiteFooter />
 </Story>
 
@@ -382,6 +398,13 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+  }
+
+  /* ---- Methodology box container ---- */
+  .methodology-container {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
   }
 
   /* ---- Right column: Lottie graphic ---- */
