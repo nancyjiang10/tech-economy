@@ -44,8 +44,6 @@
       { href: 'https://www.nycitynewsservice.com/nycns_topics/health/', label: 'Health' },
       { href: 'https://www.nycitynewsservice.com/nycns_topics/housing/', label: 'Housing' },
       { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/', label: 'Politics' },
-      { href: 'https://eldeadline.nycitynewsservice.com/', label: 'El Deadline' },
-      { href: 'https://motthavenherald.com/', label: 'The Bronx' },
     ],
   }}
 />
