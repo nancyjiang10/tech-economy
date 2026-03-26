@@ -172,13 +172,7 @@
   and a large animated Lottie data graphic on the right.
 -->
 <Story name="Default">
-  <SiteHeader
-    navLinks={[
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/', label: 'Arts & Culture' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/',    label: 'Education' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/',     label: 'Politics' },
-    ]}
-  />
+  <SiteHeader />
 
   <section class="hero" style:background-color="var(--color-light-gray)">
     <div class="hero-grid">

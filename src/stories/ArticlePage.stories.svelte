@@ -39,19 +39,7 @@
   layout responds across mobile, tablet, and desktop breakpoints.
 -->
 <Story name="Default">
-  <SiteHeader
-    navLinks={[
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/', label: 'Arts & Culture' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/business/',     label: 'Business' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/',    label: 'Education' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/environment/',  label: 'Environment' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/health/',       label: 'Health' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/housing/',      label: 'Housing' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/',     label: 'Politics' },
-      { href: 'https://eldeadline.nycitynewsservice.com/',                    label: 'El Deadline' },
-      { href: 'https://motthavenherald.com/',                                 label: 'The Bronx' },
-    ]}
-  />
+  <SiteHeader />
 
   <div class="container">
     <ArticleHeader
@@ -155,12 +143,7 @@
 
 <!-- Data-Driven: lede image followed immediately by a stat dashboard -->
 <Story name="Data Driven">
-  <SiteHeader
-    navLinks={[
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/', label: 'Education' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/',  label: 'Politics' },
-    ]}
-  />
+  <SiteHeader />
 
   <div class="container">
     <ArticleHeader

@@ -29,24 +29,11 @@
   });
 </script>
 
-<!-- Default: header with no navigation links -->
-<Story name="Default" args={{ navLinks: [] }} />
+<!-- Default: header with the standard navigation links -->
+<Story name="Default" />
 
-<!-- With Navigation: header with a full set of nav links -->
-<Story
-  name="With Navigation"
-  args={{
-    navLinks: [
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/', label: 'Arts & Culture' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/business/', label: 'Business' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/', label: 'Education' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/environment/', label: 'Environment' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/health/', label: 'Health' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/housing/', label: 'Housing' },
-      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/', label: 'Politics' },
-    ],
-  }}
-/>
+<!-- No Navigation: header with nav links removed -->
+<Story name="No Navigation" args={{ navLinks: [] }} />
 
 <!-- Single Link: header with just one navigation item -->
 <Story

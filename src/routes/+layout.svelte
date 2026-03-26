@@ -18,20 +18,10 @@ Use it for headers, footers, and navigation that appear on all pages.
   // In Svelte 5, we use $props() to receive the page content
   let { children } = $props();
 
-  // Navigation links for the header (matching real NYCity News Service)
-  const navLinks = [
-    { label: 'Arts & Culture', href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/' },
-    { label: 'Business', href: 'https://www.nycitynewsservice.com/nycns_topics/business/' },
-    { label: 'Education', href: 'https://www.nycitynewsservice.com/nycns_topics/education/' },
-    { label: 'Environment', href: 'https://www.nycitynewsservice.com/nycns_topics/environment/' },
-    { label: 'Health', href: 'https://www.nycitynewsservice.com/nycns_topics/health/' },
-    { label: 'Housing', href: 'https://www.nycitynewsservice.com/nycns_topics/housing/' },
-    { label: 'Politics', href: 'https://www.nycitynewsservice.com/nycns_topics/politics/' },
-  ];
 </script>
 
 {#if page.data.showHeader !== false}
-  <SiteHeader {navLinks} />
+  <SiteHeader />
 {/if}
 
 <main>
