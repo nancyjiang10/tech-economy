@@ -14,6 +14,8 @@
   import DropdownInput from '$lib/components/DropdownInput.svelte';
   import LottieGraphic from '$lib/components/LottieGraphic.svelte';
   import MethodologyBox from '$lib/components/MethodologyBox.svelte';
+  import RankingList from '$lib/components/RankingList.svelte';
+  import RankingCard from '$lib/components/RankingCard.svelte';
   import SiteHeader    from '$lib/components/SiteHeader.svelte';
   import SiteFooter    from '$lib/components/SiteFooter.svelte';
 
@@ -159,7 +161,7 @@
   };
 
   const { Story } = defineMeta({
-    title: 'Compositions/Hero with Database Search',
+    title: 'Compositions/Database Explorer',
     tags: ['autodocs'],
     parameters: {
       layout: 'fullscreen',
@@ -217,6 +219,16 @@
       </div>
     </div>
   </section>
+
+  <div class="results-container">
+    <RankingList title="Top Programs by Enrollment">
+      <RankingCard rank={1} href="https://www.journalism.cuny.edu/" title="M.A. in Journalism" description="Our flagship program trains reporters, editors, and multimedia journalists." value="420" valueLabel="enrolled" />
+      <RankingCard rank={2} href="https://www.journalism.cuny.edu/" title="M.A. in Engagement Journalism" description="Building trust and deepening connections with communities." value="285" valueLabel="enrolled" />
+      <RankingCard rank={3} href="https://www.journalism.cuny.edu/" title="Bilingual Journalism" description="For students fluent in English and Spanish." value="140" valueLabel="enrolled" />
+      <RankingCard rank={4} href="https://www.journalism.cuny.edu/" title="Professional Education" description="Evening and weekend workshops for mid-career journalists." value="95" valueLabel="enrolled" />
+      <RankingCard rank={5} href="https://www.journalism.cuny.edu/" title="Fellowship Programs" description="Supporting in-depth reporting projects." value="45" valueLabel="fellows" />
+    </RankingList>
+  </div>
 
   <div class="methodology-container">
     <MethodologyBox title="About This Database">
@@ -294,6 +306,13 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+  }
+
+  /* ---- Results container ---- */
+  .results-container {
+    max-width: var(--max-width);
+    margin: var(--spacing-lg) auto;
+    padding: 0 var(--spacing-md);
   }
 
   /* ---- Methodology box container ---- */

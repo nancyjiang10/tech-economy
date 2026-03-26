@@ -22,7 +22,7 @@ DropdownInput.svelte — A styled select dropdown input.
       onchange={onchange}
     >
       {#if placeholder}
-        <option value="" disabled selected>{placeholder}</option>
+        <option value="" selected>{placeholder}</option>
       {/if}
       {#each options as option (option.value)}
         <option value={option.value}>{option.label}</option>
