@@ -129,7 +129,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm, 0.75rem);
-    margin-bottom: var(--spacing-md, 1rem);
+    margin: var(--spacing-md, 1rem) 0;
   }
 
   @media (min-width: 600px) {
