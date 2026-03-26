@@ -3,14 +3,12 @@
 
   Stories for the DatabaseHeader component.
   DatabaseHeader is a full-width hero banner with a headline, optional description,
-  and a children slot for additional content. Supports light and dark themes.
+  and a children slot for additional content.
 
   Props:
   - headline: Primary hero title
   - description: Supporting text below the headline
   - bgColor: Background color CSS value (default: var(--color-light-gray))
-  - bgImage: Optional background image URL
-  - dark: Boolean to toggle light/dark color scheme
   - children: Additional content rendered below the text
 -->
 <script module>
@@ -37,10 +35,6 @@
         control: 'color',
         description: 'Background color for the hero',
       },
-      dark: {
-        control: 'boolean',
-        description: 'Use white text on a dark background',
-      },
     },
   });
 </script>
@@ -55,17 +49,6 @@
   }}
 />
 
-<!-- Dark: hero with dark background and white text -->
-<Story
-  name="Dark"
-  args={{
-    headline: 'Search Our Programs',
-    description: 'Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism.',
-    bgColor: '#1a1a1a',
-    dark: true,
-  }}
-/>
-
 <!-- CUNY Blue: hero using the brand accent color -->
 <Story
   name="CUNY Blue"
@@ -73,7 +56,6 @@
     headline: 'Find Your Path at CUNY Journalism',
     description: 'Master\'s degrees, professional education, and media center resources — all at an affordable price.',
     bgColor: 'var(--color-accent)',
-    dark: true,
   }}
 />
 

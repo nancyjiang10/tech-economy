@@ -1,6 +1,6 @@
 <!--
 @component
-DatabaseHeader.svelte — A full-width hero header with optional background color/image,
+DatabaseHeader.svelte — A full-width hero header with optional background color,
 headline, description, and children slot for additional content.
 -->
 <script>
@@ -8,17 +8,13 @@ headline, description, and children slot for additional content.
     headline = '',
     description = '',
     bgColor = 'var(--color-light-gray)',
-    bgImage = '',
-    dark = false,
     children,
   } = $props();
 </script>
 
 <header
   class="hero-header"
-  class:hero-dark={dark}
   style:background-color={bgColor}
-  style:background-image={bgImage ? `url(${bgImage})` : 'none'}
 >
   <div class="hero-inner">
     <div class="hero-content">
@@ -42,8 +38,6 @@ headline, description, and children slot for additional content.
 
   .hero-header {
     width: 100%;
-    background-size: cover;
-    background-position: center;
     padding: var(--spacing-xl) var(--spacing-md);
   }
 
@@ -75,15 +69,6 @@ headline, description, and children slot for additional content.
 
   .hero-extra {
     margin-top: var(--spacing-md);
-  }
-
-  /* Dark theme variant */
-  .hero-dark .hero-headline {
-    color: var(--color-white);
-  }
-
-  .hero-dark .hero-description {
-    color: rgba(255, 255, 255, 0.85);
   }
 
   @include tablet {
