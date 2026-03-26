@@ -1,10 +1,10 @@
 <!--
 @component
-LottieGraphic.svelte — Renders a Lottie animation from a JSON URL or object.
-Uses the lottie-web library for high-quality vector animations.
+LottieGraphic.svelte — Renders a Lottie animation using @lottiefiles/dotlottie-web.
+Uses a canvas-based renderer for reliable, high-performance playback.
 -->
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
 
   let {
     src = '',
@@ -14,51 +14,53 @@ Uses the lottie-web library for high-quality vector animations.
     ariaLabel = 'Animated graphic',
   } = $props();
 
-  let containerEl;
-  let animationInstance;
+  let canvas;
+  let player;
 
-  onMount(async () => {
-    const lottie = (await import('lottie-web')).default;
+  onMount(() => {
+    import('@lottiefiles/dotlottie-web').then(({ DotLottie }) => {
+      const options = {
+        canvas,
+        autoplay,
+        loop,
+        renderConfig: {
+          autoResize: true,
+        },
+      };
 
-    const options = {
-      container: containerEl,
-      renderer: 'svg',
-      loop,
-      autoplay,
+      if (animationData) {
+        options.data = JSON.stringify(animationData);
+      } else if (src) {
+        options.src = src;
+      }
+
+      player = new DotLottie(options);
+    });
+
+    return () => {
+      if (player) {
+        player.destroy();
+      }
     };
-
-    if (animationData) {
-      options.animationData = animationData;
-    } else if (src) {
-      options.path = src;
-    }
-
-    animationInstance = lottie.loadAnimation(options);
-  });
-
-  onDestroy(() => {
-    if (animationInstance) {
-      animationInstance.destroy();
-    }
   });
 </script>
 
 <div
   class="lottie-graphic"
-  bind:this={containerEl}
   role="img"
   aria-label={ariaLabel}
-></div>
+>
+  <canvas bind:this={canvas}></canvas>
+</div>
 
 <style>
   .lottie-graphic {
     width: 100%;
-    height: auto;
   }
 
-  .lottie-graphic :global(svg) {
-    display: block;
+  canvas {
     width: 100%;
     height: auto;
+    display: block;
   }
 </style>

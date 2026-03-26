@@ -241,7 +241,11 @@
     animationData: CIRCLE_BAR_ANIMATION,
     ariaLabel: 'Animated data visualization with pulsing circle and bar chart',
   }}
-/>
+>
+  {#snippet children(args)}
+    <LottieGraphic {...args} />
+  {/snippet}
+</Story>
 
 <!-- Inline Animation Data: a simple looping graphic rendered from inline data -->
 <Story
@@ -250,4 +254,8 @@
     animationData: PULSING_DOTS_ANIMATION,
     ariaLabel: 'Three animated pulsing dots',
   }}
-/>
+>
+  {#snippet children(args)}
+    <LottieGraphic {...args} />
+  {/snippet}
+</Story>

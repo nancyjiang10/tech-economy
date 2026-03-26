@@ -31,6 +31,6 @@
   },
   "type": "module",
   "dependencies": {
-    "lottie-web": "^5.13.0"
+    "@lottiefiles/dotlottie-web": "^0.67.0"
   }
 }
