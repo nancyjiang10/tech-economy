@@ -64,11 +64,11 @@
     label: 'Category',
     placeholder: 'All categories…',
     options: [
-      { value: 'immigration', label: 'Immigration' },
-      { value: 'history', label: 'History' },
-      { value: 'landmarks', label: 'Landmarks' },
-      { value: 'politics', label: 'Politics' },
-      { value: 'education', label: 'Education' },
+      { value: 'reporting', label: 'Reporting' },
+      { value: 'data', label: 'Data Journalism' },
+      { value: 'audio', label: 'Audio' },
+      { value: 'video', label: 'Video' },
+      { value: 'engagement', label: 'Engagement' },
     ],
   }}
 />

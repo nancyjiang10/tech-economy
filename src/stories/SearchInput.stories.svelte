@@ -45,11 +45,11 @@
 <!-- With Value: pre-filled search input -->
 <Story
   name="With Value"
-  args={{ placeholder: 'Search…', value: 'Statue of Liberty', label: 'Search' }}
+  args={{ placeholder: 'Search…', value: 'Journalism', label: 'Search' }}
 />
 
 <!-- Custom Placeholder: search input with a contextual placeholder -->
 <Story
   name="Custom Placeholder"
-  args={{ placeholder: 'Search by name, borough, or zip code…', label: 'Find a Location' }}
+  args={{ placeholder: 'Search by program, topic, or keyword…', label: 'Find a Program' }}
 />

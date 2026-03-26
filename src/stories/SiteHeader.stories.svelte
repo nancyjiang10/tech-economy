@@ -37,10 +37,15 @@
   name="With Navigation"
   args={{
     navLinks: [
-      { href: '/the-poem', label: 'The Poem' },
-      { href: '/the-statue', label: 'The Statue' },
-      { href: '/emma-lazarus', label: 'Emma Lazarus' },
-      { href: '/immigration', label: 'Immigration' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/', label: 'Arts & Culture' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/business/', label: 'Business' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/', label: 'Education' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/environment/', label: 'Environment' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/health/', label: 'Health' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/housing/', label: 'Housing' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/', label: 'Politics' },
+      { href: 'https://eldeadline.nycitynewsservice.com/', label: 'El Deadline' },
+      { href: 'https://motthavenherald.com/', label: 'The Bronx' },
     ],
   }}
 />
@@ -49,6 +54,6 @@
 <Story
   name="Single Link"
   args={{
-    navLinks: [{ href: '/the-new-colossus', label: 'The New Colossus' }],
+    navLinks: [{ href: 'https://www.nycitynewsservice.com/nycns_topics/education/', label: 'Education' }],
   }}
 />

@@ -1,7 +1,7 @@
 <!--
   HeroComposition.stories.svelte
 
-  Composition stories that combine the HeroHeader with a large Lottie graphic,
+  Composition stories that combine the DatabaseHeader with a large Lottie graphic,
   search input, and dropdown — in the style of how ProPublica tops their
   database search applications.
 
@@ -174,9 +174,9 @@
 <Story name="Default">
   <SiteHeader
     navLinks={[
-      { href: '/data',   label: 'Data' },
-      { href: '/about',  label: 'About' },
-      { href: '/guides', label: 'Guides' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/', label: 'Arts & Culture' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/education/',    label: 'Education' },
+      { href: 'https://www.nycitynewsservice.com/nycns_topics/politics/',     label: 'Politics' },
     ]}
   />
 
@@ -184,21 +184,21 @@
     <div class="hero-grid">
       <!-- Left column: headline, byline, description, search controls -->
       <div class="hero-text">
-        <h1 class="hero-headline">NYC Public Records Database</h1>
+        <h1 class="hero-headline">Search CUNY Journalism Programs</h1>
         <p class="hero-byline">
-          By <strong>The NYCity News Service Data Team</strong>
+          By <strong>NYCity News Service</strong>
         </p>
-        <p class="hero-date">Updated March 2026</p>
+        <p class="hero-date">Updated January 2026</p>
         <p class="hero-description">
-          Search millions of public records spanning all five boroughs. Our
-          reporters have compiled, cleaned, and verified data from dozens of
-          city agencies so you can look up the information that matters to you.
+          Explore degree programs, workshops, and fellowship opportunities at
+          the Craig Newmark Graduate School of Journalism. Find the program
+          that fits your goals and start your journalism career.
         </p>
 
         <div class="hero-controls">
           <SearchInput
-            label="Search Records"
-            placeholder="Search by name, address, or keyword…"
+            label="Search Programs"
+            placeholder="Search by program, topic, or keyword…"
           />
           <DropdownInput
             label="Borough"
@@ -227,10 +227,9 @@
   <div class="methodology-container">
     <MethodologyBox title="About This Database">
       <p>
-        This database was compiled by the NYCity News Service Data Team from public records
-        obtained through Freedom of Information Law requests to more than 30 city agencies.
-        Records were cleaned, deduplicated, and standardized using Python. The database is
-        updated weekly as new records become available.
+        This database was compiled by student journalists at the Craig Newmark Graduate
+        School of Journalism from public records and university publications. Data is
+        updated as new programs and opportunities become available.
       </p>
       <p>
         Have a tip or found an error? Contact us at

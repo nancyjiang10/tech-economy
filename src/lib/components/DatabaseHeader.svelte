@@ -1,6 +1,6 @@
 <!--
 @component
-HeroHeader.svelte — A full-width hero header with optional background color/image,
+DatabaseHeader.svelte — A full-width hero header with optional background color/image,
 headline, description, and children slot for additional content.
 -->
 <script>

@@ -5,121 +5,17 @@
 */}
 
 import { Meta } from '@storybook/addon-docs/blocks';
+import homepageScroll from './homepage-scroll.gif';
 
 <Meta title="Introduction" />
 
 # NYCity News Service Component Library
 
-This Storybook documents the reusable UI components for the
-[CUNY Graduate School of Journalism](https://www.journalism.cuny.edu/) static site template.
-Each component is built with [Svelte 5](https://svelte.dev/) and styled to match the
-[NYCity News Service](https://www.nycitynewsservice.com/) design system.
+<img src={homepageScroll} alt="Scrolling preview of the NYCity News Service template" style={{maxWidth: '600px', width: '100%', marginTop: '20px'}} />
 
-The source code is available on GitHub at
+This site documents the reusable user-interface components developed for the
+[Craig Newmark Graduate School of Journalism](https://www.journalism.cuny.edu/) at The City University of New York. Each component is built with [Svelte 5](https://svelte.dev/) and styled to match the [NYCity News Service](https://www.nycitynewsservice.com/) design system.
+
+It was created for ["JOUR 73361: Coding the News,"](https://palewi.re/docs/coding-the-news/) a course on teaches how America's top news organizations escape rigid publishing systems to design beautiful data-driven stories on deadline. The source code is available on GitHub at
 [palewire/cuny-jour-static-site-template](https://github.com/palewire/cuny-jour-static-site-template).
 
----
-
-## Getting Started
-
-Install dependencies and start Storybook:
-
-```bash
-npm install
-npm run storybook
-```
-
-Components live in `src/lib/components/` and can be imported with the `$lib` alias:
-
-```svelte
-<script>
-  import ArticleHeader from '$lib/components/ArticleHeader.svelte';
-  import ArticleBody   from '$lib/components/ArticleBody.svelte';
-  import Image         from '$lib/components/Image.svelte';
-</script>
-```
-
----
-
-## Available Components
-
-### Page Chrome
-
-| Component | Description |
-|-----------|-------------|
-| [SiteHeader](?path=/docs/components-siteheader--docs) | Animated gradient masthead with optional navigation links |
-| [SiteFooter](?path=/docs/components-sitefooter--docs) | CUNY-branded footer with About / Contact links |
-
-### Article Layout
-
-| Component | Description |
-|-----------|-------------|
-| [ArticleHeader](?path=/docs/components-articleheader--docs) | Large serif headline with byline and publication date |
-| [ArticleBody](?path=/docs/components-articlebody--docs) | Typography wrapper for paragraphs, subheadings, blockquotes, and lists |
-| [Image](?path=/docs/components-image--docs) | Responsive `<figure>` with optional caption and photo credit |
-
-### Data & Links
-
-| Component | Description |
-|-----------|-------------|
-| [BigNumber](?path=/docs/components-bignumber--docs) | Large statistic card for data dashboards |
-| [Dashboard](?path=/docs/components-dashboard--docs) | Flex-row container that holds `BigNumber` cards side by side |
-| [RelatedLinks](?path=/docs/components-relatedlinks--docs) | "Related Stories" section with an accented heading |
-
----
-
-## Design Tokens
-
-All components share a set of CSS custom properties defined in `src/app.scss`.
-The most commonly referenced tokens are:
-
-### Colors
-| Token | Value | Use |
-|-------|-------|-----|
-| `--color-accent` | `#0033A1` | CUNY Blue — borders, buttons, highlights |
-| `--color-dark` | `#1a1a1a` | Headlines and high-contrast text |
-| `--color-text` | `#333333` | Body copy |
-| `--color-light-gray` | `#f5f5f5` | Backgrounds, meta boxes |
-| `--color-medium-gray` | `#666666` | Secondary labels and captions |
-
-### Typography
-| Token | Size | Use |
-|-------|------|-----|
-| `--font-serif` | PT Serif | Headlines, blockquotes, story links |
-| `--font-sans` | Droid Sans | Body copy, labels, navigation |
-| `--font-size-display` | 3 rem (48 px) | BigNumber values |
-| `--font-size-6xl` | 2.75 rem (44 px) | Article headlines (desktop) |
-| `--font-size-base` | 1 rem (16 px) | Body text |
-
-### Spacing
-| Token | Value |
-|-------|-------|
-| `--spacing-xxs` | 0.25 rem (4 px) |
-| `--spacing-xs` | 0.5 rem (8 px) |
-| `--spacing-sm` | 1 rem (16 px) |
-| `--spacing-md` | 1.5 rem (24 px) |
-| `--spacing-lg` | 2 rem (32 px) |
-| `--spacing-xl` | 3 rem (48 px) |
-| `--spacing-xxl` | 4 rem (64 px) |
-
----
-
-## Responsive Breakpoints
-
-Components are built mobile-first. Use the **viewport toolbar** (or the `Viewport` panel)
-to preview stories at different screen sizes:
-
-| Preset | Width | Description |
-|--------|-------|-------------|
-| Mobile | 375 px | Typical phone — navigation hidden in header |
-| Tablet | 768 px | Meta box goes inline; headline font grows |
-| Desktop | 1280 px | Full navigation visible; max-width layout kicks in |
-| Wide | 1440 px | Extra-wide monitor |
-
----
-
-## Accessibility
-
-Every story runs [axe-core](https://github.com/dequelabs/axe-core) automatically via
-`@storybook/addon-a11y`. Check the **Accessibility** panel at the bottom of the screen
-to see any WCAG violations and how to fix them.

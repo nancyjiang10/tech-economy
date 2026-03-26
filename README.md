@@ -1,5 +1,7 @@
 A simple SvelteKit starter template for ["JOUR 73361: Coding the News,"](https://github.com/palewire/cuny-jour-73361-coding-the-news) a course taught at the City University of New York's Craig Newmark Graduate School of Journalism
 
+![Scrolling preview of the NYCity News Service template](src/stories/homepage-scroll.gif)
+
 ## Quick Start
 
 1. Click the green "Use this template" button on GitHub

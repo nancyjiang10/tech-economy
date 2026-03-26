@@ -35,31 +35,31 @@
   });
 </script>
 
-<!-- Default: height stat with a label -->
-<Story name="Default" args={{ number: '305 ft', label: 'Height to Torch Tip' }} />
+<!-- Default: year stat with a label -->
+<Story name="Default" args={{ number: '2006', label: 'Year Founded' }} />
 
 <!-- With Footnote: includes optional clarifying text -->
 <Story
   name="With Footnote"
   args={{
-    number: '354',
-    label: 'Steps to the Crown',
-    footnote: 'From pedestal base to crown level',
+    number: '50%',
+    label: 'Attend tuition free',
+    footnote: 'As of Aug. 2025',
   }}
 />
 
 <!-- Large Number: shows large count formatting -->
-<Story name="Large Number" args={{ number: '4M', label: 'Annual Visitors' }} />
+<Story name="Large Number" args={{ number: '1,300', label: 'Alumni' }} />
 
 <!-- Weight: whole number example -->
-<Story name="Weight" args={{ number: '225 tons', label: 'Weight of Copper & Steel' }} />
+<Story name="Weight" args={{ number: '3', label: 'Media Centers' }} />
 
 <!-- Year: shows date examples -->
 <Story
   name="Year"
   args={{
-    number: '1886',
-    label: 'Year Dedicated',
-    footnote: 'Dedicated October 28, 1886',
+    number: '2006',
+    label: 'Year Founded',
+    footnote: 'Born during the digital revolution',
   }}
 />

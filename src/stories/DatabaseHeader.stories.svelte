@@ -1,8 +1,8 @@
 <!--
-  HeroHeader.stories.svelte
+  DatabaseHeader.stories.svelte
 
-  Stories for the HeroHeader component.
-  HeroHeader is a full-width hero banner with a headline, optional description,
+  Stories for the DatabaseHeader component.
+  DatabaseHeader is a full-width hero banner with a headline, optional description,
   and a children slot for additional content. Supports light and dark themes.
 
   Props:
@@ -15,11 +15,11 @@
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
-  import HeroHeader from '$lib/components/HeroHeader.svelte';
+  import DatabaseHeader from '$lib/components/DatabaseHeader.svelte';
 
   const { Story } = defineMeta({
-    title: 'Components/HeroHeader',
-    component: HeroHeader,
+    title: 'Components/DatabaseHeader',
+    component: DatabaseHeader,
     tags: ['autodocs'],
     parameters: {
       layout: 'fullscreen',
@@ -49,8 +49,8 @@
 <Story
   name="Default"
   args={{
-    headline: 'Search the Database',
-    description: 'Explore records from across all five boroughs. Updated daily with the latest public data.',
+    headline: 'Search Our Programs',
+    description: 'Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism.',
     bgColor: 'var(--color-light-gray)',
   }}
 />
@@ -59,8 +59,8 @@
 <Story
   name="Dark"
   args={{
-    headline: 'Search the Database',
-    description: 'Explore records from across all five boroughs. Updated daily with the latest public data.',
+    headline: 'Search Our Programs',
+    description: 'Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism.',
     bgColor: '#1a1a1a',
     dark: true,
   }}
@@ -70,8 +70,8 @@
 <Story
   name="CUNY Blue"
   args={{
-    headline: 'NYC Public Records Lookup',
-    description: 'A searchable database of public records, compiled and verified by the NYCity News Service.',
+    headline: 'Find Your Path at CUNY Journalism',
+    description: 'Master\'s degrees, professional education, and media center resources — all at an affordable price.',
     bgColor: 'var(--color-accent)',
     dark: true,
   }}
@@ -81,7 +81,7 @@
 <Story
   name="Headline Only"
   args={{
-    headline: 'The New Colossus Project',
+    headline: 'Craig Newmark Graduate School of Journalism',
     bgColor: 'var(--color-light-gray)',
   }}
 />

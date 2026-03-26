@@ -1,8 +1,4 @@
 {
-  "//": "package.json: This file defines your project and its dependencies.",
-  "//name": "The name of your project. Change this when you create a new site.",
-  "//scripts": "Commands you can run: 'npm run dev' starts a local server, 'npm run build' creates the final site.",
-  "//devDependencies": "The packages this project needs. They are installed when you run 'npm install'.",
   "name": "cuny-jour-static-site-template",
   "version": "1.0.0",
   "private": true,
@@ -26,6 +22,7 @@
     "eslint": "^10.0.3",
     "eslint-plugin-svelte": "^3.15.2",
     "globals": "^17.4.0",
+    "playwright": "^1.58.2",
     "remark-gfm": "^4.0.1",
     "sass": "^1.97.3",
     "storybook": "^10.2.19",

@@ -32,10 +32,9 @@
   <div class="story-container">
     <MethodologyBox>
       <p>
-        The data in this story was obtained through a Freedom of Information Law request
-        to the New York City Department of Buildings. Records cover inspections conducted
-        between January 2020 and December 2024. We excluded records flagged as duplicates
-        by the agency and verified a random sample of 200 entries against court filings.
+        The data in this story was compiled by student journalists at the Craig Newmark
+        Graduate School of Journalism. Records were obtained through Freedom of Information
+        Law requests to New York City agencies and verified against public filings.
       </p>
       <p>
         Analysis was performed using Python and the pandas library. Our code and data are
@@ -50,9 +49,9 @@
   <div class="story-container">
     <MethodologyBox title="About the Data">
       <p>
-        This database is built from public records published by the NYC Department of
-        Education and updated weekly. School-level data is aggregated from individual
-        incident reports filed by principals and verified by district superintendents.
+        This database was built from public records published by NYC agencies and updated
+        weekly. School-level data is aggregated from individual reports filed by city
+        officials and verified by our student reporters.
       </p>
     </MethodologyBox>
   </div>
@@ -63,8 +62,8 @@
   <div class="story-container">
     <MethodologyBox title="Sources and Methodology">
       <p>
-        Exposed discharge data comes from the
-        <a href="https://data.cityofnewyork.us">NYC Open Data portal</a> and was
+        Data was obtained from the
+        <a href="https://data.cityofnewyork.us">NYC Open Data portal</a> and
         cross-referenced with records from the
         <a href="https://www.dec.ny.gov">NYS Department of Environmental Conservation</a>.
         Population estimates are from the U.S. Census Bureau's

@@ -41,6 +41,9 @@ const config = {
     options: {},
   },
 
+  // Serve SvelteKit's static/ folder so assets like images and GIFs resolve at the same paths
+  staticDirs: ["../static"],
+
   // Opt out of Storybook's anonymous usage telemetry
   core: {
     disableTelemetry: true,
