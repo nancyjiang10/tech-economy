@@ -27,10 +27,10 @@ const preview = {
       ],
     },
 
-    // Sort stories so the Introduction page appears first (default homepage)
+    // Sort stories so Introduction appears first, Design Tokens second, then the rest
     options: {
       storySort: {
-        order: ['Introduction', '*'],
+        order: ['Introduction', 'Design Tokens', '*'],
       },
     },
 
