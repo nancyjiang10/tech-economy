@@ -7,8 +7,8 @@ using an OpenFreeMap-hosted basemap tile service.
 
 USAGE EXAMPLE:
 <LocatorMap
-  longitude={-73.9857}
-  latitude={40.7484}
+  longitude={-73.9914662}
+  latitude={40.7555711}
   zoom={13}
   theme="liberty"
   dot={true}
@@ -28,8 +28,8 @@ USAGE EXAMPLE:
   };
 
   let {
-    longitude = -73.9857,    // Map center longitude (default: Midtown Manhattan)
-    latitude = 40.7484,      // Map center latitude
+    longitude = -73.9914662,  // Map center longitude (default: Newmark J-School)
+    latitude = 40.7555711,    // Map center latitude
     zoom = 13,               // Initial zoom level (0–22)
     theme = 'liberty',       // Basemap theme: 'liberty' | 'bright' | 'positron'
     dot = false,             // Whether to show a dot marker at the map center
