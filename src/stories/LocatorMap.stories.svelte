@@ -9,7 +9,8 @@
   - longitude: Map center longitude (default: -73.9857)
   - latitude: Map center latitude (default: 40.7484)
   - zoom: Initial zoom level 0–22 (default: 13)
-  - style: MapLibre style URL (default: OpenFreeMap liberty)
+  - theme: Basemap theme — 'liberty' | 'bright' | 'positron' (default: 'liberty')
+  - dot: Show a dot marker at the map center (default: false)
   - caption: Optional caption text below the map
   - credit: Optional credit line
 -->
@@ -34,9 +35,14 @@
         control: { type: 'range', min: 0, max: 22, step: 0.5 },
         description: 'Initial zoom level (0 = world, 22 = building)',
       },
-      style: {
-        control: 'text',
-        description: 'MapLibre style URL (defaults to OpenFreeMap liberty)',
+      theme: {
+        control: { type: 'select' },
+        options: ['liberty', 'bright', 'positron'],
+        description: "OpenFreeMap basemap theme ('liberty', 'bright', or 'positron')",
+      },
+      dot: {
+        control: 'boolean',
+        description: 'Show a red dot marker at the map center',
       },
       caption: {
         control: 'text',
@@ -58,6 +64,23 @@
     latitude: 40.7484,
     zoom: 13,
     caption: 'The Craig Newmark Graduate School of Journalism is at 219 West 40th Street in Midtown Manhattan.',
+    credit: 'OpenFreeMap / OpenStreetMap contributors',
+  }}
+>
+  {#snippet children(args)}
+    <LocatorMap {...args} />
+  {/snippet}
+</Story>
+
+<!-- Dot Marker: map with a red dot marking the location -->
+<Story
+  name="Dot Marker"
+  args={{
+    longitude: -73.9857,
+    latitude: 40.7484,
+    zoom: 13,
+    dot: true,
+    caption: 'A red dot marks the location of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
 >
@@ -112,15 +135,32 @@
   {/snippet}
 </Story>
 
-<!-- Alternate Style: OpenFreeMap bright style -->
+<!-- Bright Theme: OpenFreeMap bright basemap -->
 <Story
-  name="Bright Style"
+  name="Bright Theme"
   args={{
     longitude: -73.9857,
     latitude: 40.7484,
     zoom: 13,
-    style: 'https://tiles.openfreemap.org/styles/bright',
-    caption: 'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap bright style.',
+    theme: 'bright',
+    caption: 'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap bright theme.',
+    credit: 'OpenFreeMap / OpenStreetMap contributors',
+  }}
+>
+  {#snippet children(args)}
+    <LocatorMap {...args} />
+  {/snippet}
+</Story>
+
+<!-- Positron Theme: OpenFreeMap positron basemap -->
+<Story
+  name="Positron Theme"
+  args={{
+    longitude: -73.9857,
+    latitude: 40.7484,
+    zoom: 13,
+    theme: 'positron',
+    caption: 'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap positron theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
 >

@@ -10,6 +10,8 @@ USAGE EXAMPLE:
   longitude={-73.9857}
   latitude={40.7484}
   zoom={13}
+  theme="liberty"
+  dot={true}
   caption="The Craig Newmark Graduate School of Journalism is in Midtown Manhattan."
   credit="OpenFreeMap / OpenStreetMap contributors"
 />
@@ -18,17 +20,30 @@ USAGE EXAMPLE:
   import { onMount } from 'svelte';
   import 'maplibre-gl/dist/maplibre-gl.css';
 
+  /** Maps theme names to OpenFreeMap style URLs */
+  const THEME_URLS = {
+    liberty: 'https://tiles.openfreemap.org/styles/liberty',
+    bright: 'https://tiles.openfreemap.org/styles/bright',
+    positron: 'https://tiles.openfreemap.org/styles/positron',
+  };
+
   let {
     longitude = -73.9857,    // Map center longitude (default: Midtown Manhattan)
     latitude = 40.7484,      // Map center latitude
     zoom = 13,               // Initial zoom level (0–22)
-    style = 'https://tiles.openfreemap.org/styles/liberty', // OpenFreeMap basemap style URL
+    theme = 'liberty',       // Basemap theme: 'liberty' | 'bright' | 'positron'
+    dot = false,             // Whether to show a dot marker at the map center
     caption = '',            // Optional caption below the map
     credit = '',             // Optional credit line
   } = $props();
 
+  const styleUrl = $derived(THEME_URLS[theme] ?? THEME_URLS.liberty);
+
   let mapContainer;
-  let map;
+  let map = $state(null);
+
+  // Tracks the style URL currently applied to the map, to avoid redundant setStyle calls
+  let appliedStyleUrl = styleUrl;
 
   // Build a descriptive label for screen readers from the caption or coordinates
   const ariaLabel = $derived(
@@ -37,15 +52,47 @@ USAGE EXAMPLE:
       : `Locator map centered at ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
   );
 
+  /** Adds the red dot GeoJSON layer at the map center. */
+  function addDotLayer() {
+    if (!map || map.getSource('locator-dot')) return;
+    map.addSource('locator-dot', {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [longitude, latitude] },
+        properties: {},
+      },
+    });
+    map.addLayer({
+      id: 'locator-dot',
+      type: 'circle',
+      source: 'locator-dot',
+      paint: {
+        'circle-radius': 8,
+        'circle-color': '#cc0000',
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff',
+      },
+    });
+  }
+
+  /** Removes the dot GeoJSON layer from the map. */
+  function removeDotLayer() {
+    if (!map) return;
+    if (map.getLayer('locator-dot')) map.removeLayer('locator-dot');
+    if (map.getSource('locator-dot')) map.removeSource('locator-dot');
+  }
+
   onMount(() => {
     import('maplibre-gl')
       .then(({ Map }) => {
         map = new Map({
           container: mapContainer,
-          style,
+          style: styleUrl,
           center: [longitude, latitude],
           zoom,
-          interactive: false,  // Static locator map — no pan or zoom by the user
+          interactive: false,           // Static locator map — no pan or zoom by the user
+          attributionControl: { compact: true }, // Start attribution collapsed behind the ℹ icon
         });
       })
       .catch((err) => {
@@ -54,7 +101,35 @@ USAGE EXAMPLE:
 
     return () => {
       if (map) map.remove();
+      map = null;
     };
+  });
+
+  // Reactively update the basemap style when theme changes
+  $effect(() => {
+    const url = styleUrl;
+    if (!map || url === appliedStyleUrl) return;
+    appliedStyleUrl = url;
+    map.setStyle(url);
+    // Re-add the dot once the new style finishes loading
+    if (dot) {
+      map.once('style.load', addDotLayer);
+    }
+  });
+
+  // Reactively add or remove the dot marker when the dot prop changes
+  $effect(() => {
+    const showDot = dot;
+    if (!map) return;
+
+    if (map.isStyleLoaded()) {
+      if (showDot) addDotLayer();
+      else removeDotLayer();
+    } else if (showDot) {
+      // Style not yet loaded — defer until ready
+      map.once('style.load', addDotLayer);
+      return () => map.off('style.load', addDotLayer);
+    }
   });
 </script>
 
