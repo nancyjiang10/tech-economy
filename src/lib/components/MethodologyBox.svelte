@@ -27,6 +27,7 @@ of an article.
     padding: var(--spacing-md);
     margin-top: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
+    max-width: var(--max-width);
   }
 
   .methodology-title {
