@@ -85,8 +85,11 @@ USAGE EXAMPLE:
   }
 
   onMount(() => {
+    let mounted = true;
+
     import('maplibre-gl')
       .then(({ Map }) => {
+        if (!mounted) return;
         map = new Map({
           container: mapContainer,
           style: styleUrl,
@@ -101,6 +104,7 @@ USAGE EXAMPLE:
       });
 
     return () => {
+      mounted = false;
       if (map) map.remove();
       map = null;
     };
@@ -129,7 +133,7 @@ USAGE EXAMPLE:
     } else if (showDot) {
       // Style not yet loaded — defer until ready
       map.once('style.load', addDotLayer);
-      return () => map.off('style.load', addDotLayer);
+      return () => map?.off('style.load', addDotLayer);
     }
   });
 </script>
