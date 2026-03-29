@@ -35,7 +35,7 @@ USAGE EXAMPLE:
     dot = false,             // Whether to show a dot marker at the map center
     width = null,            // Optional explicit width in pixels (e.g. 300). Defaults to 100% of parent.
     caption = '',            // Optional caption below the map
-    credit = '',             // Optional credit line
+    credit = "OpenFreeMap / OpenStreetMap contributors", // Optional credit line
   } = $props();
 
   const styleUrl = $derived(THEME_URLS[theme] ?? THEME_URLS.liberty);
