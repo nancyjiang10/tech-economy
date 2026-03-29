@@ -33,6 +33,7 @@ USAGE EXAMPLE:
     zoom = 13,               // Initial zoom level (0–22)
     theme = 'liberty',       // Basemap theme: 'liberty' | 'bright' | 'positron'
     dot = false,             // Whether to show a dot marker at the map center
+    width = null,            // Optional explicit width in pixels (e.g. 300). Defaults to 100% of parent.
     caption = '',            // Optional caption below the map
     credit = '',             // Optional credit line
   } = $props();
@@ -92,7 +93,7 @@ USAGE EXAMPLE:
           center: [longitude, latitude],
           zoom,
           interactive: false,           // Static locator map — no pan or zoom by the user
-          attributionControl: { compact: true }, // Start attribution collapsed behind the ℹ icon
+          attributionControl: credit ? false : { compact: true }, // Hide when credit line is shown below the map
         });
       })
       .catch((err) => {
@@ -133,12 +134,14 @@ USAGE EXAMPLE:
   });
 </script>
 
-<figure class="locator-map-figure">
+<figure class="locator-map-figure" style:width={width ? `${width}px` : undefined}>
   <div
     class="locator-map"
     bind:this={mapContainer}
     role="img"
     aria-label={ariaLabel}
+    style:width={width ? `${width}px` : undefined}
+    style:height={width ? `${width}px` : undefined}
   ></div>
   {#if caption || credit}
     <figcaption class="caption-container">
@@ -156,12 +159,12 @@ USAGE EXAMPLE:
   @use '../styles' as *;
 
   .locator-map-figure {
-    margin: var(--spacing-md) 0;
+    margin: var(--spacing-sm) 0;
     padding: 0;
     width: 100%;
 
     @include tablet {
-      margin: var(--spacing-lg) 0;
+      margin: var(--spacing-sm) 0;
     }
   }
 
@@ -175,8 +178,8 @@ USAGE EXAMPLE:
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
-    padding-top: var(--spacing-xs);
-    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xxs);
+    margin-top: var(--spacing-xxs);
   }
 
   .caption {
@@ -188,6 +191,5 @@ USAGE EXAMPLE:
   .credit {
     font-size: var(--font-size-xs);
     color: var(--color-medium-gray);
-    font-style: italic;
   }
 </style>

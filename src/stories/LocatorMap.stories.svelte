@@ -11,6 +11,7 @@
   - zoom: Initial zoom level 0–22 (default: 13)
   - theme: Basemap theme — 'liberty' | 'bright' | 'positron' (default: 'liberty')
   - dot: Show a dot marker at the map center (default: false)
+  - width: Explicit width in pixels (default: 300 in stories)
   - caption: Optional caption text below the map
   - credit: Optional credit line
 -->
@@ -44,6 +45,10 @@
         control: 'boolean',
         description: 'Show a red dot marker at the map center',
       },
+      width: {
+        control: { type: 'number', step: 50 },
+        description: 'Explicit width in pixels (square map)',
+      },
       caption: {
         control: 'text',
         description: 'Optional caption displayed below the map',
@@ -63,6 +68,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 13,
+    width: 300,
     caption: 'The Craig Newmark Graduate School of Journalism is at 219 West 40th Street in Midtown Manhattan.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
@@ -79,6 +85,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 13,
+    width: 300,
     dot: true,
     caption: 'A red dot marks the location of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
@@ -96,6 +103,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 13,
+    width: 300,
   }}
 >
   {#snippet children(args)}
@@ -110,6 +118,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 11,
+    width: 300,
     caption: 'Midtown Manhattan, New York City.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
@@ -126,6 +135,7 @@
     longitude: -74.006,
     latitude: 40.7128,
     zoom: 9,
+    width: 300,
     caption: 'New York City and its five boroughs.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
@@ -142,6 +152,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 13,
+    width: 300,
     theme: 'bright',
     caption: 'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap bright theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
@@ -159,6 +170,7 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 13,
+    width: 300,
     theme: 'positron',
     caption: 'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap positron theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
