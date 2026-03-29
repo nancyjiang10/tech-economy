@@ -152,6 +152,9 @@ layout is single-column and backward-compatible.
   }
 
   @include desktop {
+    .hero-inner {
+      padding: 0 var(--spacing-md);
+    }
     .hero-headline {
       font-size: var(--font-size-display);
     }

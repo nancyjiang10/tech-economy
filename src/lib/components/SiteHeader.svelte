@@ -160,7 +160,7 @@ SiteHeader.svelte — NYCity News Service Style Header
   @include desktop {
     .masthead {
       justify-content: space-between;
-      padding: var(--font-size-xs) 0;
+      padding: var(--font-size-xs) var(--spacing-md);
     }
 
     .logo-nycity {
