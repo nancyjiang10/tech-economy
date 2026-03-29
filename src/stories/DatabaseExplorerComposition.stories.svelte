@@ -102,7 +102,7 @@
 
   /* Results section below the header */
   .results-container {
-    max-width: var(--max-width);
+    max-width: var(--max-width-wide);
     margin: var(--spacing-lg) auto;
     padding: 0 var(--spacing-md);
   }
