@@ -30,14 +30,14 @@ layout is single-column and backward-compatible.
         {#if headline}
           <h1 class="hero-headline">{headline}</h1>
         {/if}
+        {#if description}
+          <p class="hero-description">{description}</p>
+        {/if}
         {#if byline}
           <p class="hero-byline">{byline}</p>
         {/if}
         {#if date}
           <p class="hero-date">{date}</p>
-        {/if}
-        {#if description}
-          <p class="hero-description">{description}</p>
         {/if}
       </div>
       {#if children}
@@ -59,7 +59,7 @@ layout is single-column and backward-compatible.
 
   .hero-header {
     width: 100%;
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .hero-inner {
@@ -95,7 +95,7 @@ layout is single-column and backward-compatible.
     font-family: var(--font-sans);
     font-size: var(--font-size-base);
     color: var(--color-medium-gray);
-    margin-bottom: var(--spacing-xxs);
+    margin: var(--spacing-xxs) 0;
   }
 
   .hero-date {
@@ -104,15 +104,15 @@ layout is single-column and backward-compatible.
     color: var(--color-medium-gray);
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wider);
-    margin-bottom: var(--spacing-sm);
+    margin: var(--spacing-xxs) 0;
   }
 
   .hero-description {
     font-family: var(--font-sans);
     font-size: var(--font-size-lg);
-    line-height: var(--leading-relaxed);
+    line-height: var(--leading-base);
     color: var(--color-text);
-    margin-bottom: 0;
+    margin-bottom: var(--spacing-sm);
   }
 
   .hero-extra {

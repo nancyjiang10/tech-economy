@@ -99,6 +99,8 @@
       <LottieGraphic
         animationData={DATA_ANIMATION}
         ariaLabel="Animated data visualization with bar chart and rotating ring"
+        trimTop={0.25}
+        trimBottom={0.06}
       />
     {/snippet}
   </DatabaseHeader>
@@ -130,6 +132,8 @@
       <LottieGraphic
         animationData={DATA_ANIMATION}
         ariaLabel="Animated data visualization with bar chart and rotating ring"
+        trimTop={0.25}
+        trimBottom={0.06}
       />
     {/snippet}
   </DatabaseHeader>

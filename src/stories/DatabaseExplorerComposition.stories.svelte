@@ -40,32 +40,21 @@
   <SiteHeader />
 
   <DatabaseHeader
-    headline="Search CUNY Journalism Programs"
-    byline="By NYCity News Service"
+    headline="CUNY Journalism Courses Explorer"
     date="Updated January 2026"
-    description="Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism. Find the program that fits your goals and start your journalism career."
+    description="Find the program that fits your goals"
   >
     <div class="hero-controls">
       <SearchInput
-        label="Search Programs"
-        placeholder="Search by program, topic, or keyword…"
-      />
-      <DropdownInput
-        label="Borough"
-        placeholder="All boroughs…"
-        options={[
-          { value: 'manhattan',     label: 'Manhattan' },
-          { value: 'brooklyn',      label: 'Brooklyn' },
-          { value: 'queens',        label: 'Queens' },
-          { value: 'bronx',         label: 'The Bronx' },
-          { value: 'staten-island', label: 'Staten Island' },
-        ]}
+        placeholder="Enter a program, topic, or keyword…"
       />
     </div>
     {#snippet graphic()}
       <LottieGraphic
         animationData={DATA_ANIMATION}
         ariaLabel="Animated data visualization with bar chart and pulsing elements"
+        trimTop={0.25}
+        trimBottom={0.06}
       />
     {/snippet}
   </DatabaseHeader>
