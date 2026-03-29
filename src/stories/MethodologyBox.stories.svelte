@@ -16,12 +16,15 @@
 
   const { Story } = defineMeta({
     title: 'Components/MethodologyBox',
-    component: MethodologyBox,
     tags: ['autodocs'],
     argTypes: {
       title: {
         control: 'text',
         description: 'Heading text shown at the top of the box',
+      },
+      children: {
+        control: false,
+        description: 'Rich HTML content describing the methodology',
       },
     },
   });
