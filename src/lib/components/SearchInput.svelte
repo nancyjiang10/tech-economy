@@ -5,7 +5,7 @@ SearchInput.svelte — A search text input with magnifying glass icon.
 <script>
   let {
     placeholder = 'Search…',
-    value = '',
+    value = $bindable(''),
     label = 'Search',
     oninput = () => {},
   } = $props();
@@ -34,7 +34,7 @@ SearchInput.svelte — A search text input with magnifying glass icon.
       class="search-field"
       type="search"
       {placeholder}
-      {value}
+      bind:value
       oninput={oninput}
     />
   </div>
