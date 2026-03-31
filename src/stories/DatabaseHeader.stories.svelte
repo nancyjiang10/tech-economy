@@ -104,7 +104,30 @@
 />
 
 <!-- With Graphic: two-column layout with animated data visualization on the right -->
-<Story name="With Graphic">
+<Story
+  name="With Graphic"
+  parameters={{
+    docs: {
+      source: {
+        code: `<DatabaseHeader
+  headline="Search CUNY Programs"
+  byline="By NYCity News Service"
+  date="Updated January 2026"
+  description="Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism."
+>
+  {#snippet graphic()}
+    <LottieGraphic
+      animationData={DATA_ANIMATION}
+      ariaLabel="Animated data visualization with bar chart and rotating ring"
+      trimTop={0.25}
+      trimBottom={0.06}
+    />
+  {/snippet}
+</DatabaseHeader>`,
+      },
+    },
+  }}
+>
   <DatabaseHeader
     headline="Search CUNY Programs"
     byline="By NYCity News Service"
@@ -123,7 +146,42 @@
 </Story>
 
 <!-- With Graphic and Controls: two-column hero with search inputs in the children slot -->
-<Story name="With Graphic and Controls">
+<Story
+  name="With Graphic and Controls"
+  parameters={{
+    docs: {
+      source: {
+        code: `<DatabaseHeader
+  headline="Search CUNY Programs"
+  byline="By NYCity News Service"
+  date="Updated January 2026"
+  description="Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism."
+>
+  <SearchInput label="Search Programs" placeholder="Search by program, topic, or keyword…" />
+  <DropdownInput
+    label="Borough"
+    placeholder="All boroughs…"
+    options={[
+      { value: 'manhattan',     label: 'Manhattan' },
+      { value: 'brooklyn',      label: 'Brooklyn' },
+      { value: 'queens',        label: 'Queens' },
+      { value: 'bronx',         label: 'The Bronx' },
+      { value: 'staten-island', label: 'Staten Island' },
+    ]}
+  />
+  {#snippet graphic()}
+    <LottieGraphic
+      animationData={DATA_ANIMATION}
+      ariaLabel="Animated data visualization with bar chart and rotating ring"
+      trimTop={0.25}
+      trimBottom={0.06}
+    />
+  {/snippet}
+</DatabaseHeader>`,
+      },
+    },
+  }}
+>
   <DatabaseHeader
     headline="Search CUNY Programs"
     byline="By NYCity News Service"
