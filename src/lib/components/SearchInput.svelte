@@ -67,7 +67,7 @@ SearchInput.svelte — A search text input with magnifying glass icon.
   .search-icon {
     position: absolute;
     left: var(--spacing-xs);
-    color: var(--color-medium-gray);
+    color: var(--color-accent);
     pointer-events: none;
   }
 
