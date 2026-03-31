@@ -10,6 +10,8 @@ When `graphic` is provided the inner layout becomes a two-column flex row
 layout is single-column and backward-compatible.
 -->
 <script>
+  import Kicker from './Kicker.svelte';
+
   let {
     kicker = '',
     headline = '',
@@ -30,7 +32,7 @@ layout is single-column and backward-compatible.
     <div class="hero-left">
       <div class="hero-content">
         {#if kicker}
-          <p class="hero-kicker">{kicker}</p>
+          <Kicker text={kicker} />
         {/if}
         {#if headline}
           <h1 class="hero-headline">{headline}</h1>
@@ -85,16 +87,6 @@ layout is single-column and backward-compatible.
 
   .hero-content {
     max-width: var(--max-width);
-  }
-
-  .hero-kicker {
-    font-family: var(--font-sans);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wider);
-    margin-bottom: var(--spacing-xxs);
   }
 
   .hero-headline {

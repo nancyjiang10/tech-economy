@@ -3,19 +3,24 @@
 ArticleHeader.svelte — NYCity News Service Style Article Header
 
 Displays the headline and metadata line with icons in the NYCity style:
+- Optional kicker (eyebrow label) above the headline
 - Large serif headline
 - Bordered metadata box with date, authors, and optional source
 
 USAGE EXAMPLE:
 <ArticleHeader
   headline="City Council Approves New Budget"
+  kicker="City Hall"
   byline="Jane Smith, John Doe"
   pubDate="2024-01-15"
 />
 -->
 <script>
+  import Kicker from './Kicker.svelte';
+
   let {
     headline,           // Required: The main title of the article
+    kicker = '',        // Optional: Eyebrow label rendered above the headline
     byline = '',        // Optional: The author's name(s)
     pubDate = '',       // Optional: Publication date in YYYY-MM-DD format
   } = $props();
@@ -38,6 +43,7 @@ USAGE EXAMPLE:
 </script>
 
 <header class="article-header">
+  <Kicker text={kicker} />
   <h1 class="headline">{headline}</h1>
 
   {#if byline || pubDate}
