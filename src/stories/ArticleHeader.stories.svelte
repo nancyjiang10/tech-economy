@@ -7,6 +7,7 @@
 
   Props:
   - headline: The main article title (required)
+  - kicker: Optional eyebrow label rendered above the headline in site blue
   - byline: Author name(s) (optional)
   - pubDate: Publication date in YYYY-MM-DD format (optional)
 -->
@@ -22,6 +23,10 @@
       headline: {
         control: 'text',
         description: 'The main article title displayed as a large serif heading',
+      },
+      kicker: {
+        control: 'text',
+        description: 'Optional eyebrow label rendered above the headline in site blue',
       },
       byline: {
         control: 'text',
@@ -40,6 +45,17 @@
   name="Default"
   args={{
     headline: 'Become a force for good. Join our next class.',
+    byline: 'NYCity News Service',
+    pubDate: '2026-01-31',
+  }}
+/>
+
+<!-- With Kicker: eyebrow label above the headline -->
+<Story
+  name="With Kicker"
+  args={{
+    kicker: 'City Hall',
+    headline: 'City Council Approves New Budget',
     byline: 'NYCity News Service',
     pubDate: '2026-01-31',
   }}
