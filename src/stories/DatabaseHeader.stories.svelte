@@ -2,11 +2,12 @@
   DatabaseHeader.stories.svelte
 
   Stories for the DatabaseHeader component.
-  DatabaseHeader is a full-width hero banner with a headline, optional byline,
-  date, description, children slot for additional content (e.g. search controls),
-  and an optional graphic snippet that renders in a right column.
+  DatabaseHeader is a full-width hero banner with a headline, optional kicker,
+  byline, date, description, children slot for additional content (e.g. search
+  controls), and an optional graphic snippet that renders in a right column.
 
   Props:
+  - kicker: Optional uppercase eyebrow label rendered above the headline in site blue
   - headline: Primary hero title
   - byline: Attribution line rendered below the headline
   - date: Publication/update date rendered below the byline
@@ -32,6 +33,10 @@
       layout: 'fullscreen',
     },
     argTypes: {
+      kicker: {
+        control: 'text',
+        description: 'Optional uppercase eyebrow label rendered above the headline in site blue',
+      },
       headline: {
         control: 'text',
         description: 'Primary hero title',
@@ -71,6 +76,17 @@
   name="Headline Only"
   args={{
     headline: 'Craig Newmark Graduate School of Journalism',
+    bgColor: 'var(--color-light-gray)',
+  }}
+/>
+
+<!-- With Kicker: eyebrow label above the headline in site blue -->
+<Story
+  name="With Kicker"
+  args={{
+    kicker: 'Housing Coverage',
+    headline: 'NYC Housing Violations Database',
+    description: 'Search and filter HPD housing violations across all five boroughs.',
     bgColor: 'var(--color-light-gray)',
   }}
 />

@@ -1,8 +1,9 @@
 <!--
 @component
 DatabaseHeader.svelte — A full-width hero header with optional background color,
-headline, byline, date, description, children slot for additional content (e.g.
-search controls), and an optional graphic snippet that renders in a right column.
+kicker, headline, byline, date, description, children slot for additional content
+(e.g. search controls), and an optional graphic snippet that renders in a right
+column.
 
 When `graphic` is provided the inner layout becomes a two-column flex row
 (text + controls on the left, graphic on the right). Without `graphic` the
@@ -10,6 +11,7 @@ layout is single-column and backward-compatible.
 -->
 <script>
   let {
+    kicker = '',
     headline = '',
     description = '',
     byline = '',
@@ -27,6 +29,9 @@ layout is single-column and backward-compatible.
   <div class="hero-inner" class:has-graphic={!!graphic}>
     <div class="hero-left">
       <div class="hero-content">
+        {#if kicker}
+          <p class="hero-kicker">{kicker}</p>
+        {/if}
         {#if headline}
           <h1 class="hero-headline">{headline}</h1>
         {/if}
@@ -80,6 +85,16 @@ layout is single-column and backward-compatible.
 
   .hero-content {
     max-width: var(--max-width);
+  }
+
+  .hero-kicker {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wider);
+    margin-bottom: var(--spacing-xxs);
   }
 
   .hero-headline {
