@@ -11,6 +11,7 @@
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import ArticleBody from '$lib/components/ArticleBody.svelte';
+  import Blockquote from '$lib/components/Blockquote.svelte';
 
   const { Story } = defineMeta({
     title: 'Components/ArticleBody',
@@ -115,7 +116,7 @@
   </div>
 </Story>
 
-<!-- With Blockquote: shows the NYCity-style blue-bordered pull quote -->
+<!-- With Blockquote: shows the Blockquote component inside article body -->
 <Story
   name="With Blockquote"
   parameters={{
@@ -127,10 +128,9 @@
     trust, the Newmark Graduate School of Journalism is committed to producing the
     next generation of skilled, ethically minded, and diverse journalists.
   </p>
-  <blockquote>
+  <Blockquote attribution="Craig Newmark Graduate School of Journalism">
     <p>We invite you to be part of our world.</p>
-  </blockquote>
-  <p>— Craig Newmark Graduate School of Journalism</p>
+  </Blockquote>
 </ArticleBody>`,
       },
     },
@@ -141,14 +141,11 @@
       <p>
         At a time when our profession is reeling from financial pressures and lack of trust, the Newmark Graduate School of Journalism is committed to producing the next generation of skilled, ethically minded, and diverse journalists.
       </p>
-      <blockquote>
+      <Blockquote attribution="Craig Newmark Graduate School of Journalism">
         <p>
           We invite you to be part of our world.
         </p>
-      </blockquote>
-      <p>
-        — Craig Newmark Graduate School of Journalism
-      </p>
+      </Blockquote>
     </ArticleBody>
   </div>
 </Story>

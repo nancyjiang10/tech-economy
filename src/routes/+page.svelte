@@ -6,6 +6,7 @@ This is your page!
   // Import all the news furniture components
   import ArticleHeader from '$lib/components/ArticleHeader.svelte';
   import ArticleBody from '$lib/components/ArticleBody.svelte';
+  import Blockquote from '$lib/components/Blockquote.svelte';
   import Image from '$lib/components/Image.svelte';
   import RelatedLinks from '$lib/components/RelatedLinks.svelte';
 
@@ -60,6 +61,10 @@ This is your page!
       Our mission is to serve the public interest – by training new journalists from varied economic, racial, and cultural backgrounds who will bring much-needed diversity to newsrooms, by helping mid-career journalists retool their skills, and by partnering with other media organizations to find new paths to excellence.
     </p>
 
+    <Blockquote attribution="Craig Newmark Graduate School of Journalism">
+      <p>We invite you to be part of our world.</p>
+    </Blockquote>
+
     <p>
       Our low tuition rates, along with the added backing of private donors, allow candidates for our master’s degrees in journalism and engagement journalism to receive a world-class education at an affordable price. We also offer a unique bilingual master’s in journalism for students fluent in English and Spanish.
     </p>
@@ -78,10 +83,6 @@ This is your page!
 
     <p>
       At a time when our profession is reeling from financial pressures and lack of trust, the Newmark Graduate School of Journalism is committed to producing the next generation of skilled, ethically minded, and diverse journalists.
-    </p>
-
-    <p>
-      We invite you to be part of our world.
     </p>
   </ArticleBody>
 
