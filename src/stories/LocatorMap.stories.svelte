@@ -43,7 +43,7 @@
       },
       dot: {
         control: 'boolean',
-        description: 'Show a red dot marker at the map center',
+        description: 'Show a blue dot marker at the map center',
       },
       width: {
         control: { type: 'number', step: 50 },
@@ -78,7 +78,7 @@
   {/snippet}
 </Story>
 
-<!-- Dot Marker: map with a red dot marking the location -->
+<!-- Dot Marker: map with a blue dot marking the location -->
 <Story
   name="Dot Marker"
   args={{
@@ -87,7 +87,7 @@
     zoom: 13,
     width: 300,
     dot: true,
-    caption: 'A red dot marks the location of the Craig Newmark Graduate School of Journalism.',
+    caption: 'A blue dot marks the location of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
 >
