@@ -11,6 +11,9 @@ layout is single-column and backward-compatible.
 -->
 <script>
   import Kicker from './Kicker.svelte';
+  import Headline from './Headline.svelte';
+  import Byline from './Byline.svelte';
+  import Pubdate from './Pubdate.svelte';
 
   let {
     kicker = '',
@@ -34,18 +37,12 @@ layout is single-column and backward-compatible.
         {#if kicker}
           <Kicker text={kicker} />
         {/if}
-        {#if headline}
-          <h1 class="hero-headline">{headline}</h1>
-        {/if}
+        <Headline text={headline} />
         {#if description}
           <p class="hero-description">{description}</p>
         {/if}
-        {#if byline}
-          <p class="hero-byline">{byline}</p>
-        {/if}
-        {#if date}
-          <p class="hero-date">{date}</p>
-        {/if}
+        <Byline {byline} />
+        <Pubdate date={date} />
       </div>
       {#if children}
         <div class="hero-extra">
@@ -89,29 +86,9 @@ layout is single-column and backward-compatible.
     max-width: var(--max-width);
   }
 
-  .hero-headline {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-5xl);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--leading-tight);
-    color: var(--color-dark);
+  /* Override Headline margin and desktop font size for the hero context */
+  .hero-content :global(.headline) {
     margin-bottom: var(--spacing-xs);
-  }
-
-  .hero-byline {
-    font-family: var(--font-sans);
-    font-size: var(--font-size-base);
-    color: var(--color-medium-gray);
-    margin: var(--spacing-xxs) 0;
-  }
-
-  .hero-date {
-    font-family: var(--font-sans);
-    font-size: var(--font-size-sm);
-    color: var(--color-medium-gray);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wider);
-    margin: var(--spacing-xxs) 0;
   }
 
   .hero-description {
@@ -145,10 +122,6 @@ layout is single-column and backward-compatible.
       align-items: center;
     }
 
-    .hero-headline {
-      font-size: var(--font-size-6xl);
-    }
-
     .hero-description {
       font-size: var(--font-size-xl);
     }
@@ -162,7 +135,8 @@ layout is single-column and backward-compatible.
     .hero-inner {
       padding: 0 var(--spacing-md);
     }
-    .hero-headline {
+
+    .hero-content :global(.headline) {
       font-size: var(--font-size-display);
     }
   }
