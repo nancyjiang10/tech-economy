@@ -3,6 +3,8 @@
 Card.svelte — A card container with optional image, link, and footer actions.
 -->
 <script>
+  import { asset } from '$app/paths';
+
   let {
     href = '',
     image = '',
@@ -10,12 +12,20 @@ Card.svelte — A card container with optional image, link, and footer actions.
     children,
     footer,
   } = $props();
+
+  // Resolve local images (those starting with /) using asset()
+  // but not external URLs (http://, https://, //, data:)
+  const resolvedImage = $derived(
+    image && image.startsWith('/') && !image.startsWith('//')
+      ? asset(image)
+      : image
+  );
 </script>
 
 {#snippet cardContent()}
   {#if image}
     <div class="card-image">
-      <img src={image} alt={imageAlt} />
+      <img src={resolvedImage} alt={imageAlt} />
     </div>
   {/if}
   <div class="card-body">
