@@ -19,7 +19,7 @@
  *   --height        Suggested window height (for display only)
  */
 
-const { execSync, spawnSync } = require('child_process');
+const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
@@ -189,7 +189,7 @@ function getMacOSVSCodeWindowId() {
       stdio: ['pipe', 'pipe', 'pipe'],
     }).trim();
     return result;
-  } catch (error) {
+  } catch {
     // Fallback: try to get window ID using CGWindowListCopyWindowInfo
     return getMacOSWindowIdFallback();
   }
@@ -199,29 +199,11 @@ function getMacOSVSCodeWindowId() {
  * Fallback method to get VSCode window ID on macOS
  */
 function getMacOSWindowIdFallback() {
-  // Use JXA (JavaScript for Automation) to get window list
-  const script = `
-    ObjC.import('CoreGraphics');
-    ObjC.import('Cocoa');
-    
-    const windowList = $.CGWindowListCopyWindowInfo($.kCGWindowListOptionOnScreenOnly, $.kCGNullWindowID);
-    const windows = ObjC.deepUnwrap(windowList);
-    
-    for (const win of windows) {
-      const ownerName = win.kCGWindowOwnerName || '';
-      const windowName = win.kCGWindowName || '';
-      if (ownerName.includes('Code') || ownerName === 'Electron') {
-        // Return the window number (ID)
-        JSON.stringify({ id: win.kCGWindowNumber, name: windowName, owner: ownerName });
-      }
-    }
-  `;
-
   try {
     // Simpler approach: just use the app name for screencapture
     const result = execSync(
       `osascript -l JavaScript -e 'Application("Visual Studio Code").windows[0].id()'`,
-      { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
+      { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] },
     ).trim();
     return result;
   } catch {
@@ -256,7 +238,7 @@ function captureMacOS(outputPath) {
 
   // Fallback: Use interactive window capture
   console.log(
-    `${colors.yellow}Note: Using interactive capture. Click on the VSCode window.${colors.reset}`
+    `${colors.yellow}Note: Using interactive capture. Click on the VSCode window.${colors.reset}`,
   );
   try {
     execSync(`screencapture -o -x -w "${outputPath}"`, {
@@ -315,10 +297,8 @@ function captureLinux(outputPath) {
         console.log(`${colors.dim}Using ${tool.name}...${colors.reset}`);
         tool.capture();
         return true;
-      } catch (error) {
-        console.error(
-          `${colors.yellow}${tool.name} failed, trying next tool...${colors.reset}`
-        );
+      } catch {
+        console.error(`${colors.yellow}${tool.name} failed, trying next tool...${colors.reset}`);
       }
     }
   }
@@ -368,32 +348,34 @@ function displayInstructionBox(options) {
   console.log('\n');
   console.log(`${colors.cyan}${box.topLeft}${horizontalLine}${box.topRight}${colors.reset}`);
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}VSCode Screenshot Capture${colors.reset}${' '.repeat(boxWidth - 29)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}VSCode Screenshot Capture${colors.reset}${' '.repeat(boxWidth - 29)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
   console.log(
-    `${colors.cyan}${box.verticalRight}${horizontalLine}${box.verticalLeft}${colors.reset}`
+    `${colors.cyan}${box.verticalRight}${horizontalLine}${box.verticalLeft}${colors.reset}`,
   );
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   // Instructions
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}Please set up VSCode:${colors.reset}${' '.repeat(boxWidth - 25)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}Please set up VSCode:${colors.reset}${' '.repeat(boxWidth - 25)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   // Wrap and display instructions
   const instructionLines = wrapText(options.instructions, contentWidth - 4);
   for (const line of instructionLines) {
     const paddedLine = `  → ${line}`.padEnd(boxWidth - 2);
-    console.log(`${colors.cyan}${box.vertical}${colors.reset}${paddedLine}${colors.cyan}${box.vertical}${colors.reset}`);
+    console.log(
+      `${colors.cyan}${box.vertical}${colors.reset}${paddedLine}${colors.cyan}${box.vertical}${colors.reset}`,
+    );
   }
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   // Output path
@@ -402,33 +384,31 @@ function displayInstructionBox(options) {
   const outputVisible = `  Output: ${options.output}`;
   const outputPadding = boxWidth - 2 - outputVisible.length;
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${outputLabel}${' '.repeat(Math.max(0, outputPadding))}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${outputLabel}${' '.repeat(Math.max(0, outputPadding))}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   // Dimensions hint
   if (options.width || options.height) {
     const dimText = `  Suggested size: ${options.width}×${options.height}`;
     console.log(
-      `${colors.cyan}${box.vertical}${colors.reset}${colors.dim}${dimText}${colors.reset}${' '.repeat(boxWidth - 2 - dimText.length)}${colors.cyan}${box.vertical}${colors.reset}`
+      `${colors.cyan}${box.vertical}${colors.reset}${colors.dim}${dimText}${colors.reset}${' '.repeat(boxWidth - 2 - dimText.length)}${colors.cyan}${box.vertical}${colors.reset}`,
     );
   }
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   // Action prompt
   const promptText = '  Press ENTER when ready to capture...';
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${colors.yellow}${promptText}${colors.reset}${' '.repeat(boxWidth - 2 - promptText.length)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${colors.yellow}${promptText}${colors.reset}${' '.repeat(boxWidth - 2 - promptText.length)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
   );
-  console.log(
-    `${colors.cyan}${box.bottomLeft}${horizontalLine}${box.bottomRight}${colors.reset}`
-  );
+  console.log(`${colors.cyan}${box.bottomLeft}${horizontalLine}${box.bottomRight}${colors.reset}`);
   console.log('');
 }
 

@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { execSync, spawn } = require('child_process');
+const { execSync } = require('child_process');
 
 // Session storage directory
 const SESSION_DIR = path.join(os.homedir(), '.playwright-sessions');
@@ -140,7 +140,6 @@ async function recordVideo(options) {
 
   // Create temp directory for video recording
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'video-capture-'));
-  const tempVideoPath = path.join(tempDir, 'recording.webm');
 
   // Launch browser with video recording
   const browser = await chromium.launch({
@@ -207,18 +206,18 @@ async function recordVideo(options) {
       const palettePath = path.join(tempDir, 'palette.png');
       execSync(
         `ffmpeg -y -i "${videoPath}" -vf "fps=${options.fps},scale=${options.width}:-1:flags=lanczos,palettegen=stats_mode=diff" "${palettePath}"`,
-        { stdio: 'pipe' }
+        { stdio: 'pipe' },
       );
       // Then use the palette to create the GIF
       execSync(
         `ffmpeg -y -i "${videoPath}" -i "${palettePath}" -lavfi "fps=${options.fps},scale=${options.width}:-1:flags=lanczos [x]; [x][1:v] paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" "${options.output}"`,
-        { stdio: 'pipe' }
+        { stdio: 'pipe' },
       );
     } else if (outputExt === '.mp4') {
       console.log('Converting to MP4...');
       execSync(
         `ffmpeg -y -i "${videoPath}" -c:v libx264 -preset slow -crf 22 -an "${options.output}"`,
-        { stdio: 'pipe' }
+        { stdio: 'pipe' },
       );
     } else {
       // WebM - just copy

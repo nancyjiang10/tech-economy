@@ -1,10 +1,17 @@
 /** @type {import('prettier').Config} */
 export default {
-  useTabs: false,
-  tabWidth: 2,
+  arrowParens: 'always',
+  bracketSpacing: true,
+  embeddedLanguageFormatting: 'auto',
+  endOfLine: 'lf',
+  htmlWhitespaceSensitivity: 'css',
+  printWidth: 80,
+  proseWrap: 'preserve',
+  semi: true,
   singleQuote: true,
-  trailingComma: 'all',
-  printWidth: 100,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  useTabs: false,
   plugins: ['prettier-plugin-svelte'],
   overrides: [
     {
