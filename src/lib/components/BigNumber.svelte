@@ -11,7 +11,9 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
+  @use '$lib/styles' as *;
+
   .big-number {
     text-align: center;
     padding: var(--spacing-md);
@@ -42,5 +44,15 @@
     color: var(--color-white);
     margin-top: var(--spacing-xxs);
     font-style: italic;
+  }
+
+  @include mobile {
+    .big-number {
+      padding: var(--spacing-sm);
+    }
+
+    .number {
+      font-size: var(--font-size-5xl);
+    }
   }
 </style>

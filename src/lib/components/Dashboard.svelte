@@ -6,7 +6,9 @@
   {@render children()}
 </div>
 
-<style>
+<style lang="scss">
+  @use '$lib/styles' as *;
+
   .row {
     margin: var(--spacing-lg) 0;
     display: flex;
@@ -19,5 +21,16 @@
     flex: 1;
     min-width: var(--dashboard-item-min-width);
     max-width: var(--dashboard-item-max-width);
+  }
+
+  @include mobile {
+    .row {
+      flex-direction: column;
+    }
+
+    .row > :global(*) {
+      min-width: 0;
+      max-width: none;
+    }
   }
 </style>
