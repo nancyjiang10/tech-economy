@@ -12,8 +12,8 @@ USAGE EXAMPLE:
 -->
 <script>
   let {
-    children,             // The quote content passed between opening/closing tags
-    attribution = '',     // Optional source or speaker name
+    children, // The quote content passed between opening/closing tags
+    attribution = '', // Optional source or speaker name
   } = $props();
 </script>
 

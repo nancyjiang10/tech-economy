@@ -124,14 +124,26 @@
         title="Arts & Culture"
         description="Coverage of NYC's cultural scene."
       />
-      <RankingCard rank={2} title="Education" description="Reporting on schools and higher ed." />
+      <RankingCard
+        rank={2}
+        title="Education"
+        description="Reporting on schools and higher ed."
+      />
       <RankingCard
         rank={3}
         title="Housing"
         description="Investigating the city's housing crisis."
       />
-      <RankingCard rank={4} title="Health" description="Public health and healthcare access." />
-      <RankingCard rank={5} title="Politics" description="City and state government coverage." />
+      <RankingCard
+        rank={4}
+        title="Health"
+        description="Public health and healthcare access."
+      />
+      <RankingCard
+        rank={5}
+        title="Politics"
+        description="City and state government coverage."
+      />
     </RankingList>
   </div>
 </Story>

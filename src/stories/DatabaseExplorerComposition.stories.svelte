@@ -104,13 +104,16 @@
   <div class="methodology-container">
     <MethodologyBox title="About This Database">
       <p>
-        This database was compiled by student journalists at the Craig Newmark Graduate School of
-        Journalism from public records and university publications. Data is updated as new programs
-        and opportunities become available.
+        This database was compiled by student journalists at the Craig Newmark
+        Graduate School of Journalism from public records and university
+        publications. Data is updated as new programs and opportunities become
+        available.
       </p>
       <p>
         Have a tip or found an error? Contact us at
-        <a href="mailto:data@nycitynewsservice.com">data@nycitynewsservice.com</a>.
+        <a href="mailto:data@nycitynewsservice.com"
+          >data@nycitynewsservice.com</a
+        >.
       </p>
     </MethodologyBox>
   </div>

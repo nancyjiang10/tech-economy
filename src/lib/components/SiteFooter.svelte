@@ -17,19 +17,23 @@ USAGE EXAMPLE:
     <!-- CUNY Logo -->
     <div class="footer-logo">
       <a href="https://www.journalism.cuny.edu/">
-        <img 
-          src={asset('/cuny-footer-logo.svg')} 
+        <img
+          src={asset('/cuny-footer-logo.svg')}
           alt="Craig Newmark Graduate School of Journalism at CUNY"
           class="cuny-logo"
         />
       </a>
     </div>
-    
+
     <!-- Footer Navigation -->
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="https://www.nycitynewsservice.com/about/" class="footer-link">ABOUT US</a>
+      <a href="https://www.nycitynewsservice.com/about/" class="footer-link"
+        >ABOUT US</a
+      >
       <span class="footer-divider">|</span>
-      <a href="https://www.nycitynewsservice.com/contact/" class="footer-link">CONTACT US</a>
+      <a href="https://www.nycitynewsservice.com/contact/" class="footer-link"
+        >CONTACT US</a
+      >
     </nav>
   </div>
 </footer>

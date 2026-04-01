@@ -5,13 +5,7 @@ Card.svelte — A card container with optional image, link, and footer actions.
 <script>
   import { asset } from '$app/paths';
 
-  let {
-    href = '',
-    image = '',
-    imageAlt = '',
-    children,
-    footer,
-  } = $props();
+  let { href = '', image = '', imageAlt = '', children, footer } = $props();
 
   // Resolve local images (those starting with /) using asset()
   // but not external URLs (http://, https://, //, data:)

@@ -5,13 +5,34 @@ SiteHeader.svelte — NYCity News Service Style Header
 <script>
   let {
     navLinks = [
-      { label: 'Arts & Culture', href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/' },
-      { label: 'Business', href: 'https://www.nycitynewsservice.com/nycns_topics/business/' },
-      { label: 'Education', href: 'https://www.nycitynewsservice.com/nycns_topics/education/' },
-      { label: 'Environment', href: 'https://www.nycitynewsservice.com/nycns_topics/environment/' },
-      { label: 'Health', href: 'https://www.nycitynewsservice.com/nycns_topics/health/' },
-      { label: 'Housing', href: 'https://www.nycitynewsservice.com/nycns_topics/housing/' },
-      { label: 'Politics', href: 'https://www.nycitynewsservice.com/nycns_topics/politics/' },
+      {
+        label: 'Arts & Culture',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/',
+      },
+      {
+        label: 'Business',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/business/',
+      },
+      {
+        label: 'Education',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/education/',
+      },
+      {
+        label: 'Environment',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/environment/',
+      },
+      {
+        label: 'Health',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/health/',
+      },
+      {
+        label: 'Housing',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/housing/',
+      },
+      {
+        label: 'Politics',
+        href: 'https://www.nycitynewsservice.com/nycns_topics/politics/',
+      },
     ],
   } = $props();
 </script>
@@ -20,25 +41,31 @@ SiteHeader.svelte — NYCity News Service Style Header
   <!-- Compact masthead with logo left and nav right -->
   <div class="masthead-wrapper">
     <div class="masthead">
-    <a href="https://www.nycitynewsservice.com/" class="logo" aria-label="NYCity News Service">
-      <!-- Compact HTML/CSS Logo with thin white border -->
-      <span class="logo-text">
-        <span class="logo-nycity">NYCITY</span><span class="logo-news-service">News Service</span>
-      </span>
-    </a>
+      <a
+        href="https://www.nycitynewsservice.com/"
+        class="logo"
+        aria-label="NYCity News Service"
+      >
+        <!-- Compact HTML/CSS Logo with thin white border -->
+        <span class="logo-text">
+          <span class="logo-nycity">NYCITY</span><span class="logo-news-service"
+            >News Service</span
+          >
+        </span>
+      </a>
 
-    <!-- Navigation inline with logo -->
-    {#if navLinks.length > 0}
-      <nav class="main-nav" aria-label="Main navigation">
-        <ul class="nav-list">
-          {#each navLinks as link (link.href)}
-            <li>
-              <a href={link.href} class="nav-link">{link.label}</a>
-            </li>
-          {/each}
-        </ul>
-      </nav>
-    {/if}
+      <!-- Navigation inline with logo -->
+      {#if navLinks.length > 0}
+        <nav class="main-nav" aria-label="Main navigation">
+          <ul class="nav-list">
+            {#each navLinks as link (link.href)}
+              <li>
+                <a href={link.href} class="nav-link">{link.label}</a>
+              </li>
+            {/each}
+          </ul>
+        </nav>
+      {/if}
     </div>
   </div>
 </header>
@@ -178,5 +205,4 @@ SiteHeader.svelte — NYCity News Service Style Header
       align-items: center;
     }
   }
-
 </style>

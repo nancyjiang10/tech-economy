@@ -22,10 +22,10 @@ USAGE EXAMPLE:
   import Pubdate from './Pubdate.svelte';
 
   let {
-    headline,           // Required: The main title of the article
-    kicker = '',        // Optional: Eyebrow label rendered above the headline
-    byline = '',        // Optional: The author's name(s)
-    pubDate = '',       // Optional: Publication date in YYYY-MM-DD format
+    headline, // Required: The main title of the article
+    kicker = '', // Optional: Eyebrow label rendered above the headline
+    byline = '', // Optional: The author's name(s)
+    pubDate = '', // Optional: Publication date in YYYY-MM-DD format
   } = $props();
 </script>
 
@@ -37,9 +37,27 @@ USAGE EXAMPLE:
     <div class="meta">
       {#if byline}
         <div class="meta-item meta-byline">
-          <svg class="meta-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+          <svg
+            class="meta-icon"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <path
+              d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <circle
+              cx="12"
+              cy="7"
+              r="4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
           </svg>
           <Byline {byline} />
         </div>
@@ -47,9 +65,28 @@ USAGE EXAMPLE:
 
       {#if pubDate}
         <div class="meta-item meta-date">
-          <svg class="meta-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <svg
+            class="meta-icon"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M12 6v6l4 2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
           <Pubdate date={pubDate} />
         </div>

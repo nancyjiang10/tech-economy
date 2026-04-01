@@ -298,7 +298,10 @@ async function injectBrowserChrome(page, title, displayUrl) {
     container.innerHTML = html;
     // Insert all chrome elements (top bar + frame borders)
     while (container.firstElementChild) {
-      document.body.insertBefore(container.firstElementChild, document.body.firstChild);
+      document.body.insertBefore(
+        container.firstElementChild,
+        document.body.firstChild
+      );
     }
   }, chrome.html);
 }
@@ -331,7 +334,7 @@ function convertToMp4(webmPath, mp4Path, trimStart = 0) {
     const trimFlag = trimStart > 0 ? `-ss ${trimStart}` : '';
     execSync(
       `ffmpeg -y ${trimFlag} -i "${webmPath}" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -movflags +faststart -an "${mp4Path}"`,
-      { stdio: 'pipe' },
+      { stdio: 'pipe' }
     );
     console.log(`MP4 saved: ${mp4Path}`);
     return true;
@@ -351,13 +354,13 @@ function generateGif(mp4Path, gifPath, width = 450) {
     // Generate palette
     execSync(
       `ffmpeg -y -i "${mp4Path}" -vf "fps=15,scale=${width}:-1:flags=lanczos,palettegen=stats_mode=diff" "${palettePath}"`,
-      { stdio: 'pipe' },
+      { stdio: 'pipe' }
     );
 
     // Generate GIF using palette
     execSync(
       `ffmpeg -y -i "${mp4Path}" -i "${palettePath}" -lavfi "fps=15,scale=${width}:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" -loop ${GIF_LOOP_COUNT} "${gifPath}"`,
-      { stdio: 'pipe' },
+      { stdio: 'pipe' }
     );
 
     // Clean up palette
@@ -423,7 +426,9 @@ async function recordVideo(options) {
 
     // Give the page extra time to finish rendering async assets during setup only
     if (options.wait > 0) {
-      console.log(`Waiting ${options.wait}ms for page to settle (setup only)...`);
+      console.log(
+        `Waiting ${options.wait}ms for page to settle (setup only)...`
+      );
       await setupPage.waitForTimeout(options.wait);
     }
 
@@ -484,14 +489,20 @@ async function recordVideo(options) {
     await recordContext.close();
 
     // Find the recorded video file
-    const videoFiles = fs.readdirSync(tempDir).filter((f) => f.endsWith('.webm'));
+    const videoFiles = fs
+      .readdirSync(tempDir)
+      .filter((f) => f.endsWith('.webm'));
     if (videoFiles.length === 0) {
       throw new Error('No video file was recorded');
     }
     const recordedVideo = path.join(tempDir, videoFiles[0]);
 
     // Convert to MP4, trimming the 2-second chrome settling time from the beginning
-    const mp4Success = convertToMp4(recordedVideo, options.output, options.trim);
+    const mp4Success = convertToMp4(
+      recordedVideo,
+      options.output,
+      options.trim
+    );
     if (!mp4Success) {
       console.error('Failed to convert to MP4. Keeping WebM...');
       const webmOutput = options.output.replace('.mp4', '.webm');

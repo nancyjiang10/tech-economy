@@ -19,9 +19,9 @@
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import DatabaseHeader from '$lib/components/DatabaseHeader.svelte';
-  import LottieGraphic  from '$lib/components/LottieGraphic.svelte';
-  import SearchInput    from '$lib/components/SearchInput.svelte';
-  import DropdownInput  from '$lib/components/DropdownInput.svelte';
+  import LottieGraphic from '$lib/components/LottieGraphic.svelte';
+  import SearchInput from '$lib/components/SearchInput.svelte';
+  import DropdownInput from '$lib/components/DropdownInput.svelte';
 
   import DATA_ANIMATION from './DatabaseHeaderGraphic.json';
 
@@ -35,7 +35,8 @@
     argTypes: {
       kicker: {
         control: 'text',
-        description: 'Optional uppercase eyebrow label rendered above the headline in site blue',
+        description:
+          'Optional uppercase eyebrow label rendered above the headline in site blue',
       },
       headline: {
         control: 'text',
@@ -66,7 +67,8 @@
   name="Default"
   args={{
     headline: 'Search Our Programs',
-    description: 'Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism.',
+    description:
+      'Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism.',
     bgColor: 'var(--color-light-gray)',
   }}
 />
@@ -86,7 +88,8 @@
   args={{
     kicker: 'Housing Coverage',
     headline: 'NYC Housing Violations Database',
-    description: 'Search and filter HPD housing violations across all five boroughs.',
+    description:
+      'Search and filter HPD housing violations across all five boroughs.',
     bgColor: 'var(--color-light-gray)',
   }}
 />
@@ -98,7 +101,8 @@
     headline: 'NYC Housing Violations Database',
     byline: 'By the NYCity News Service Data Team',
     date: 'Updated March 2026',
-    description: 'Search and filter HPD housing violations across all five boroughs. Data sourced from NYC Open Data and updated weekly.',
+    description:
+      'Search and filter HPD housing violations across all five boroughs. Data sourced from NYC Open Data and updated weekly.',
     bgColor: 'var(--color-light-gray)',
   }}
 />
@@ -189,15 +193,18 @@
     description="Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate School of Journalism."
   >
     <div class="demo-controls">
-      <SearchInput label="Search Programs" placeholder="Search by program, topic, or keyword…" />
+      <SearchInput
+        label="Search Programs"
+        placeholder="Search by program, topic, or keyword…"
+      />
       <DropdownInput
         label="Borough"
         placeholder="All boroughs…"
         options={[
-          { value: 'manhattan',     label: 'Manhattan' },
-          { value: 'brooklyn',      label: 'Brooklyn' },
-          { value: 'queens',        label: 'Queens' },
-          { value: 'bronx',         label: 'The Bronx' },
+          { value: 'manhattan', label: 'Manhattan' },
+          { value: 'brooklyn', label: 'Brooklyn' },
+          { value: 'queens', label: 'Queens' },
+          { value: 'bronx', label: 'The Bronx' },
           { value: 'staten-island', label: 'Staten Island' },
         ]}
       />

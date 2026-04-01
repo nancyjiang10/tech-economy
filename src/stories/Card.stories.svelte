@@ -41,8 +41,8 @@
   <Card>
     <h3>CUNY Journalism Programs</h3>
     <p>
-      Explore degree programs, workshops, and fellowship opportunities at the Craig Newmark Graduate
-      School of Journalism.
+      Explore degree programs, workshops, and fellowship opportunities at the
+      Craig Newmark Graduate School of Journalism.
     </p>
   </Card>
 </Story>
@@ -52,8 +52,8 @@
   <Card href="https://www.journalism.cuny.edu/">
     <h3>Visit the J-School</h3>
     <p>
-      Learn more about admissions, financial aid, and campus life at the Craig Newmark Graduate
-      School of Journalism.
+      Learn more about admissions, financial aid, and campus life at the Craig
+      Newmark Graduate School of Journalism.
     </p>
   </Card>
 </Story>
@@ -61,10 +61,14 @@
 <!-- With Image: card with a top image -->
 <Story name="With Image">
   <div style="max-width: 400px;">
-    <Card image="/example-photo.gif" imageAlt="The Craig Newmark Graduate School of Journalism">
+    <Card
+      image="/example-photo.gif"
+      imageAlt="The Craig Newmark Graduate School of Journalism"
+    >
       <h3>Our Campus</h3>
       <p>
-        219 West 40th Street in Midtown Manhattan, in the heart of the media capital of the world.
+        219 West 40th Street in Midtown Manhattan, in the heart of the media
+        capital of the world.
       </p>
     </Card>
   </div>
@@ -76,13 +80,15 @@
     <Card>
       <h3>Spring 2026 Applications</h3>
       <p>
-        Applications are now open for the M.A. in Journalism and M.A. in Engagement Journalism
-        programs.
+        Applications are now open for the M.A. in Journalism and M.A. in
+        Engagement Journalism programs.
       </p>
       {#snippet footer()}
         <a href="https://www.journalism.cuny.edu/admissions/">Apply Now</a>
         &nbsp;&middot;&nbsp;
-        <a href="https://www.journalism.cuny.edu/admissions/financial-aid/">Financial Aid</a>
+        <a href="https://www.journalism.cuny.edu/admissions/financial-aid/"
+          >Financial Aid</a
+        >
       {/snippet}
     </Card>
   </div>
@@ -98,8 +104,8 @@
     >
       <h3>Craig Newmark Graduate School of Journalism</h3>
       <p>
-        Become a force for good. Join our next class at one of the nation's leading journalism
-        schools.
+        Become a force for good. Join our next class at one of the nation's
+        leading journalism schools.
       </p>
       {#snippet footer()}
         <span>Learn more &rarr;</span>

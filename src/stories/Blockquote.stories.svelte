@@ -23,11 +23,13 @@
     argTypes: {
       attribution: {
         control: 'text',
-        description: 'Optional source or speaker name displayed below the quote',
+        description:
+          'Optional source or speaker name displayed below the quote',
       },
       children: {
         control: false,
-        description: 'The quote content passed between opening and closing tags',
+        description:
+          'The quote content passed between opening and closing tags',
       },
     },
   });
@@ -94,7 +96,10 @@
   <div class="story-container">
     <Blockquote attribution="NYCity News Service">
       <p>
-        At a time when our profession is reeling from financial pressures and lack of trust, the Newmark Graduate School of Journalism is committed to producing the next generation of skilled, ethically minded, and diverse journalists.
+        At a time when our profession is reeling from financial pressures and
+        lack of trust, the Newmark Graduate School of Journalism is committed to
+        producing the next generation of skilled, ethically minded, and diverse
+        journalists.
       </p>
     </Blockquote>
   </div>

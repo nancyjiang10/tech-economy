@@ -1,4 +1,3 @@
-
 <script>
   let { number, label, footnote } = $props();
 </script>

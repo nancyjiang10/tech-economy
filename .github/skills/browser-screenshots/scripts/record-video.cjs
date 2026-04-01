@@ -114,7 +114,9 @@ async function recordVideo(options) {
 
   // Check ffmpeg for GIF conversion
   if (outputExt === '.gif' && !checkFfmpeg()) {
-    console.error('Error: ffmpeg is required for GIF output. Install with: brew install ffmpeg');
+    console.error(
+      'Error: ffmpeg is required for GIF output. Install with: brew install ffmpeg'
+    );
     process.exit(1);
   }
 
@@ -206,18 +208,18 @@ async function recordVideo(options) {
       const palettePath = path.join(tempDir, 'palette.png');
       execSync(
         `ffmpeg -y -i "${videoPath}" -vf "fps=${options.fps},scale=${options.width}:-1:flags=lanczos,palettegen=stats_mode=diff" "${palettePath}"`,
-        { stdio: 'pipe' },
+        { stdio: 'pipe' }
       );
       // Then use the palette to create the GIF
       execSync(
         `ffmpeg -y -i "${videoPath}" -i "${palettePath}" -lavfi "fps=${options.fps},scale=${options.width}:-1:flags=lanczos [x]; [x][1:v] paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" "${options.output}"`,
-        { stdio: 'pipe' },
+        { stdio: 'pipe' }
       );
     } else if (outputExt === '.mp4') {
       console.log('Converting to MP4...');
       execSync(
         `ffmpeg -y -i "${videoPath}" -c:v libx264 -preset slow -crf 22 -an "${options.output}"`,
-        { stdio: 'pipe' },
+        { stdio: 'pipe' }
       );
     } else {
       // WebM - just copy

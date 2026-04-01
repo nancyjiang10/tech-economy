@@ -22,11 +22,13 @@
     argTypes: {
       headline: {
         control: 'text',
-        description: 'The main article title displayed as a large serif heading',
+        description:
+          'The main article title displayed as a large serif heading',
       },
       kicker: {
         control: 'text',
-        description: 'Optional eyebrow label rendered above the headline in site blue',
+        description:
+          'Optional eyebrow label rendered above the headline in site blue',
       },
       byline: {
         control: 'text',
@@ -34,7 +36,8 @@
       },
       pubDate: {
         control: 'text',
-        description: 'Publication date in YYYY-MM-DD format (e.g. "2024-01-15")',
+        description:
+          'Publication date in YYYY-MM-DD format (e.g. "2024-01-15")',
       },
     },
   });
@@ -65,7 +68,8 @@
 <Story
   name="Headline Only"
   args={{
-    headline: 'At the Craig Newmark Graduate School of Journalism, Change Is in Our DNA',
+    headline:
+      'At the Craig Newmark Graduate School of Journalism, Change Is in Our DNA',
   }}
 />
 
@@ -92,7 +96,7 @@
   name="Long Headline"
   args={{
     headline:
-      'How America\'s Top News Organizations Escape Rigid Publishing Systems to Design Beautiful Data-Driven Stories on Deadline',
+      "How America's Top News Organizations Escape Rigid Publishing Systems to Design Beautiful Data-Driven Stories on Deadline",
     byline: 'NYCity News Service',
     pubDate: '2026-01-31',
   }}

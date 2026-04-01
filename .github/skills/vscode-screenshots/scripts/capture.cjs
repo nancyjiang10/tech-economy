@@ -37,9 +37,13 @@ function generateWebP(imagePath) {
     execSync(`cwebp -q 80 "${imagePath}" -o "${webpPath}"`, { stdio: 'pipe' });
     const origSize = Math.round(fs.statSync(imagePath).size / 1024);
     const webpSize = Math.round(fs.statSync(webpPath).size / 1024);
-    console.log(`WebP copy saved: ${webpPath} (${origSize} KB → ${webpSize} KB)`);
+    console.log(
+      `WebP copy saved: ${webpPath} (${origSize} KB → ${webpSize} KB)`
+    );
   } catch {
-    console.log('Note: cwebp not found, skipping WebP generation. Install with: brew install webp');
+    console.log(
+      'Note: cwebp not found, skipping WebP generation. Install with: brew install webp'
+    );
   }
 }
 
@@ -184,10 +188,13 @@ function getMacOSVSCodeWindowId() {
   `;
 
   try {
-    const result = execSync(`osascript -e '${script.replace(/'/g, "'\"'\"'")}'`, {
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', 'pipe'],
-    }).trim();
+    const result = execSync(
+      `osascript -e '${script.replace(/'/g, "'\"'\"'")}'`,
+      {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'pipe'],
+      }
+    ).trim();
     return result;
   } catch {
     // Fallback: try to get window ID using CGWindowListCopyWindowInfo
@@ -203,7 +210,7 @@ function getMacOSWindowIdFallback() {
     // Simpler approach: just use the app name for screencapture
     const result = execSync(
       `osascript -l JavaScript -e 'Application("Visual Studio Code").windows[0].id()'`,
-      { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] },
+      { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
     ).trim();
     return result;
   } catch {
@@ -238,7 +245,7 @@ function captureMacOS(outputPath) {
 
   // Fallback: Use interactive window capture
   console.log(
-    `${colors.yellow}Note: Using interactive capture. Click on the VSCode window.${colors.reset}`,
+    `${colors.yellow}Note: Using interactive capture. Click on the VSCode window.${colors.reset}`
   );
   try {
     execSync(`screencapture -o -x -w "${outputPath}"`, {
@@ -246,7 +253,9 @@ function captureMacOS(outputPath) {
     });
     return true;
   } catch (error) {
-    console.error(`${colors.red}Screenshot capture failed: ${error.message}${colors.reset}`);
+    console.error(
+      `${colors.red}Screenshot capture failed: ${error.message}${colors.reset}`
+    );
     return false;
   }
 }
@@ -266,7 +275,10 @@ function captureLinux(outputPath) {
     {
       name: 'gnome-screenshot',
       check: () => commandExists('gnome-screenshot'),
-      capture: () => execSync(`gnome-screenshot -w -f "${outputPath}"`, { stdio: 'inherit' }),
+      capture: () =>
+        execSync(`gnome-screenshot -w -f "${outputPath}"`, {
+          stdio: 'inherit',
+        }),
     },
     {
       name: 'scrot',
@@ -277,15 +289,21 @@ function captureLinux(outputPath) {
       name: 'import (ImageMagick)',
       check: () => commandExists('import') && commandExists('xdotool'),
       capture: () => {
-        const windowId = execSync('xdotool getactivewindow', { encoding: 'utf8' }).trim();
-        execSync(`import -window ${windowId} "${outputPath}"`, { stdio: 'inherit' });
+        const windowId = execSync('xdotool getactivewindow', {
+          encoding: 'utf8',
+        }).trim();
+        execSync(`import -window ${windowId} "${outputPath}"`, {
+          stdio: 'inherit',
+        });
       },
     },
     {
       name: 'maim',
       check: () => commandExists('maim') && commandExists('xdotool'),
       capture: () => {
-        const windowId = execSync('xdotool getactivewindow', { encoding: 'utf8' }).trim();
+        const windowId = execSync('xdotool getactivewindow', {
+          encoding: 'utf8',
+        }).trim();
         execSync(`maim -i ${windowId} "${outputPath}"`, { stdio: 'inherit' });
       },
     },
@@ -298,7 +316,9 @@ function captureLinux(outputPath) {
         tool.capture();
         return true;
       } catch {
-        console.error(`${colors.yellow}${tool.name} failed, trying next tool...${colors.reset}`);
+        console.error(
+          `${colors.yellow}${tool.name} failed, trying next tool...${colors.reset}`
+        );
       }
     }
   }
@@ -346,23 +366,25 @@ function displayInstructionBox(options) {
   const horizontalLine = box.horizontal.repeat(boxWidth - 2);
 
   console.log('\n');
-  console.log(`${colors.cyan}${box.topLeft}${horizontalLine}${box.topRight}${colors.reset}`);
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}VSCode Screenshot Capture${colors.reset}${' '.repeat(boxWidth - 29)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.topLeft}${horizontalLine}${box.topRight}${colors.reset}`
   );
   console.log(
-    `${colors.cyan}${box.verticalRight}${horizontalLine}${box.verticalLeft}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}VSCode Screenshot Capture${colors.reset}${' '.repeat(boxWidth - 29)}${colors.cyan}${box.vertical}${colors.reset}`
   );
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.verticalRight}${horizontalLine}${box.verticalLeft}${colors.reset}`
+  );
+  console.log(
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   // Instructions
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}Please set up VSCode:${colors.reset}${' '.repeat(boxWidth - 25)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}  ${colors.bold}Please set up VSCode:${colors.reset}${' '.repeat(boxWidth - 25)}${colors.cyan}${box.vertical}${colors.reset}`
   );
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   // Wrap and display instructions
@@ -370,12 +392,12 @@ function displayInstructionBox(options) {
   for (const line of instructionLines) {
     const paddedLine = `  → ${line}`.padEnd(boxWidth - 2);
     console.log(
-      `${colors.cyan}${box.vertical}${colors.reset}${paddedLine}${colors.cyan}${box.vertical}${colors.reset}`,
+      `${colors.cyan}${box.vertical}${colors.reset}${paddedLine}${colors.cyan}${box.vertical}${colors.reset}`
     );
   }
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   // Output path
@@ -384,31 +406,33 @@ function displayInstructionBox(options) {
   const outputVisible = `  Output: ${options.output}`;
   const outputPadding = boxWidth - 2 - outputVisible.length;
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${outputLabel}${' '.repeat(Math.max(0, outputPadding))}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${outputLabel}${' '.repeat(Math.max(0, outputPadding))}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   // Dimensions hint
   if (options.width || options.height) {
     const dimText = `  Suggested size: ${options.width}×${options.height}`;
     console.log(
-      `${colors.cyan}${box.vertical}${colors.reset}${colors.dim}${dimText}${colors.reset}${' '.repeat(boxWidth - 2 - dimText.length)}${colors.cyan}${box.vertical}${colors.reset}`,
+      `${colors.cyan}${box.vertical}${colors.reset}${colors.dim}${dimText}${colors.reset}${' '.repeat(boxWidth - 2 - dimText.length)}${colors.cyan}${box.vertical}${colors.reset}`
     );
   }
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   // Action prompt
   const promptText = '  Press ENTER when ready to capture...';
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${colors.yellow}${promptText}${colors.reset}${' '.repeat(boxWidth - 2 - promptText.length)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${colors.yellow}${promptText}${colors.reset}${' '.repeat(boxWidth - 2 - promptText.length)}${colors.cyan}${box.vertical}${colors.reset}`
   );
 
   console.log(
-    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`,
+    `${colors.cyan}${box.vertical}${colors.reset}${' '.repeat(boxWidth - 2)}${colors.cyan}${box.vertical}${colors.reset}`
   );
-  console.log(`${colors.cyan}${box.bottomLeft}${horizontalLine}${box.bottomRight}${colors.reset}`);
+  console.log(
+    `${colors.cyan}${box.bottomLeft}${horizontalLine}${box.bottomRight}${colors.reset}`
+  );
   console.log('');
 }
 
@@ -471,7 +495,9 @@ Keyboard shortcut: Win+Shift+S (Snip & Sketch)
   }
 
   if (platform === 'unknown') {
-    console.error(`${colors.red}Unknown platform: ${os.platform()}${colors.reset}`);
+    console.error(
+      `${colors.red}Unknown platform: ${os.platform()}${colors.reset}`
+    );
     process.exit(1);
   }
 
@@ -483,9 +509,13 @@ Keyboard shortcut: Win+Shift+S (Snip & Sketch)
 
   // Wait the specified delay with countdown
   if (options.delay > 0) {
-    console.log(`${colors.yellow}Navigate to the view you want to capture...${colors.reset}`);
+    console.log(
+      `${colors.yellow}Navigate to the view you want to capture...${colors.reset}`
+    );
     for (let i = options.delay; i > 0; i--) {
-      process.stdout.write(`\r${colors.dim}Capturing in ${i}s...${colors.reset}  `);
+      process.stdout.write(
+        `\r${colors.dim}Capturing in ${i}s...${colors.reset}  `
+      );
       await sleep(1000);
     }
     process.stdout.write('\r' + ' '.repeat(30) + '\r');

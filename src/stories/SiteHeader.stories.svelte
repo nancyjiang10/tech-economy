@@ -23,7 +23,8 @@
     argTypes: {
       navLinks: {
         control: 'object',
-        description: 'Array of navigation link objects with href and label properties',
+        description:
+          'Array of navigation link objects with href and label properties',
       },
     },
   });
@@ -39,6 +40,11 @@
 <Story
   name="Single Link"
   args={{
-    navLinks: [{ href: 'https://www.nycitynewsservice.com/nycns_topics/education/', label: 'Education' }],
+    navLinks: [
+      {
+        href: 'https://www.nycitynewsservice.com/nycns_topics/education/',
+        label: 'Education',
+      },
+    ],
   }}
 />

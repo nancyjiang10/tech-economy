@@ -86,7 +86,9 @@ async function saveSession(options) {
       timeout: 60000,
     });
 
-    console.log('Browser opened. Log in and then close the browser window when done...\n');
+    console.log(
+      'Browser opened. Log in and then close the browser window when done...\n'
+    );
 
     // Wait for browser to be closed by user
     await new Promise((resolve) => {
@@ -106,7 +108,9 @@ async function saveSession(options) {
   // If we get here without saving, the browser was closed unexpectedly
   // We need a different approach - save on page close
   console.log('Browser closed without saving session.');
-  console.log("Note: To save session, keep the browser open and we'll save on context close.");
+  console.log(
+    "Note: To save session, keep the browser open and we'll save on context close."
+  );
 }
 
 async function saveSessionInteractive(options) {
@@ -147,7 +151,9 @@ async function saveSessionInteractive(options) {
     timeout: 60000,
   });
 
-  console.log('Browser opened. Log in and then press ENTER here when done...\n');
+  console.log(
+    'Browser opened. Log in and then press ENTER here when done...\n'
+  );
 
   // Wait for user to press Enter
   await new Promise((resolve) => {
@@ -163,7 +169,9 @@ async function saveSessionInteractive(options) {
 
   console.log(`Session saved to: ${sessionPath}`);
   console.log(`\nUse with capture.js:`);
-  console.log(`  node capture.cjs --url URL --output out.png --session ${options.session}`);
+  console.log(
+    `  node capture.cjs --url URL --output out.png --session ${options.session}`
+  );
 
   await browser.close();
 }

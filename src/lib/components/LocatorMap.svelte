@@ -28,14 +28,14 @@ USAGE EXAMPLE:
   };
 
   let {
-    longitude = -73.9914662,  // Map center longitude (default: Newmark J-School)
-    latitude = 40.7555711,    // Map center latitude
-    zoom = 13,               // Initial zoom level (0–22)
-    theme = 'liberty',       // Basemap theme: 'liberty' | 'bright' | 'positron'
-    dot = false,             // Whether to show a dot marker at the map center
-    width = null,            // Optional explicit width in pixels (e.g. 300). Defaults to 100% of parent.
-    caption = '',            // Optional caption below the map
-    credit = "OpenFreeMap / OpenStreetMap contributors", // Optional credit line
+    longitude = -73.9914662, // Map center longitude (default: Newmark J-School)
+    latitude = 40.7555711, // Map center latitude
+    zoom = 13, // Initial zoom level (0–22)
+    theme = 'liberty', // Basemap theme: 'liberty' | 'bright' | 'positron'
+    dot = false, // Whether to show a dot marker at the map center
+    width = null, // Optional explicit width in pixels (e.g. 300). Defaults to 100% of parent.
+    caption = '', // Optional caption below the map
+    credit = 'OpenFreeMap / OpenStreetMap contributors', // Optional credit line
   } = $props();
 
   const styleUrl = $derived(THEME_URLS[theme] ?? THEME_URLS.liberty);
@@ -95,7 +95,7 @@ USAGE EXAMPLE:
           style: styleUrl,
           center: [longitude, latitude],
           zoom,
-          interactive: false,           // Static locator map — no pan or zoom by the user
+          interactive: false, // Static locator map — no pan or zoom by the user
           attributionControl: credit ? false : { compact: true }, // Hide when credit line is shown below the map
         });
       })
@@ -138,7 +138,10 @@ USAGE EXAMPLE:
   });
 </script>
 
-<figure class="locator-map-figure" style:width={width ? `${width}px` : undefined}>
+<figure
+  class="locator-map-figure"
+  style:width={width ? `${width}px` : undefined}
+>
   <div
     class="locator-map"
     bind:this={mapContainer}

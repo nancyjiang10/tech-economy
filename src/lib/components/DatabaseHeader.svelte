@@ -27,10 +27,7 @@ layout is single-column and backward-compatible.
   } = $props();
 </script>
 
-<header
-  class="hero-header"
-  style:background-color={bgColor}
->
+<header class="hero-header" style:background-color={bgColor}>
   <div class="hero-inner" class:has-graphic={!!graphic}>
     <div class="hero-left">
       <div class="hero-content">
@@ -42,7 +39,7 @@ layout is single-column and backward-compatible.
           <p class="hero-description">{description}</p>
         {/if}
         <Byline {byline} />
-        <Pubdate date={date} />
+        <Pubdate {date} />
       </div>
       {#if children}
         <div class="hero-extra">

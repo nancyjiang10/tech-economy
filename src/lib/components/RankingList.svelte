@@ -3,10 +3,7 @@
 RankingList.svelte — A container for RankingCard items with an optional title.
 -->
 <script>
-  let {
-    title = '',
-    children,
-  } = $props();
+  let { title = '', children } = $props();
 </script>
 
 <div class="ranking-list">

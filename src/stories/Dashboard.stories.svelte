@@ -41,7 +41,11 @@
   <Dashboard>
     <BigNumber number="2006" label="Year Founded" />
     <BigNumber number="1,300" label="Alumni" />
-    <BigNumber number="50%" label="Attend tuition free" footnote="As of Aug. 2025" />
+    <BigNumber
+      number="50%"
+      label="Attend tuition free"
+      footnote="As of Aug. 2025"
+    />
   </Dashboard>
 </Story>
 
