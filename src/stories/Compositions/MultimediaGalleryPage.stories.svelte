@@ -46,7 +46,7 @@
       <TextSlide
         slide={{
           headline: 'Consectetur Adipiscing',
-          body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.',
+          body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
         }}
       />
       <PhotoSlide
@@ -70,7 +70,7 @@
       <TextSlide
         slide={{
           headline: 'Magna Aliqua',
-          body: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.',
+          body: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.',
         }}
       />
       <PhotoSlide
@@ -79,15 +79,6 @@
           title: 'Quis Nostrud',
           caption:
             'Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.',
-          credit: 'Photo by Jane Doe',
-        }}
-      />
-      <PhotoSlide
-        photo={{
-          filename: '../storybook/lewis-hines.jpg',
-          title: 'Fugiat Nulla',
-          caption:
-            'Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.',
           credit: 'Photo by Jane Doe',
         }}
       />
