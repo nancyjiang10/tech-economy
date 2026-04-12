@@ -61,7 +61,10 @@ USAGE EXAMPLE:
 
 <div class="gallery-wrapper">
   <div class="gallery" bind:this={galleryEl}>
-    <div class="slides-track" style="transform: translateX(-{currentSlide * 100}%)">
+    <div
+      class="slides-track"
+      style="transform: translateX(-{currentSlide * 100}%)"
+    >
       {@render children()}
     </div>
 
@@ -72,11 +75,7 @@ USAGE EXAMPLE:
     >
       <span class="arrow-hint">‹</span>
     </button>
-    <button
-      class="tap-zone tap-next"
-      onclick={goNext}
-      aria-label="Next slide"
-    >
+    <button class="tap-zone tap-next" onclick={goNext} aria-label="Next slide">
       <span class="arrow-hint">›</span>
     </button>
 
@@ -101,40 +100,19 @@ USAGE EXAMPLE:
   .gallery-wrapper {
     height: 100dvh;
     background: black;
-
-    @include tablet {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #111;
-    }
+    container-type: inline-size;
+    overflow: hidden;
   }
 
   .gallery {
     position: relative;
     height: 100%;
     overflow: hidden;
-
-    @include tablet {
-      overflow: visible;
-      max-width: 420px;
-      width: 100%;
-      aspect-ratio: 9 / 16;
-      height: auto;
-      max-height: 100dvh;
-      border-radius: var(--border-radius-sm);
-      box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
-    }
-
-    @include desktop {
-      max-width: 480px;
-    }
   }
 
   .slides-track {
     display: flex;
     height: 100%;
-    overflow: hidden;
     transition: transform 0.3s ease;
   }
 
@@ -187,9 +165,10 @@ USAGE EXAMPLE:
   .dots {
     position: absolute;
     bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     display: flex;
+    justify-content: center;
     gap: 0.5rem;
     z-index: 5;
   }

@@ -65,12 +65,6 @@ USAGE EXAMPLE:
     );
     background-size: 200% 100%;
     animation: gradient-sweep 6s ease-in-out infinite;
-
-    @include tablet {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
-    }
   }
 
   @keyframes gradient-sweep {
@@ -142,6 +136,10 @@ USAGE EXAMPLE:
     line-height: 1.2;
     margin: 0 0 1rem;
     color: white;
+
+    @container (min-width: 768px) {
+      font-size: 3.5rem;
+    }
   }
 
   .intro {
@@ -149,12 +147,21 @@ USAGE EXAMPLE:
     line-height: 1.6;
     opacity: 0.85;
     margin: 0 0 1.5rem;
+
+    @container (min-width: 768px) {
+      font-size: 1.375rem;
+      line-height: 1.7;
+    }
   }
 
   .byline {
     font-size: 0.875rem;
     opacity: 0.6;
     margin: 0;
+
+    @container (min-width: 768px) {
+      font-size: 1.125rem;
+    }
   }
 
   .scroll-hint {
@@ -162,7 +169,8 @@ USAGE EXAMPLE:
     opacity: 0.4;
     margin: 0;
     padding-bottom: 3.5rem;
-    text-align: center;
     color: white;
+    display: flex;
+    justify-content: center;
   }
 </style>
