@@ -65,6 +65,12 @@ USAGE EXAMPLE:
     );
     background-size: 200% 100%;
     animation: gradient-sweep 6s ease-in-out infinite;
+
+    @include tablet {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
   }
 
   @keyframes gradient-sweep {

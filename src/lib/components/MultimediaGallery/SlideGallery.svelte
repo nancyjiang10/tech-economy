@@ -20,23 +20,20 @@ USAGE EXAMPLE:
 </SlideGallery>
 -->
 <script>
-  import { onMount, onDestroy } from 'svelte';
-
   let { children } = $props();
 
   let currentSlide = $state(0);
   let totalSlides = $state(0);
   let galleryEl;
 
-  onMount(() => {
+  $effect(() => {
+    if (typeof window === 'undefined' || !galleryEl) {
+      return;
+    }
+
     totalSlides = galleryEl.querySelectorAll('[data-slide]').length;
     window.addEventListener('keydown', handleKeydown);
-  });
-
-  onDestroy(() => {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('keydown', handleKeydown);
-    }
+    return () => window.removeEventListener('keydown', handleKeydown);
   });
 
   function goNext() {
@@ -119,6 +116,7 @@ USAGE EXAMPLE:
     overflow: hidden;
 
     @include tablet {
+      overflow: visible;
       max-width: 420px;
       width: 100%;
       aspect-ratio: 9 / 16;
@@ -136,6 +134,7 @@ USAGE EXAMPLE:
   .slides-track {
     display: flex;
     height: 100%;
+    overflow: hidden;
     transition: transform 0.3s ease;
   }
 
