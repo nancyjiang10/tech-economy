@@ -58,7 +58,13 @@ USAGE EXAMPLE:
     opacity: 0.7;
   }
 
-  .content :global(a:hover) {
+  .content :global(a:hover),
+  .content :global(a:focus-visible) {
     opacity: 1;
+  }
+
+  .content :global(a:focus-visible) {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
   }
 </style>

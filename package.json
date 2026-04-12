@@ -13,7 +13,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o build/storybook",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lighthouse": "lhci autorun"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

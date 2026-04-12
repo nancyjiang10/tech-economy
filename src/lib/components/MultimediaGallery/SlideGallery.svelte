@@ -116,6 +116,12 @@ USAGE EXAMPLE:
     transition: transform 0.3s ease;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .slides-track {
+      transition: none;
+    }
+  }
+
   .tap-zone {
     position: absolute;
     top: 0;
@@ -158,7 +164,13 @@ USAGE EXAMPLE:
     }
   }
 
-  .tap-zone:hover .arrow-hint {
+  .tap-zone:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: -2px;
+  }
+
+  .tap-zone:hover .arrow-hint,
+  .tap-zone:focus-visible .arrow-hint {
     opacity: 0.7;
   }
 
