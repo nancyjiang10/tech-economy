@@ -25,9 +25,11 @@ USAGE EXAMPLE:
     alt={photo.title}
   />
   <div class="caption">
-    <h2>{photo.title}</h2>
-    <p>{photo.caption}</p>
-    <span class="credit">{photo.credit}</span>
+    <div class="caption-inner">
+      <h2>{photo.title}</h2>
+      <p>{photo.caption}</p>
+      <span class="credit">{photo.credit}</span>
+    </div>
   </div>
 </div>
 
@@ -58,6 +60,10 @@ USAGE EXAMPLE:
       transparent 100%
     );
     color: white;
+  }
+
+  .caption-inner {
+    max-width: 600px;
   }
 
   .caption h2 {

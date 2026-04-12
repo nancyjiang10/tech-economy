@@ -26,7 +26,7 @@ describe('TitleSlide', () => {
         byline: 'By Test',
       },
     });
-    expect(screen.getByText('Scroll to begin ↓')).toBeTruthy();
+    expect(screen.getByText('Tap to begin →')).toBeTruthy();
   });
 
   it('renders the headline in an h1', () => {

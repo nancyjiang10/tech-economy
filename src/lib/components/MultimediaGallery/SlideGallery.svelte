@@ -7,6 +7,10 @@ Displays one slide at a time with tap-to-advance navigation (tap right
 two-thirds to go forward, left third to go back) and dot indicators at
 the bottom showing the current position.
 
+On desktop viewports (768px+), the gallery is constrained to a phone-like
+aspect ratio (9:16) and centered on a dark background, similar to how
+Instagram displays Stories on the web.
+
 USAGE EXAMPLE:
 <SlideGallery>
   <TitleSlide headline="My Story" intro="A photo essay." byline="Jane Doe" />
@@ -16,7 +20,7 @@ USAGE EXAMPLE:
 </SlideGallery>
 -->
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   let { children } = $props();
 
@@ -26,6 +30,13 @@ USAGE EXAMPLE:
 
   onMount(() => {
     totalSlides = galleryEl.querySelectorAll('[data-slide]').length;
+    window.addEventListener('keydown', handleKeydown);
+  });
+
+  onDestroy(() => {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', handleKeydown);
+    }
   });
 
   function goNext() {
@@ -39,44 +50,88 @@ USAGE EXAMPLE:
       currentSlide--;
     }
   }
+
+  function handleKeydown(event) {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      goNext();
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      goPrev();
+    }
+  }
 </script>
 
-<div class="gallery" bind:this={galleryEl}>
-  <div class="slides-track" style="transform: translateX(-{currentSlide * 100}%)">
-    {@render children()}
-  </div>
-
-  <button
-    class="tap-zone tap-prev"
-    onclick={goPrev}
-    aria-label="Previous slide"
-  ></button>
-  <button
-    class="tap-zone tap-next"
-    onclick={goNext}
-    aria-label="Next slide"
-  ></button>
-
-  {#if totalSlides > 1}
-    <div class="dots" role="tablist" aria-label="Slide navigation">
-      {#each Array(totalSlides) as _, i}
-        <span
-          class="dot"
-          class:active={i === currentSlide}
-          role="tab"
-          aria-selected={i === currentSlide}
-          aria-label="Slide {i + 1}"
-        ></span>
-      {/each}
+<div class="gallery-wrapper">
+  <div class="gallery" bind:this={galleryEl}>
+    <div class="slides-track" style="transform: translateX(-{currentSlide * 100}%)">
+      {@render children()}
     </div>
-  {/if}
+
+    <button
+      class="tap-zone tap-prev"
+      onclick={goPrev}
+      aria-label="Previous slide"
+    >
+      <span class="arrow-hint">‹</span>
+    </button>
+    <button
+      class="tap-zone tap-next"
+      onclick={goNext}
+      aria-label="Next slide"
+    >
+      <span class="arrow-hint">›</span>
+    </button>
+
+    {#if totalSlides > 1}
+      <div class="dots" role="tablist" aria-label="Slide navigation">
+        {#each Array(totalSlides) as _, i}
+          <span
+            class="dot"
+            class:active={i === currentSlide}
+            role="tab"
+            aria-selected={i === currentSlide}
+            aria-label="Slide {i + 1}"
+          ></span>
+        {/each}
+      </div>
+    {/if}
+  </div>
 </div>
 
-<style>
+<style lang="scss">
+  @use '../../styles' as *;
+
+  .gallery-wrapper {
+    height: 100dvh;
+    background: black;
+
+    @include tablet {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+    }
+  }
+
   .gallery {
     position: relative;
-    height: 100dvh;
+    height: 100%;
     overflow: hidden;
+
+    @include tablet {
+      max-width: 420px;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      height: auto;
+      max-height: 100dvh;
+      border-radius: var(--border-radius-sm);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @include desktop {
+      max-width: 480px;
+    }
   }
 
   .slides-track {
@@ -94,16 +149,41 @@ USAGE EXAMPLE:
     cursor: pointer;
     z-index: 5;
     -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
   }
 
   .tap-prev {
     left: 0;
     width: 33.333%;
+    justify-content: flex-start;
+    padding-left: 0.5rem;
   }
 
   .tap-next {
     right: 0;
     width: 66.667%;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+  }
+
+  .arrow-hint {
+    display: none;
+    font-size: 2rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    user-select: none;
+
+    @include tablet {
+      display: block;
+    }
+  }
+
+  .tap-zone:hover .arrow-hint {
+    opacity: 0.7;
   }
 
   .dots {
