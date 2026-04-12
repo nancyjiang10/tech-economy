@@ -130,6 +130,49 @@
   </div>
 </Story>
 
+<!-- Desktop: full-viewport preview showing the centered gallery on a dark background -->
+<Story name="Desktop" parameters={{ viewport: { defaultViewport: 'responsive' } }}>
+  <SlideGallery>
+    <TitleSlide
+      headline="Lorem Ipsum Dolor"
+      intro="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod."
+      byline="By Jane Doe"
+    />
+    <PhotoSlide
+      photo={{
+        filename: '../storybook/crusher.jpg',
+        title: 'Lorem Ipsum',
+        caption:
+          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        credit: 'Photo by Jane Doe',
+      }}
+    />
+    <TextSlide
+      slide={{
+        headline: 'Consectetur Adipiscing',
+        body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      }}
+    />
+    <PhotoSlide
+      photo={{
+        filename: '../storybook/glasses.jpg',
+        title: 'Dolor Sit Amet',
+        caption:
+          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+        credit: 'Photo by Jane Doe',
+      }}
+    />
+    <CreditsSlide>
+      <h2>Credits</h2>
+      <p>Photography and text by Jane Doe</p>
+      <p>
+        Published by
+        <a href="https://www.nycitynewsservice.com/">NYCity News Service</a>
+      </p>
+    </CreditsSlide>
+  </SlideGallery>
+</Story>
+
 <style>
   .gallery-frame {
     width: 375px;
@@ -141,7 +184,7 @@
   }
 
   /* Override the component's viewport-based sizing so it fits the frame */
-  .gallery-frame :global(.gallery) {
+  .gallery-frame :global(.gallery-wrapper) {
     height: 667px;
   }
 </style>
