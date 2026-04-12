@@ -84,14 +84,13 @@ USAGE EXAMPLE:
     </button>
 
     {#if totalSlides > 1}
-      <div class="dots" role="tablist" aria-label="Slide navigation">
-        {#each Array(totalSlides) as _, i}
+      <div class="dots" aria-label="Slide indicators">
+        {#each Array.from({ length: totalSlides }, (_, i) => i) as i (i)}
           <span
             class="dot"
             class:active={i === currentSlide}
-            role="tab"
-            aria-selected={i === currentSlide}
             aria-label="Slide {i + 1}"
+            aria-current={i === currentSlide ? 'true' : undefined}
           ></span>
         {/each}
       </div>
