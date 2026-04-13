@@ -4,11 +4,11 @@ This is your page!
 -->
 <script>
   // Import all the news furniture components
-  import ArticleHeader from '$lib/components/ArticleHeader.svelte';
-  import ArticleBody from '$lib/components/ArticleBody.svelte';
-  import Blockquote from '$lib/components/Blockquote.svelte';
-  import Image from '$lib/components/Image.svelte';
-  import RelatedLinks from '$lib/components/RelatedLinks.svelte';
+  import ArticleHeader from '$lib/components/Article/ArticleHeader.svelte';
+  import ArticleBody from '$lib/components/Article/ArticleBody.svelte';
+  import Blockquote from '$lib/components/Article/Blockquote.svelte';
+  import Image from '$lib/components/Media/Image.svelte';
+  import RelatedLinks from '$lib/components/Article/RelatedLinks.svelte';
 
   // Article metadata
   let headline = 'Become a force for good. Join our next class.';

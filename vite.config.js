@@ -12,8 +12,22 @@
  * Learn more: https://vite.dev/config/
  */
 import { sveltekit } from '@sveltejs/kit/vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-  plugins: [sveltekit()],
-});
+export default defineConfig(({ mode }) => ({
+  plugins: [mode === 'test' ? svelte({ hot: false }) : sveltekit()],
+  ...(mode === 'test' ? { resolve: { conditions: ['browser'] } } : {}),
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.test.js'],
+    setupFiles: ['src/tests/setup.js'],
+    alias: {
+      '$lib': fileURLToPath(new URL('./src/lib', import.meta.url)),
+      '$app/paths': fileURLToPath(
+        new URL('./src/lib/__mocks__/$app/paths.js', import.meta.url),
+      ),
+    },
+  },
+}));

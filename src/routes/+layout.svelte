@@ -9,8 +9,8 @@ Use it for headers, footers, and navigation that appear on all pages.
   import '../app.scss';
 
   // Import site-wide components
-  import SiteHeader from '$lib/components/SiteHeader.svelte';
-  import SiteFooter from '$lib/components/SiteFooter.svelte';
+  import SiteHeader from '$lib/components/Layout/SiteHeader.svelte';
+  import SiteFooter from '$lib/components/Layout/SiteFooter.svelte';
 
   // Access page-level settings (from +page.js)
   import { page } from '$app/state';
