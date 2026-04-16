@@ -199,7 +199,7 @@ USAGE EXAMPLE:
     <ul id={listboxId} class="results-list" role="listbox">
       {#each results as result, i (result.placeId)}
         <li
-          id="geocoder-option-{i}"
+          id={`geocoder-option-${i}`}
           class="result-item"
           class:active={i === activeIndex}
           role="option"
