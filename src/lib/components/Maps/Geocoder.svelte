@@ -32,6 +32,8 @@ USAGE EXAMPLE:
   let isOpen = $state(false);
   let isLoading = $state(false);
   let activeIndex = $state(-1);
+  // Timer IDs are not reactive (never read in the template), so plain
+  // variables are appropriate here rather than $state().
   let debounceTimer = null;
   let blurTimer = null;
 
@@ -40,7 +42,7 @@ USAGE EXAMPLE:
   let instanceId = $state('');
   onMount(() => {
     instanceId =
-      typeof crypto !== 'undefined' && crypto.randomUUID
+      typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
         ? crypto.randomUUID().slice(0, 8)
         : Math.random().toString(36).slice(2, 10);
   });
