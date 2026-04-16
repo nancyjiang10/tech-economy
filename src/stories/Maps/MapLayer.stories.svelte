@@ -18,8 +18,15 @@
 
   const { Story } = defineMeta({
     title: 'Maps/MapLayer',
-    component: MapLayer,
     tags: ['autodocs'],
+    parameters: {
+      docs: {
+        description: {
+          component:
+            'MapLayer adds a GeoJSON source and styled layer to a parent Map. It must be placed inside a Map component.',
+        },
+      },
+    },
   });
 </script>
 
