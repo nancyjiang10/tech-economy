@@ -121,7 +121,10 @@ USAGE EXAMPLE:
         break;
       case 'ArrowUp':
         event.preventDefault();
-        activeIndex = Math.max(activeIndex - 1, 0);
+        activeIndex =
+          activeIndex === -1
+            ? results.length - 1
+            : Math.max(activeIndex - 1, 0);
         break;
       case 'Enter':
         event.preventDefault();
