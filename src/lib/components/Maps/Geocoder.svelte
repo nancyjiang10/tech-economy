@@ -375,8 +375,6 @@ USAGE EXAMPLE:
     letter-spacing: var(--letter-spacing-wide);
   }
 
-
-
   @include tablet {
     .geocoder-field {
       font-size: var(--font-size-lg);
