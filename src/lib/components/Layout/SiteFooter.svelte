@@ -20,7 +20,11 @@ USAGE EXAMPLE:
       <div class="footer-grid">
         <!-- Brand Column -->
         <div class="footer-brand">
-          <a href="https://www.journalism.cuny.edu/" class="footer-logo-link">
+          <a
+            href="https://www.journalism.cuny.edu/"
+            class="footer-logo-link"
+            aria-label="Visit Craig Newmark Graduate School of Journalism at CUNY website"
+          >
             <img
               src={asset('/cuny-footer-logo.svg')}
               alt="Craig Newmark Graduate School of Journalism at CUNY"
@@ -149,6 +153,13 @@ USAGE EXAMPLE:
 
   .footer-logo-link:hover .cuny-logo {
     opacity: var(--opacity-hover);
+  }
+
+  /* Ensure logo visibility in Windows High Contrast Mode */
+  @media (forced-colors: active) {
+    .cuny-logo {
+      filter: none;
+    }
   }
 
   .footer-tagline {
