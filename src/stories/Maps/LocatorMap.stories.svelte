@@ -17,10 +17,10 @@
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
-  import LocatorMap from '$lib/components/Media/LocatorMap.svelte';
+  import LocatorMap from '$lib/components/Maps/LocatorMap.svelte';
 
   const { Story } = defineMeta({
-    title: 'Media/LocatorMap',
+    title: 'Maps/LocatorMap',
     component: LocatorMap,
     tags: ['autodocs'],
     argTypes: {
