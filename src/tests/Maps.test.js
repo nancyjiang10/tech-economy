@@ -1,6 +1,61 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Geocoder from '$lib/components/Maps/Geocoder.svelte';
+import Map from '$lib/components/Maps/Map.svelte';
+
+// Mock maplibre-gl so it doesn't try to use WebGL in jsdom
+vi.mock('maplibre-gl', () => {
+  const listeners = {};
+  const mockMap = {
+    on: vi.fn((event, fn) => {
+      listeners[event] = listeners[event] || [];
+      listeners[event].push(fn);
+    }),
+    off: vi.fn((event, fn) => {
+      if (listeners[event]) {
+        listeners[event] = listeners[event].filter((f) => f !== fn);
+      }
+    }),
+    once: vi.fn((event, fn) => {
+      mockMap.on(event, fn);
+    }),
+    remove: vi.fn(),
+    getCenter: vi.fn(() => ({ lng: -74.006, lat: 40.7128 })),
+    getZoom: vi.fn(() => 10),
+    flyTo: vi.fn(),
+    setStyle: vi.fn(),
+    isStyleLoaded: vi.fn(() => true),
+    getSource: vi.fn(() => null),
+    getLayer: vi.fn(() => null),
+    addSource: vi.fn(),
+    addLayer: vi.fn(),
+    removeSource: vi.fn(),
+    removeLayer: vi.fn(),
+    setPaintProperty: vi.fn(),
+    _listeners: listeners,
+    _fireStyleLoad: () => {
+      if (listeners['style.load']) {
+        listeners['style.load'].forEach((fn) => fn());
+      }
+    },
+  };
+
+  class MockMap {
+    constructor() {
+      Object.assign(this, mockMap);
+      // Fire style.load asynchronously to mimic real behaviour
+      setTimeout(() => mockMap._fireStyleLoad(), 0);
+    }
+  }
+
+  return {
+    Map: MockMap,
+    default: { Map: MockMap },
+  };
+});
+
+// Mock the CSS import
+vi.mock('maplibre-gl/dist/maplibre-gl.css', () => ({}));
 
 /** Standard Nominatim-shaped mock response used by several tests. */
 const mockResults = [
@@ -249,5 +304,71 @@ describe('Geocoder', () => {
 
     // Listbox should be closed
     expect(container.querySelector('[role="listbox"]')).toBeNull();
+  });
+});
+
+describe('Map', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('renders a map container with role="application"', async () => {
+    const { container } = render(Map);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('[role="application"]')).toBeTruthy();
+  });
+
+  it('generates an aria-label from coordinates when no caption is given', async () => {
+    render(Map, {
+      props: { longitude: -74.006, latitude: 40.7128 },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(
+      screen.getByLabelText('Interactive map centered at 40.7128, -74.0060')
+    ).toBeTruthy();
+  });
+
+  it('uses caption in aria-label when provided', async () => {
+    render(Map, {
+      props: { caption: 'New York City' },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(
+      screen.getByLabelText('Interactive map: New York City')
+    ).toBeTruthy();
+  });
+
+  it('renders caption and credit in figcaption', async () => {
+    render(Map, {
+      props: {
+        caption: 'A test caption',
+        credit: 'Test Credit',
+      },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(screen.getByText('A test caption')).toBeTruthy();
+    expect(screen.getByText('Test Credit')).toBeTruthy();
+  });
+
+  it('applies explicit width and height as inline styles', async () => {
+    const { container } = render(Map, {
+      props: { width: 400, height: 300 },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    const mapEl = container.querySelector('[role="application"]');
+    expect(mapEl.style.width).toBe('400px');
+    expect(mapEl.style.height).toBe('300px');
+  });
+
+  it('does not render figcaption when no caption or credit', async () => {
+    const { container } = render(Map, {
+      props: { caption: '', credit: '' },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('figcaption')).toBeNull();
   });
 });
