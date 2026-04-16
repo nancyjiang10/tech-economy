@@ -1,6 +1,67 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Geocoder from '$lib/components/Maps/Geocoder.svelte';
+import Map from '$lib/components/Maps/Map.svelte';
+
+// Mock maplibre-gl so it doesn't try to use WebGL in jsdom
+vi.mock('maplibre-gl', () => {
+  class MockMap {
+    constructor() {
+      this._listeners = {};
+      this.on = vi.fn((event, fn) => {
+        this._listeners[event] = this._listeners[event] || [];
+        this._listeners[event].push(fn);
+      });
+      this.off = vi.fn((event, fn) => {
+        if (this._listeners[event]) {
+          this._listeners[event] = this._listeners[event].filter(
+            (f) => f !== fn
+          );
+        }
+      });
+      this.once = vi.fn((event, fn) => {
+        const wrapped = () => {
+          this.off(event, wrapped);
+          fn();
+        };
+        this.on(event, wrapped);
+      });
+      this.remove = vi.fn(() => {
+        Object.keys(this._listeners).forEach((event) => {
+          this._listeners[event] = [];
+        });
+      });
+      this.getCenter = vi.fn(() => ({ lng: -74.006, lat: 40.7128 }));
+      this.getZoom = vi.fn(() => 10);
+      this.flyTo = vi.fn();
+      this.setStyle = vi.fn();
+      this.isStyleLoaded = vi.fn(() => true);
+      this.getSource = vi.fn(() => null);
+      this.getLayer = vi.fn(() => null);
+      this.addSource = vi.fn();
+      this.addLayer = vi.fn();
+      this.removeSource = vi.fn();
+      this.removeLayer = vi.fn();
+      this.setPaintProperty = vi.fn();
+      this._fireStyleLoad = () => {
+        if (this._listeners['style.load']) {
+          this._listeners['style.load'].forEach((fn) => fn());
+        }
+      };
+
+      // Fire style.load asynchronously to mimic real behavior
+      setTimeout(() => this._fireStyleLoad(), 0);
+    }
+  }
+
+  return {
+    Map: MockMap,
+    default: { Map: MockMap },
+  };
+});
+
+// Mock the CSS import
+vi.mock('maplibre-gl/dist/maplibre-gl.css', () => ({}));
 
 /** Standard Nominatim-shaped mock response used by several tests. */
 const mockResults = [
@@ -249,5 +310,71 @@ describe('Geocoder', () => {
 
     // Listbox should be closed
     expect(container.querySelector('[role="listbox"]')).toBeNull();
+  });
+});
+
+describe('Map', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('renders a map container with role="application"', async () => {
+    const { container } = render(Map);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('[role="application"]')).toBeTruthy();
+  });
+
+  it('generates an aria-label from coordinates when no caption is given', async () => {
+    render(Map, {
+      props: { longitude: -74.006, latitude: 40.7128 },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(
+      screen.getByLabelText('Interactive map centered at 40.7128, -74.0060')
+    ).toBeTruthy();
+  });
+
+  it('uses caption in aria-label when provided', async () => {
+    render(Map, {
+      props: { caption: 'New York City' },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(
+      screen.getByLabelText('Interactive map: New York City')
+    ).toBeTruthy();
+  });
+
+  it('renders caption and credit in figcaption', async () => {
+    render(Map, {
+      props: {
+        caption: 'A test caption',
+        credit: 'Test Credit',
+      },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(screen.getByText('A test caption')).toBeTruthy();
+    expect(screen.getByText('Test Credit')).toBeTruthy();
+  });
+
+  it('applies explicit width and height as inline styles', async () => {
+    const { container } = render(Map, {
+      props: { width: 400, height: 300 },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    const mapEl = container.querySelector('[role="application"]');
+    expect(mapEl.style.width).toBe('400px');
+    expect(mapEl.style.height).toBe('300px');
+  });
+
+  it('does not render figcaption when no caption or credit', async () => {
+    const { container } = render(Map, {
+      props: { caption: '', credit: '' },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('figcaption')).toBeNull();
   });
 });
