@@ -247,19 +247,6 @@ USAGE EXAMPLE:
     </ul>
   {/if}
 
-  <p class="attribution">
-    Geocoding by <a
-      href="https://nominatim.openstreetmap.org/"
-      target="_blank"
-      rel="noopener noreferrer">Nominatim</a
-    >
-    /
-    <a
-      href="https://www.openstreetmap.org/copyright"
-      target="_blank"
-      rel="noopener noreferrer">OpenStreetMap</a
-    >
-  </p>
 </div>
 
 <style lang="scss">
@@ -386,21 +373,6 @@ USAGE EXAMPLE:
     font-size: var(--font-size-xs);
     color: var(--color-medium-gray);
     letter-spacing: var(--letter-spacing-wide);
-  }
-
-  .attribution {
-    margin-top: var(--spacing-xxs);
-    font-family: var(--font-sans);
-    font-size: var(--font-size-xs);
-    color: var(--color-medium-gray);
-
-    a {
-      color: var(--color-medium-gray);
-      text-decoration: underline;
-      &:hover {
-        color: var(--color-accent);
-      }
-    }
   }
 
   @include tablet {
