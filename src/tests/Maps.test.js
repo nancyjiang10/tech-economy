@@ -5,46 +5,52 @@ import Map from '$lib/components/Maps/Map.svelte';
 
 // Mock maplibre-gl so it doesn't try to use WebGL in jsdom
 vi.mock('maplibre-gl', () => {
-  const listeners = {};
-  const mockMap = {
-    on: vi.fn((event, fn) => {
-      listeners[event] = listeners[event] || [];
-      listeners[event].push(fn);
-    }),
-    off: vi.fn((event, fn) => {
-      if (listeners[event]) {
-        listeners[event] = listeners[event].filter((f) => f !== fn);
-      }
-    }),
-    once: vi.fn((event, fn) => {
-      mockMap.on(event, fn);
-    }),
-    remove: vi.fn(),
-    getCenter: vi.fn(() => ({ lng: -74.006, lat: 40.7128 })),
-    getZoom: vi.fn(() => 10),
-    flyTo: vi.fn(),
-    setStyle: vi.fn(),
-    isStyleLoaded: vi.fn(() => true),
-    getSource: vi.fn(() => null),
-    getLayer: vi.fn(() => null),
-    addSource: vi.fn(),
-    addLayer: vi.fn(),
-    removeSource: vi.fn(),
-    removeLayer: vi.fn(),
-    setPaintProperty: vi.fn(),
-    _listeners: listeners,
-    _fireStyleLoad: () => {
-      if (listeners['style.load']) {
-        listeners['style.load'].forEach((fn) => fn());
-      }
-    },
-  };
-
   class MockMap {
     constructor() {
-      Object.assign(this, mockMap);
+      this._listeners = {};
+      this.on = vi.fn((event, fn) => {
+        this._listeners[event] = this._listeners[event] || [];
+        this._listeners[event].push(fn);
+      });
+      this.off = vi.fn((event, fn) => {
+        if (this._listeners[event]) {
+          this._listeners[event] = this._listeners[event].filter(
+            (f) => f !== fn
+          );
+        }
+      });
+      this.once = vi.fn((event, fn) => {
+        const wrapped = () => {
+          this.off(event, wrapped);
+          fn();
+        };
+        this.on(event, wrapped);
+      });
+      this.remove = vi.fn(() => {
+        Object.keys(this._listeners).forEach((event) => {
+          this._listeners[event] = [];
+        });
+      });
+      this.getCenter = vi.fn(() => ({ lng: -74.006, lat: 40.7128 }));
+      this.getZoom = vi.fn(() => 10);
+      this.flyTo = vi.fn();
+      this.setStyle = vi.fn();
+      this.isStyleLoaded = vi.fn(() => true);
+      this.getSource = vi.fn(() => null);
+      this.getLayer = vi.fn(() => null);
+      this.addSource = vi.fn();
+      this.addLayer = vi.fn();
+      this.removeSource = vi.fn();
+      this.removeLayer = vi.fn();
+      this.setPaintProperty = vi.fn();
+      this._fireStyleLoad = () => {
+        if (this._listeners['style.load']) {
+          this._listeners['style.load'].forEach((fn) => fn());
+        }
+      };
+
       // Fire style.load asynchronously to mimic real behavior
-      setTimeout(() => mockMap._fireStyleLoad(), 0);
+      setTimeout(() => this._fireStyleLoad(), 0);
     }
   }
 

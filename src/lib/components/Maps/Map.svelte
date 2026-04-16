@@ -114,24 +114,23 @@ USAGE EXAMPLE:
     };
   });
 
-  // Reactively update center when props change
+  // Reactively update center and zoom when props change
   $effect(() => {
     if (!map) return;
-    const center = map.getCenter();
-    if (
-      Math.abs(center.lng - longitude) > 0.0001 ||
-      Math.abs(center.lat - latitude) > 0.0001
-    ) {
-      map.flyTo({ center: [longitude, latitude], essential: true });
-    }
-  });
 
-  // Reactively update zoom when prop changes
-  $effect(() => {
-    if (!map) return;
-    if (Math.abs(map.getZoom() - zoom) > 0.01) {
-      map.flyTo({ zoom, essential: true });
-    }
+    const center = map.getCenter();
+    const centerChanged =
+      Math.abs(center.lng - longitude) > 0.0001 ||
+      Math.abs(center.lat - latitude) > 0.0001;
+    const zoomChanged = Math.abs(map.getZoom() - zoom) > 0.01;
+
+    if (!centerChanged && !zoomChanged) return;
+
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom,
+      essential: true,
+    });
   });
 
   // Reactively update the basemap style when theme changes

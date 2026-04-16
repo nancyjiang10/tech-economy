@@ -37,7 +37,16 @@ USAGE EXAMPLE:
     layout = {}, // MapLibre layout properties
   } = $props();
 
+  if (typeof id !== 'string' || id.trim() === '') {
+    throw new Error('MapLayer requires a non-empty string "id" prop.');
+  }
+
   const ctx = getContext('maplibre-map');
+  if (!ctx) {
+    throw new Error(
+      'MapLayer must be placed inside a Map component. No map context found.'
+    );
+  }
 
   /** Adds the source and layer to the map. */
   function addLayer() {
@@ -91,14 +100,29 @@ USAGE EXAMPLE:
     }
   });
 
+  // Track previous paint keys so we can unset removed properties
+  let previousPaintKeys = Object.keys(paint);
+
   // Reactively update paint properties when paint prop changes
   $effect(() => {
     const map = ctx.getMap();
     if (!map || !map.getLayer(id)) return;
     const currentPaint = paint; // read reactive prop
+    const currentKeys = Object.keys(currentPaint);
+
+    // Unset any paint properties that were removed
+    for (const key of previousPaintKeys) {
+      if (!(key in currentPaint)) {
+        map.setPaintProperty(id, key, undefined);
+      }
+    }
+
+    // Apply current paint properties
     for (const [key, value] of Object.entries(currentPaint)) {
       map.setPaintProperty(id, key, value);
     }
+
+    previousPaintKeys = currentKeys;
   });
 
   onDestroy(() => {
