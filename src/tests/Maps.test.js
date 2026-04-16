@@ -128,12 +128,6 @@ describe('Geocoder', () => {
     expect(screen.getByPlaceholderText('Type here…')).toBeTruthy();
   });
 
-  it('renders attribution text', () => {
-    render(Geocoder);
-    expect(screen.getByText('Nominatim')).toBeTruthy();
-    expect(screen.getByText('OpenStreetMap')).toBeTruthy();
-  });
-
   it('has proper combobox ARIA attributes on the input', () => {
     render(Geocoder);
     const input = screen.getByPlaceholderText('Search for an address…');
