@@ -43,7 +43,7 @@ vi.mock('maplibre-gl', () => {
   class MockMap {
     constructor() {
       Object.assign(this, mockMap);
-      // Fire style.load asynchronously to mimic real behaviour
+      // Fire style.load asynchronously to mimic real behavior
       setTimeout(() => mockMap._fireStyleLoad(), 0);
     }
   }
