@@ -18,6 +18,8 @@ USAGE EXAMPLE:
 />
 -->
 <script>
+  import { onMount, onDestroy } from 'svelte';
+
   let {
     placeholder = 'Search for an address…',
     label = 'Location',
@@ -30,10 +32,23 @@ USAGE EXAMPLE:
   let isOpen = $state(false);
   let isLoading = $state(false);
   let activeIndex = $state(-1);
-  let debounceTimer = $state(null);
+  let debounceTimer = null;
+  let blurTimer = null;
 
-  const inputId = 'geocoder-field';
-  const listboxId = 'geocoder-listbox';
+  // Generate unique IDs per instance to avoid collisions when multiple
+  // Geocoder components are rendered on the same page.
+  let instanceId = $state('');
+  onMount(() => {
+    instanceId =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID().slice(0, 8)
+        : Math.random().toString(36).slice(2, 10);
+  });
+  const inputId = $derived(`geocoder-field-${instanceId}`);
+  const listboxId = $derived(`geocoder-listbox-${instanceId}`);
+
+  /** AbortController for the current in-flight request. */
+  let abortController = null;
 
   /**
    * Queries the Nominatim API for matching addresses.
@@ -47,13 +62,16 @@ USAGE EXAMPLE:
       return;
     }
 
+    // Abort any previous in-flight request to prevent stale results
+    if (abortController) abortController.abort();
+    abortController = new AbortController();
+
     isLoading = true;
 
     try {
       const params = new URLSearchParams({
         q: searchText.trim(),
         format: 'json',
-        addressdetails: '1',
         limit: '5',
       });
 
@@ -63,6 +81,7 @@ USAGE EXAMPLE:
           headers: {
             Accept: 'application/json',
           },
+          signal: abortController.signal,
         }
       );
 
@@ -83,6 +102,7 @@ USAGE EXAMPLE:
       isOpen = results.length > 0;
       activeIndex = -1;
     } catch (err) {
+      if (err.name === 'AbortError') return; // Request was intentionally cancelled
       console.error('Geocoder: search failed', err);
       results = [];
       isOpen = false;
@@ -142,7 +162,8 @@ USAGE EXAMPLE:
   /** Close dropdown when focus leaves the component. */
   function handleBlur(event) {
     // Use a timeout so click events on results can fire first
-    setTimeout(() => {
+    if (blurTimer) clearTimeout(blurTimer);
+    blurTimer = setTimeout(() => {
       const geocoderEl = event.currentTarget;
       if (geocoderEl && !geocoderEl.contains(document.activeElement)) {
         isOpen = false;
@@ -150,15 +171,17 @@ USAGE EXAMPLE:
       }
     }, 200);
   }
+
+  /** Clean up all timers and in-flight requests on destroy. */
+  onDestroy(() => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    if (blurTimer) clearTimeout(blurTimer);
+    if (abortController) abortController.abort();
+  });
 </script>
 
 <div
   class="geocoder"
-  role="combobox"
-  aria-expanded={isOpen}
-  aria-haspopup="listbox"
-  aria-owns={listboxId}
-  aria-controls={listboxId}
   onfocusout={handleBlur}
 >
   <label class="geocoder-label" for={inputId}>{label}</label>
@@ -183,6 +206,10 @@ USAGE EXAMPLE:
       class="geocoder-field"
       type="search"
       autocomplete="off"
+      role="combobox"
+      aria-expanded={isOpen}
+      aria-haspopup="listbox"
+      aria-owns={listboxId}
       {placeholder}
       bind:value={query}
       oninput={handleInput}
@@ -190,7 +217,7 @@ USAGE EXAMPLE:
       aria-autocomplete="list"
       aria-controls={listboxId}
       aria-activedescendant={activeIndex >= 0
-        ? `geocoder-option-${activeIndex}`
+        ? `geocoder-option-${instanceId}-${activeIndex}`
         : undefined}
     />
     {#if isLoading}
@@ -202,7 +229,7 @@ USAGE EXAMPLE:
     <ul id={listboxId} class="results-list" role="listbox">
       {#each results as result, i (result.placeId)}
         <li
-          id={`geocoder-option-${i}`}
+          id={`geocoder-option-${instanceId}-${i}`}
           class="result-item"
           class:active={i === activeIndex}
           role="option"

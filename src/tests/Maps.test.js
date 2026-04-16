@@ -1,10 +1,54 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Geocoder from '$lib/components/Maps/Geocoder.svelte';
 
+/** Standard Nominatim-shaped mock response used by several tests. */
+const mockResults = [
+  {
+    place_id: 123,
+    display_name: 'New York, NY, USA',
+    lat: '40.7128',
+    lon: '-74.0060',
+    type: 'city',
+  },
+  {
+    place_id: 456,
+    display_name: 'New York Mills, MN, USA',
+    lat: '46.5180',
+    lon: '-95.3764',
+    type: 'city',
+  },
+];
+
+/** Stubs globalThis.fetch with a successful Nominatim response. */
+function stubFetchSuccess(data = mockResults) {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(data),
+      })
+    )
+  );
+}
+
+/** Types into the input and advances fake timers past the debounce + fetch. */
+async function typeAndSearch(input, text) {
+  await fireEvent.input(input, { target: { value: text } });
+  await vi.advanceTimersByTimeAsync(0); // debounce fires (debounceMs=0)
+  await vi.advanceTimersByTimeAsync(0); // flush fetch microtasks
+}
+
 describe('Geocoder', () => {
   beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('renders with default label and placeholder', () => {
@@ -29,12 +73,13 @@ describe('Geocoder', () => {
     expect(screen.getByText('OpenStreetMap')).toBeTruthy();
   });
 
-  it('has proper combobox ARIA attributes', () => {
-    const { container } = render(Geocoder);
-    const combobox = container.querySelector('[role="combobox"]');
-    expect(combobox).toBeTruthy();
-    expect(combobox.getAttribute('aria-expanded')).toBe('false');
-    expect(combobox.getAttribute('aria-haspopup')).toBe('listbox');
+  it('has proper combobox ARIA attributes on the input', () => {
+    render(Geocoder);
+    const input = screen.getByPlaceholderText('Search for an address…');
+    expect(input.getAttribute('role')).toBe('combobox');
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(input.getAttribute('aria-autocomplete')).toBe('list');
   });
 
   it('does not show results list initially', () => {
@@ -43,13 +88,13 @@ describe('Geocoder', () => {
   });
 
   it('shows loading indicator during fetch', async () => {
-    // Mock fetch to hang so we can check loading state
+    let resolveFetch;
     vi.stubGlobal(
       'fetch',
       vi.fn(
         () =>
-          new Promise(() => {
-            /* never resolves */
+          new Promise((resolve) => {
+            resolveFetch = resolve;
           })
       )
     );
@@ -60,82 +105,37 @@ describe('Geocoder', () => {
 
     const input = screen.getByPlaceholderText('Search for an address…');
     await fireEvent.input(input, { target: { value: 'New York' } });
-
-    // Wait for the debounce (0ms) + microtask
-    await new Promise((r) => setTimeout(r, 50));
+    await vi.advanceTimersByTimeAsync(0);
 
     expect(container.querySelector('.loading-indicator')).toBeTruthy();
+
+    // Resolve so the component finishes cleanly
+    resolveFetch({
+      ok: true,
+      json: () => Promise.resolve([]),
+    });
+    await vi.advanceTimersByTimeAsync(0);
   });
 
   it('displays results from Nominatim response', async () => {
-    const mockResults = [
-      {
-        place_id: 123,
-        display_name: 'New York, NY, USA',
-        lat: '40.7128',
-        lon: '-74.0060',
-        type: 'city',
-      },
-      {
-        place_id: 456,
-        display_name: 'New York Mills, MN, USA',
-        lat: '46.5180',
-        lon: '-95.3764',
-        type: 'city',
-      },
-    ];
-
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockResults),
-        })
-      )
-    );
-
+    stubFetchSuccess();
     render(Geocoder, { props: { debounceMs: 0 } });
 
     const input = screen.getByPlaceholderText('Search for an address…');
-    await fireEvent.input(input, { target: { value: 'New York' } });
-
-    // Wait for debounce + fetch
-    await new Promise((r) => setTimeout(r, 100));
+    await typeAndSearch(input, 'New York');
 
     expect(screen.getByText('New York, NY, USA')).toBeTruthy();
     expect(screen.getByText('New York Mills, MN, USA')).toBeTruthy();
   });
 
   it('fires onresult when a result is selected', async () => {
-    const mockResults = [
-      {
-        place_id: 123,
-        display_name: 'New York, NY, USA',
-        lat: '40.7128',
-        lon: '-74.0060',
-        type: 'city',
-      },
-    ];
-
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockResults),
-        })
-      )
-    );
+    stubFetchSuccess(mockResults.slice(0, 1));
 
     const onresult = vi.fn();
     render(Geocoder, { props: { debounceMs: 0, onresult } });
 
     const input = screen.getByPlaceholderText('Search for an address…');
-    await fireEvent.input(input, { target: { value: 'New York' } });
-
-    // Wait for debounce + fetch
-    await new Promise((r) => setTimeout(r, 100));
+    await typeAndSearch(input, 'New York');
 
     const option = screen.getByText('New York, NY, USA');
     await fireEvent.mouseDown(option);
@@ -155,9 +155,7 @@ describe('Geocoder', () => {
 
     const input = screen.getByPlaceholderText('Search for an address…');
     await fireEvent.input(input, { target: { value: 'NY' } });
-
-    // Wait for debounce
-    await new Promise((r) => setTimeout(r, 50));
+    await vi.advanceTimersByTimeAsync(0);
 
     expect(fetchSpy).not.toHaveBeenCalled();
   });
@@ -176,12 +174,80 @@ describe('Geocoder', () => {
     const { container } = render(Geocoder, { props: { debounceMs: 0 } });
 
     const input = screen.getByPlaceholderText('Search for an address…');
-    await fireEvent.input(input, { target: { value: 'New York' } });
-
-    // Wait for debounce + fetch
-    await new Promise((r) => setTimeout(r, 100));
+    await typeAndSearch(input, 'New York');
 
     // Should not show results and should not crash
+    expect(container.querySelector('[role="listbox"]')).toBeNull();
+  });
+
+  // --- Keyboard navigation tests ---
+
+  it('ArrowDown moves activeIndex through results', async () => {
+    stubFetchSuccess();
+    render(Geocoder, { props: { debounceMs: 0 } });
+
+    const input = screen.getByPlaceholderText('Search for an address…');
+    await typeAndSearch(input, 'New York');
+
+    // First ArrowDown → index 0
+    await fireEvent.keyDown(input, { key: 'ArrowDown' });
+    let options = screen.getAllByRole('option');
+    expect(options[0].getAttribute('aria-selected')).toBe('true');
+    expect(options[1].getAttribute('aria-selected')).toBe('false');
+
+    // Second ArrowDown → index 1
+    await fireEvent.keyDown(input, { key: 'ArrowDown' });
+    options = screen.getAllByRole('option');
+    expect(options[0].getAttribute('aria-selected')).toBe('false');
+    expect(options[1].getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('ArrowUp from -1 jumps to the last result', async () => {
+    stubFetchSuccess();
+    render(Geocoder, { props: { debounceMs: 0 } });
+
+    const input = screen.getByPlaceholderText('Search for an address…');
+    await typeAndSearch(input, 'New York');
+
+    // ArrowUp when no item is active → last item
+    await fireEvent.keyDown(input, { key: 'ArrowUp' });
+    const options = screen.getAllByRole('option');
+    expect(options[options.length - 1].getAttribute('aria-selected')).toBe(
+      'true'
+    );
+  });
+
+  it('Enter selects the active result', async () => {
+    stubFetchSuccess(mockResults.slice(0, 1));
+    const onresult = vi.fn();
+    render(Geocoder, { props: { debounceMs: 0, onresult } });
+
+    const input = screen.getByPlaceholderText('Search for an address…');
+    await typeAndSearch(input, 'New York');
+
+    await fireEvent.keyDown(input, { key: 'ArrowDown' });
+    await fireEvent.keyDown(input, { key: 'Enter' });
+
+    expect(onresult).toHaveBeenCalledWith({
+      displayName: 'New York, NY, USA',
+      lat: 40.7128,
+      lng: -74.006,
+    });
+  });
+
+  it('Escape closes the dropdown', async () => {
+    stubFetchSuccess();
+    const { container } = render(Geocoder, { props: { debounceMs: 0 } });
+
+    const input = screen.getByPlaceholderText('Search for an address…');
+    await typeAndSearch(input, 'New York');
+
+    // Listbox should be open
+    expect(container.querySelector('[role="listbox"]')).toBeTruthy();
+
+    await fireEvent.keyDown(input, { key: 'Escape' });
+
+    // Listbox should be closed
     expect(container.querySelector('[role="listbox"]')).toBeNull();
   });
 });
