@@ -8,12 +8,13 @@
 # 3. Push changes to the main branch
 # 4. The workflow will build and deploy your site to https://<your-github-username>.github.io/<your-repository-name>/
 
-name: Deploy to GitHub Pages
+name: Continuous Deployment
 
 on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -22,7 +23,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: 'pages-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
@@ -67,6 +68,7 @@ jobs:
 
   deploy:
     name: Deploy
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
