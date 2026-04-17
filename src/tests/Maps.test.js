@@ -115,9 +115,7 @@ describe('Geocoder', () => {
   it('renders with default label and placeholder', () => {
     render(Geocoder);
     expect(screen.getByLabelText('Search')).toBeTruthy();
-    expect(
-      screen.getByPlaceholderText('Enter an address…')
-    ).toBeTruthy();
+    expect(screen.getByPlaceholderText('Enter an address…')).toBeTruthy();
   });
 
   it('accepts a custom label and placeholder', () => {
