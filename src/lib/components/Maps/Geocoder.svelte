@@ -10,8 +10,8 @@ the place name, latitude, and longitude.
 
 USAGE EXAMPLE:
 <Geocoder
-  label="Find an address"
-  placeholder="Search for a place…"
+  label="Search"
+  placeholder="Enter an address…"
   onresult={(result) => {
     console.log(result.lat, result.lng, result.displayName);
   }}
@@ -21,8 +21,8 @@ USAGE EXAMPLE:
   import { onMount, onDestroy } from 'svelte';
 
   let {
-    placeholder = 'Search for an address…',
-    label = 'Location',
+    placeholder = 'Enter an address…',
+    label = 'Search',
     onresult = () => {},
     debounceMs = 300,
   } = $props();
@@ -182,10 +182,7 @@ USAGE EXAMPLE:
   });
 </script>
 
-<div
-  class="geocoder"
-  onfocusout={handleBlur}
->
+<div class="geocoder" onfocusout={handleBlur}>
   <label class="geocoder-label" for={inputId}>{label}</label>
   <div class="input-wrapper">
     <svg
@@ -246,7 +243,6 @@ USAGE EXAMPLE:
       {/each}
     </ul>
   {/if}
-
 </div>
 
 <style lang="scss">
