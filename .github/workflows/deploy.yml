@@ -8,7 +8,7 @@
 # 3. Push changes to the main branch
 # 4. The workflow will build and deploy your site to https://<your-github-username>.github.io/<your-repository-name>/
 
-name: Deploy to GitHub Pages
+name: Continuous Deployment
 
 on:
   push:
