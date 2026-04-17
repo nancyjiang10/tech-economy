@@ -114,9 +114,9 @@ describe('Geocoder', () => {
 
   it('renders with default label and placeholder', () => {
     render(Geocoder);
-    expect(screen.getByLabelText('Location')).toBeTruthy();
+    expect(screen.getByLabelText('Search')).toBeTruthy();
     expect(
-      screen.getByPlaceholderText('Search for an address…')
+      screen.getByPlaceholderText('Enter an address…')
     ).toBeTruthy();
   });
 
@@ -130,7 +130,7 @@ describe('Geocoder', () => {
 
   it('has proper combobox ARIA attributes on the input', () => {
     render(Geocoder);
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     expect(input.getAttribute('role')).toBe('combobox');
     expect(input.getAttribute('aria-expanded')).toBe('false');
     expect(input.getAttribute('aria-haspopup')).toBe('listbox');
@@ -158,7 +158,7 @@ describe('Geocoder', () => {
       props: { debounceMs: 0 },
     });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await fireEvent.input(input, { target: { value: 'New York' } });
     await vi.advanceTimersByTimeAsync(0);
 
@@ -176,7 +176,7 @@ describe('Geocoder', () => {
     stubFetchSuccess();
     render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     expect(screen.getByText('New York, NY, USA')).toBeTruthy();
@@ -189,7 +189,7 @@ describe('Geocoder', () => {
     const onresult = vi.fn();
     render(Geocoder, { props: { debounceMs: 0, onresult } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     const option = screen.getByText('New York, NY, USA');
@@ -208,7 +208,7 @@ describe('Geocoder', () => {
 
     render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await fireEvent.input(input, { target: { value: 'NY' } });
     await vi.advanceTimersByTimeAsync(0);
 
@@ -228,7 +228,7 @@ describe('Geocoder', () => {
 
     const { container } = render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     // Should not show results and should not crash
@@ -241,7 +241,7 @@ describe('Geocoder', () => {
     stubFetchSuccess();
     render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     // First ArrowDown → index 0
@@ -261,7 +261,7 @@ describe('Geocoder', () => {
     stubFetchSuccess();
     render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     // ArrowUp when no item is active → last item
@@ -277,7 +277,7 @@ describe('Geocoder', () => {
     const onresult = vi.fn();
     render(Geocoder, { props: { debounceMs: 0, onresult } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     await fireEvent.keyDown(input, { key: 'ArrowDown' });
@@ -294,7 +294,7 @@ describe('Geocoder', () => {
     stubFetchSuccess();
     const { container } = render(Geocoder, { props: { debounceMs: 0 } });
 
-    const input = screen.getByPlaceholderText('Search for an address…');
+    const input = screen.getByPlaceholderText('Enter an address…');
     await typeAndSearch(input, 'New York');
 
     // Listbox should be open
