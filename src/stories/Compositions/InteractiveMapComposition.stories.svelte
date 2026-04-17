@@ -91,7 +91,9 @@
         latitude={mapLat}
         zoom={mapZoom}
         theme="liberty"
-        caption={hasResult ? `Showing results near ${mapLat.toFixed(4)}, ${mapLng.toFixed(4)}` : 'New York City'}
+        caption={hasResult
+          ? `Showing results near ${mapLat.toFixed(4)}, ${mapLng.toFixed(4)}`
+          : ''}
         credit="OpenFreeMap / OpenStreetMap contributors"
       >
         <MapLayer
