@@ -11,6 +11,7 @@
   - data: GeoJSON FeatureCollection or Feature
   - paint: MapLibre paint properties object
   - layout: MapLibre layout properties object
+  - popup: Optional function (feature) => htmlString for click popups
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
@@ -168,6 +169,26 @@
         'line-color': '#0033A1',
         'line-width': 2,
       }}
+    />
+  </Map>
+</Story>
+
+<!-- Popup: Click a landmark to see a popup -->
+<Story name="Popup">
+  <Map longitude={-73.99} latitude={40.735} zoom={11}
+    caption="Click a landmark to see a popup."
+  >
+    <MapLayer
+      id="landmarks-popup"
+      type="circle"
+      data={nycLandmarks}
+      paint={{
+        'circle-radius': 8,
+        'circle-color': '#0033A1',
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff',
+      }}
+      popup={(feature) => `<strong>${feature.properties.name}</strong>`}
     />
   </Map>
 </Story>
