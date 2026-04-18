@@ -7,6 +7,11 @@ obtain the MapLibre GL map instance, then adds a GeoJSON source and a
 styled layer. The layer is automatically removed when the component is
 destroyed or when the map style changes and reloads.
 
+Pass a `popup` template function to enable click-to-inspect popups. The
+function receives the clicked feature and should return an HTML string.
+When `popup` is set, the cursor changes to a pointer while hovering
+over the layer so readers know it is clickable.
+
 USAGE EXAMPLE:
 <Map longitude={-74.006} latitude={40.7128} zoom={10}>
   <MapLayer
@@ -23,11 +28,13 @@ USAGE EXAMPLE:
       ],
     }}
     paint={{ 'circle-radius': 8, 'circle-color': '#0033A1' }}
+    popup={(feature) => `<strong>${feature.properties.name}</strong>`}
   />
 </Map>
 -->
 <script>
   import { getContext, onDestroy } from 'svelte';
+  import maplibregl from 'maplibre-gl';
 
   let {
     id, // Unique layer identifier (required)
@@ -35,6 +42,7 @@ USAGE EXAMPLE:
     data = { type: 'FeatureCollection', features: [] }, // GeoJSON data
     paint = {}, // MapLibre paint properties
     layout = {}, // MapLibre layout properties
+    popup = null, // Optional function (feature) => htmlString
   } = $props();
 
   if (typeof id !== 'string' || id.trim() === '') {
@@ -48,7 +56,39 @@ USAGE EXAMPLE:
     );
   }
 
-  /** Adds the source and layer to the map. */
+  /** Tracks the currently-open popup so we can close it when another click opens a new one. */
+  let openPopup = null;
+
+  /** Handles clicks on the layer: builds an HTML popup from the template function. */
+  function handleClick(e) {
+    if (!popup) return;
+    const feature = e.features && e.features[0];
+    if (!feature) return;
+
+    const html = popup(feature);
+    if (!html) return;
+
+    if (openPopup) openPopup.remove();
+    openPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: true })
+      .setLngLat(e.lngLat)
+      .setHTML(html)
+      .addTo(ctx.getMap());
+  }
+
+  /** Sets the cursor to a pointer while hovering over a clickable layer. */
+  function handleMouseEnter() {
+    if (!popup) return;
+    const map = ctx.getMap();
+    if (map) map.getCanvas().style.cursor = 'pointer';
+  }
+
+  /** Restores the default cursor when the hover ends. */
+  function handleMouseLeave() {
+    const map = ctx.getMap();
+    if (map) map.getCanvas().style.cursor = '';
+  }
+
+  /** Adds the source, layer, and interaction handlers to the map. */
   function addLayer() {
     const map = ctx.getMap();
     if (!map) return;
@@ -69,14 +109,32 @@ USAGE EXAMPLE:
       paint,
       layout,
     });
+
+    if (popup) {
+      map.on('click', id, handleClick);
+      map.on('mouseenter', id, handleMouseEnter);
+      map.on('mouseleave', id, handleMouseLeave);
+    }
   }
 
-  /** Removes the source and layer from the map. */
+  /** Removes the source, layer, and any registered handlers from the map. */
   function removeLayer() {
     const map = ctx.getMap();
     if (!map) return;
+
+    if (popup) {
+      map.off('click', id, handleClick);
+      map.off('mouseenter', id, handleMouseEnter);
+      map.off('mouseleave', id, handleMouseLeave);
+    }
+
     if (map.getLayer(id)) map.removeLayer(id);
     if (map.getSource(id)) map.removeSource(id);
+
+    if (openPopup) {
+      openPopup.remove();
+      openPopup = null;
+    }
   }
 
   // Re-add the layer whenever the map style reloads (e.g. theme change)
