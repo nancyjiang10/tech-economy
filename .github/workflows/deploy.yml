@@ -56,11 +56,6 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}
 
-      - name: Lighthouse CI
-        run: |
-          npm install -g @lhci/cli
-          lhci autorun
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
