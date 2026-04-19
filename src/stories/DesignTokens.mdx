@@ -743,6 +743,11 @@ matching the site header.
 | `--dropcap-margin-right`| `0.05em`             | Space between letter and text                 |
 | `--dropcap-color`       | `var(--color-accent)`| Fallback color of the initial letter           |
 
+The dropcap letter uses the global `dropcap-gradient` keyframe animation
+(defined in `src/app.scss`), which sweeps through
+`--color-cuny-blue-dark` → `--color-accent` → `--color-cuny-blue-light`
+over 6 seconds, identical to the `gradient-sweep` animation on the site header.
+
 ## SCSS Variables
 
 Defined in `src/lib/styles/_variables.scss` — available after `@use '$lib/styles' as *`.
