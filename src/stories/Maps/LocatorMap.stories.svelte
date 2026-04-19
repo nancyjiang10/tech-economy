@@ -74,11 +74,7 @@
       'The Craig Newmark Graduate School of Journalism is at 219 West 40th Street in Midtown Manhattan.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Dot Marker: map with a blue dot marking the location -->
 <Story
@@ -93,11 +89,7 @@
       'A blue dot marks the location of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- No Caption: map without caption or credit -->
 <Story
@@ -108,11 +100,7 @@
     zoom: 13,
     width: 300,
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Neighborhood View: zoomed out to show neighborhood context -->
 <Story
@@ -125,11 +113,7 @@
     caption: 'Midtown Manhattan, New York City.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- City Overview: zoomed out to show the full city -->
 <Story
@@ -142,11 +126,7 @@
     caption: 'New York City and its five boroughs.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Bright Theme: OpenFreeMap bright basemap -->
 <Story
@@ -161,11 +141,7 @@
       'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap bright theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Positron Theme: OpenFreeMap positron basemap -->
 <Story
@@ -180,8 +156,4 @@
       'The Craig Newmark Graduate School of Journalism, rendered with the OpenFreeMap positron theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <LocatorMap {...args} />
-  {/snippet}
-</Story>
+/>

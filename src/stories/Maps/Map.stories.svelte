@@ -83,11 +83,7 @@
     caption: 'New York City — pan and zoom to explore.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <Map {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Neighborhood View: Zoomed into Midtown Manhattan -->
 <Story
@@ -99,11 +95,7 @@
     caption: 'Midtown Manhattan, home of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <Map {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Bright Theme -->
 <Story
@@ -116,11 +108,7 @@
     caption: 'New York City with the bright basemap theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <Map {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Positron Theme -->
 <Story
@@ -133,11 +121,7 @@
     caption: 'New York City with the positron basemap theme.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <Map {...args} />
-  {/snippet}
-</Story>
+/>
 
 <!-- Fixed Size: Explicit width and height -->
 <Story
@@ -151,8 +135,4 @@
     caption: 'A 400×300 pixel interactive map.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
->
-  {#snippet children(args)}
-    <Map {...args} />
-  {/snippet}
-</Story>
+/>
