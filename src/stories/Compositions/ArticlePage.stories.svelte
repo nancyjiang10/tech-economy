@@ -38,7 +38,7 @@
   Resize the canvas (or use the Viewport toolbar) to see how the
   layout responds across mobile, tablet, and desktop breakpoints.
 -->
-<Story name="Default">
+<Story name="Default" asChild>
   <SiteHeader />
 
   <div class="container">
@@ -138,7 +138,7 @@
 </Story>
 
 <!-- Text-Only: headline, body, and related links — no images or data -->
-<Story name="Text Only">
+<Story name="Text Only" asChild>
   <SiteHeader navLinks={[]} />
 
   <div class="container">
@@ -190,7 +190,7 @@
 </Story>
 
 <!-- Data-Driven: lede image followed immediately by a stat dashboard -->
-<Story name="Data Driven">
+<Story name="Data Driven" asChild>
   <SiteHeader />
 
   <div class="container">

@@ -31,7 +31,7 @@
 </script>
 
 <!-- Default: standard methodology disclosure -->
-<Story name="Default">
+<Story name="Default" asChild>
   <div class="story-container">
     <MethodologyBox>
       <p>
@@ -49,7 +49,7 @@
 </Story>
 
 <!-- Custom Title -->
-<Story name="Custom Title">
+<Story name="Custom Title" asChild>
   <div class="story-container">
     <MethodologyBox title="About the Data">
       <p>
@@ -62,7 +62,7 @@
 </Story>
 
 <!-- With Links: methodology that references external sources -->
-<Story name="With Links">
+<Story name="With Links" asChild>
   <div class="story-container">
     <MethodologyBox title="Sources and Methodology">
       <p>

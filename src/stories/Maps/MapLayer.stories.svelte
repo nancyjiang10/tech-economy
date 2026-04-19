@@ -108,7 +108,7 @@
 </script>
 
 <!-- Circle Points: NYC landmarks as circle markers -->
-<Story name="Circle Points">
+<Story name="Circle Points" asChild>
   <Map longitude={-73.99} latitude={40.735} zoom={11}
     caption="NYC landmarks as circle markers."
   >
@@ -127,7 +127,7 @@
 </Story>
 
 <!-- Line Layer: Brooklyn Bridge path -->
-<Story name="Line Layer">
+<Story name="Line Layer" asChild>
   <Map longitude={-73.992} latitude={40.703} zoom={14}
     caption="The Brooklyn Bridge drawn as a line layer."
   >
@@ -148,7 +148,7 @@
 </Story>
 
 <!-- Fill Layer: Central Park polygon -->
-<Story name="Fill Layer">
+<Story name="Fill Layer" asChild>
   <Map longitude={-73.965} latitude={40.783} zoom={13}
     caption="Central Park rendered as a filled polygon."
   >
@@ -174,7 +174,7 @@
 </Story>
 
 <!-- Popup: Click a landmark to see a popup -->
-<Story name="Popup">
+<Story name="Popup" asChild>
   <Map longitude={-73.99} latitude={40.735} zoom={11}
     caption="Click a landmark to see a popup."
   >
@@ -194,7 +194,7 @@
 </Story>
 
 <!-- Multiple Layers: Combining several layer types -->
-<Story name="Multiple Layers">
+<Story name="Multiple Layers" asChild>
   <Map longitude={-73.975} latitude={40.755} zoom={12}
     caption="Multiple layer types overlaid on the same map."
   >

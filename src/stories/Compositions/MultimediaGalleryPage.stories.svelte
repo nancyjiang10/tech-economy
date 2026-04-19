@@ -26,7 +26,7 @@
 </script>
 
 <!-- Default: a complete multimedia gallery with all slide types -->
-<Story name="Default">
+<Story name="Default" asChild>
   <div class="gallery-frame">
     <SlideGallery>
       <TitleSlide
@@ -107,6 +107,7 @@
 <!-- Desktop: landscape preview simulating a laptop screen -->
 <Story
   name="Desktop"
+  asChild
   parameters={{ viewport: { defaultViewport: 'responsive' } }}
 >
   <div class="desktop-frame">

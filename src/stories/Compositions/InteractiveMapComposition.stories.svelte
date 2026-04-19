@@ -65,7 +65,7 @@
 </script>
 
 <!-- Default: Full-page interactive NYC location search -->
-<Story name="Default">
+<Story name="Default" asChild>
   <SiteHeader />
 
   <div class="map-page">
