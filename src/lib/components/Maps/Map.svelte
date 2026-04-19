@@ -12,6 +12,7 @@ USAGE EXAMPLE:
   latitude={40.7128}
   zoom={10}
   theme="liberty"
+  border={true}
 >
   <MapLayer
     id="my-points"
@@ -38,6 +39,7 @@ USAGE EXAMPLE:
     zoom = 10, // Initial zoom level (0–22)
     theme = 'liberty', // Basemap theme: 'liberty' | 'bright' | 'positron'
     interactive = true, // Allow panning and zooming
+    border = false, // Show an accent border around the map
     width = null, // Optional explicit width in pixels
     height = null, // Optional explicit height in pixels
     aspectRatio = '4 / 3', // Aspect ratio when no explicit height is given
@@ -149,6 +151,7 @@ USAGE EXAMPLE:
 >
   <div
     class="map-container"
+    class:has-border={border}
     bind:this={mapContainer}
     role="application"
     aria-label={ariaLabel}
@@ -188,8 +191,11 @@ USAGE EXAMPLE:
   .map-container {
     width: 100%;
     display: block;
-    border: var(--border-width-accent) solid var(--color-accent);
-    border-radius: var(--border-radius-sm);
+
+    &.has-border {
+      border: var(--border-width-accent) solid var(--color-accent);
+      border-radius: var(--border-radius-sm);
+    }
   }
 
   .caption-container {

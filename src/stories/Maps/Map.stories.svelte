@@ -12,6 +12,7 @@
   - zoom: Initial zoom level 0–22 (default: 10)
   - theme: Basemap theme — 'liberty' | 'bright' | 'positron' (default: 'liberty')
   - interactive: Allow panning/zooming (default: true)
+  - border: Show an accent border around the map (default: false)
   - width: Optional explicit width in pixels
   - height: Optional explicit height in pixels
   - aspectRatio: CSS aspect ratio when no height is set (default: '4 / 3')
@@ -48,6 +49,10 @@
       interactive: {
         control: 'boolean',
         description: 'Allow pan and zoom interactions',
+      },
+      border: {
+        control: 'boolean',
+        description: 'Show an accent border around the map',
       },
       width: {
         control: { type: 'number', step: 50 },
@@ -149,6 +154,23 @@
     width: 400,
     height: 300,
     caption: 'A 400×300 pixel interactive map.',
+    credit: 'OpenFreeMap / OpenStreetMap contributors',
+  }}
+>
+  {#snippet children(args)}
+    <Map {...args} />
+  {/snippet}
+</Story>
+
+<!-- With Border: Accent border around the map -->
+<Story
+  name="With Border"
+  args={{
+    longitude: -74.006,
+    latitude: 40.7128,
+    zoom: 10,
+    border: true,
+    caption: 'Map with an accent border.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
 >
