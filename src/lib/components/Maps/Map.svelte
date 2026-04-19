@@ -12,7 +12,6 @@ USAGE EXAMPLE:
   latitude={40.7128}
   zoom={10}
   theme="liberty"
-  border={true}
 >
   <MapLayer
     id="my-points"
