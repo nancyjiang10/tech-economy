@@ -24,6 +24,7 @@ USAGE EXAMPLE:
   function initDropcap(node) {
     const paragraphs = node.querySelectorAll('p.dropcap');
     for (const p of paragraphs) {
+      if (p.querySelector('.dropcap-letter')) continue;
       const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
       let textNode = walker.nextNode();
       while (textNode && textNode.textContent.trim() === '') {
