@@ -111,7 +111,7 @@
   );
 </script>
 
-<Story name="Default">
+<Story name="Default" asChild>
   <SiteHeader />
 
   <div class="container">
