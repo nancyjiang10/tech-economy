@@ -372,15 +372,27 @@ describe('Map', () => {
   });
 
   it('uses the fiord theme URL when theme="fiord"', async () => {
-    const { container } = render(Map, { props: { theme: 'fiord' } });
+    const maplibreModule = await import('maplibre-gl');
+    const constructorSpy = vi.spyOn(maplibreModule, 'Map');
+    render(Map, { props: { theme: 'fiord' } });
     await vi.advanceTimersByTimeAsync(0);
-    expect(container.querySelector('[role="application"]')).toBeTruthy();
+    expect(constructorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        style: 'https://tiles.openfreemap.org/styles/fiord',
+      })
+    );
   });
 
   it('uses the dark theme URL when theme="dark"', async () => {
-    const { container } = render(Map, { props: { theme: 'dark' } });
+    const maplibreModule = await import('maplibre-gl');
+    const constructorSpy = vi.spyOn(maplibreModule, 'Map');
+    render(Map, { props: { theme: 'dark' } });
     await vi.advanceTimersByTimeAsync(0);
-    expect(container.querySelector('[role="application"]')).toBeTruthy();
+    expect(constructorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        style: 'https://tiles.openfreemap.org/styles/dark',
+      })
+    );
   });
 });
 
