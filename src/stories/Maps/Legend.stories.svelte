@@ -53,6 +53,11 @@
         control: 'text',
         description: 'Optional subtitle displayed beneath the title.',
       },
+      noData: {
+        control: 'object',
+        description:
+          'Optional fallback swatch for missing values. Accepts a string label or an object with label and optional color.',
+      },
     },
   });
 </script>
@@ -122,6 +127,7 @@
     title: 'Rent Burden',
     mode: 'threshold',
     items: thresholdItems,
+    noData: 'Data not available',
   }}
 />
 
@@ -153,6 +159,7 @@
     title: 'Site Type',
     mode: 'categorical',
     items: categoricalItems,
+    noData: 'Data not available',
   }}
 />
 

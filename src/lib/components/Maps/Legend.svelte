@@ -11,6 +11,9 @@ Renders one of five legend types:
 
 The component is presentational and can be placed anywhere in page layout.
 
+The optional `noData` prop renders a separate fallback swatch for missing,
+unknown, or unavailable values across all legend modes.
+
 USAGE EXAMPLE:
 <Legend
   title="Median Rent Change"
@@ -241,6 +244,48 @@ USAGE EXAMPLE:
     return [...normalizedItems].sort((left, right) => right.value - left.value);
   }
 
+  function normalizeNoData(noData) {
+    if (!noData) {
+      return null;
+    }
+
+    if (typeof noData === 'string') {
+      if (noData.trim() === '') {
+        throw new Error('Legend noData labels must be non-empty strings.');
+      }
+
+      return {
+        label: noData,
+        color: 'var(--color-light-gray)',
+      };
+    }
+
+    if (typeof noData !== 'object') {
+      throw new Error(
+        'Legend noData must be a string label or an object with label and optional color.'
+      );
+    }
+
+    const { label, color = 'var(--color-light-gray)' } = noData;
+
+    if (typeof label !== 'string' || label.trim() === '') {
+      throw new Error(
+        'Legend noData objects require a non-empty string "label" value.'
+      );
+    }
+
+    if (typeof color !== 'string' || color.trim() === '') {
+      throw new Error(
+        'Legend noData objects require a non-empty string "color" value when provided.'
+      );
+    }
+
+    return {
+      label,
+      color,
+    };
+  }
+
   function normalizeTicks(ticks, min, max, formatter) {
     if (!Array.isArray(ticks) || ticks.length === 0) {
       return [
@@ -451,6 +496,7 @@ USAGE EXAMPLE:
     midpoint = null,
     midpointLabel = '',
     formatter = null,
+    noData = null,
   } = $props();
 
   const validatedMode = $derived.by(() => {
@@ -600,6 +646,8 @@ USAGE EXAMPLE:
       ? buildProportionalSymbolLayout(proportionalItems)
       : null
   );
+
+  const noDataItem = $derived(normalizeNoData(noData));
 </script>
 
 <section
@@ -700,6 +748,16 @@ USAGE EXAMPLE:
           <span class="categorical-label">{item.label}</span>
         </div>
       {/each}
+      {#if noDataItem}
+        <div class="categorical-item categorical-no-data-item">
+          <span
+            class="categorical-swatch"
+            style:background-color={noDataItem.color}
+            aria-hidden="true"
+          ></span>
+          <span class="categorical-label">{noDataItem.label}</span>
+        </div>
+      {/if}
     </div>
   {/if}
 
@@ -742,6 +800,17 @@ USAGE EXAMPLE:
       </svg>
     </div>
   {/if}
+
+  {#if noDataItem && validatedMode !== 'categorical'}
+    <div class="legend-no-data-item">
+      <span
+        class="categorical-swatch"
+        style:background-color={noDataItem.color}
+        aria-hidden="true"
+      ></span>
+      <span class="legend-no-data-label">{noDataItem.label}</span>
+    </div>
+  {/if}
 </section>
 
 <style lang="scss">
@@ -752,6 +821,9 @@ USAGE EXAMPLE:
     max-width: 52rem;
     background: var(--color-white);
     padding: var(--spacing-xs) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
   .legend-title {
@@ -761,20 +833,21 @@ USAGE EXAMPLE:
     line-height: var(--leading-tight);
     text-align: left;
     color: var(--color-dark);
-    margin-bottom: var(--spacing-xxs);
+    margin-bottom: 0;
   }
 
   .legend-heading {
     display: flex;
     flex-direction: column;
     gap: 0.0625rem;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-xxs);
   }
 
   .legend-subtitle {
     font-size: var(--font-size-base);
     line-height: 1.2;
     color: var(--color-text);
+    margin-bottom: 0;
   }
 
   .threshold-legend,
@@ -792,6 +865,19 @@ USAGE EXAMPLE:
     flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-sm);
+  }
+
+  .legend-no-data-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-top: 0.125rem;
+  }
+
+  .legend-no-data-label {
+    font-size: var(--font-size-sm);
+    line-height: 1.2;
+    color: rgb(102 102 102 / 0.72);
   }
 
   .threshold-bar,
@@ -830,6 +916,10 @@ USAGE EXAMPLE:
     gap: var(--spacing-xs);
   }
 
+  .categorical-no-data-item {
+    color: rgb(102 102 102 / 0.72);
+  }
+
   .categorical-swatch {
     width: 0.875rem;
     height: 0.875rem;
@@ -841,6 +931,11 @@ USAGE EXAMPLE:
     font-size: var(--font-size-base);
     line-height: 1.2;
     color: var(--color-text);
+  }
+
+  .categorical-no-data-item .categorical-label {
+    font-size: var(--font-size-sm);
+    color: rgb(102 102 102 / 0.72);
   }
 
   .proportional-chart {

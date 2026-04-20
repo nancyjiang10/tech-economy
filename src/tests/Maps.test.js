@@ -479,6 +479,39 @@ describe('Legend', () => {
     expect(screen.getByText('0')).toBeTruthy();
   });
 
+  it('renders noData as a swatch item for non-categorical legends', () => {
+    render(Legend, {
+      props: {
+        title: 'Rent Burden',
+        mode: 'threshold',
+        items: [
+          { to: 10, color: '#f4d35e' },
+          { from: 10, to: 25, color: '#ee964b' },
+          { from: 25, color: '#f95738' },
+        ],
+        noData: 'Data not available',
+      },
+    });
+
+    expect(screen.getByText('Data not available')).toBeTruthy();
+  });
+
+  it('renders noData as a swatch item for categorical legends', () => {
+    render(Legend, {
+      props: {
+        title: 'Site Type',
+        mode: 'categorical',
+        items: [
+          { label: 'Hospital', color: '#0033a1' },
+          { label: 'School', color: '#ee964b' },
+        ],
+        noData: 'Data not available',
+      },
+    });
+
+    expect(screen.getByText('Data not available')).toBeTruthy();
+  });
+
   it('throws when diverging mode midpoint is outside the legend domain', () => {
     expect(() =>
       render(Legend, {
@@ -529,5 +562,17 @@ describe('Legend', () => {
         },
       })
     ).toThrow(/non-negative/i);
+  });
+
+  it('throws when noData objects are missing labels', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'categorical',
+          items: [{ label: 'Hospital', color: '#0033a1' }],
+          noData: { color: '#d9d9d9' },
+        },
+      })
+    ).toThrow(/noData.*label/i);
   });
 });
