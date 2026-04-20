@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Geocoder from '$lib/components/Maps/Geocoder.svelte';
+import Legend from '$lib/components/Maps/Legend.svelte';
 import Map from '$lib/components/Maps/Map.svelte';
 
 // Mock maplibre-gl so it doesn't try to use WebGL in jsdom
@@ -368,5 +369,102 @@ describe('Map', () => {
     });
     await vi.advanceTimersByTimeAsync(0);
     expect(container.querySelector('figcaption')).toBeNull();
+  });
+});
+
+describe('Legend', () => {
+  it('renders threshold bins with generated labels', () => {
+    render(Legend, {
+      props: {
+        title: 'Rent Burden',
+        mode: 'threshold',
+        items: [
+          { to: 10, color: '#f4d35e' },
+          { from: 10, to: 25, color: '#ee964b' },
+          { from: 25, color: '#f95738' },
+        ],
+      },
+    });
+
+    expect(screen.getByText('Rent Burden')).toBeTruthy();
+    expect(screen.getByText('Under 10')).toBeTruthy();
+    expect(screen.getByText('10–25')).toBeTruthy();
+    expect(screen.getByText('25+')).toBeTruthy();
+  });
+
+  it('renders a continuous gradient with explicit tick labels', () => {
+    render(Legend, {
+      props: {
+        title: 'Graduation Rate',
+        mode: 'continuous',
+        stops: [
+          { value: 0, color: '#edf8fb' },
+          { value: 50, color: '#66c2a4' },
+          { value: 100, color: '#238b45' },
+        ],
+        ticks: [
+          { value: 0, label: '0%' },
+          { value: 50, label: '50%' },
+          { value: 100, label: '100%' },
+        ],
+      },
+    });
+
+    expect(screen.getByText('0%')).toBeTruthy();
+    expect(screen.getByText('50%')).toBeTruthy();
+    expect(screen.getByText('100%')).toBeTruthy();
+  });
+
+  it('renders a diverging legend with midpoint label', () => {
+    render(Legend, {
+      props: {
+        title: 'Change Since 2020',
+        mode: 'diverging',
+        items: [
+          { to: -15, color: '#b2182b' },
+          { from: -15, to: 0, color: '#ef8a62' },
+          { from: 0, to: 15, color: '#67a9cf' },
+          { from: 15, color: '#2166ac' },
+        ],
+        midpoint: 0,
+        midpointLabel: 'No change',
+      },
+    });
+
+    expect(screen.getByText('No change')).toBeTruthy();
+    expect(screen.getByText('Under -15')).toBeTruthy();
+    expect(screen.getByText('-15–0')).toBeTruthy();
+    expect(screen.getByText('0–15')).toBeTruthy();
+    expect(screen.getByText('15+')).toBeTruthy();
+  });
+
+  it('throws when diverging mode midpoint is outside the legend domain', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'diverging',
+          items: [
+            { to: -10, color: '#b2182b' },
+            { from: -10, to: 0, color: '#ef8a62' },
+            { from: 0, to: 10, color: '#67a9cf' },
+          ],
+          midpoint: 25,
+        },
+      })
+    ).toThrow(/midpoint/i);
+  });
+
+  it('throws when continuous stops are not in ascending order', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'continuous',
+          stops: [
+            { value: 50, color: '#66c2a4' },
+            { value: 0, color: '#edf8fb' },
+          ],
+        },
+      })
+    ).toThrow(/ascending value/i);
   });
 });
