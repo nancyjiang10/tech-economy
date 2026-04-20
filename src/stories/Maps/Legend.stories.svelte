@@ -2,7 +2,7 @@
   Legend.stories.svelte
 
   Stories for the Legend component.
-  Legend renders threshold, continuous, and diverging quantitative legends.
+  Legend renders threshold, continuous, diverging, categorical, and proportional symbol legends.
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
@@ -19,13 +19,19 @@
       },
       mode: {
         control: { type: 'select' },
-        options: ['threshold', 'continuous', 'diverging'],
+        options: [
+          'threshold',
+          'continuous',
+          'diverging',
+          'categorical',
+          'proportional-symbols',
+        ],
         description: 'Legend rendering mode.',
       },
       items: {
         control: 'object',
         description:
-          'Threshold bins with numeric bounds and colors, used by threshold and diverging modes.',
+          'Legend entries. Threshold/diverging modes use numeric bounds and colors; categorical mode uses label and color pairs; proportional-symbols mode uses numeric values and optional labels.',
       },
       stops: {
         control: 'object',
@@ -42,6 +48,10 @@
       midpointLabel: {
         control: 'text',
         description: 'Optional label displayed at the diverging midpoint.',
+      },
+      subtitle: {
+        control: 'text',
+        description: 'Optional subtitle displayed beneath the title.',
       },
     },
   });
@@ -72,17 +82,44 @@
   ];
 
   const divergingItems = [
-    { to: -15, color: '#b2182b' },
-    { from: -15, to: 0, color: '#ef8a62' },
-    { from: 0, to: 15, color: '#67a9cf' },
-    { from: 15, color: '#2166ac' },
+    { from: -10, to: -8, color: '#1b76c2' },
+    { from: -8, to: -6, color: '#2f8edb' },
+    { from: -6, to: -4, color: '#4b9fe8' },
+    { from: -4, to: -2, color: '#75b4eb' },
+    { from: -2, to: 0, color: '#bed6ea' },
+    { from: 0, to: 2, color: '#f1d8cc' },
+    { from: 2, to: 4, color: '#f9b99a' },
+    { from: 4, to: 6, color: '#ff7634' },
+    { from: 6, to: 8, color: '#f26a07' },
+    { from: 8, to: 10, color: '#d74d00' },
+  ];
+
+  const signedDegrees = (value) => {
+    if (value === 0) {
+      return '0°';
+    }
+
+    return `${value > 0 ? '+' : '−'}${Math.abs(value)}°`;
+  };
+
+  const categoricalItems = [
+    { label: 'Hospital', color: '#0033a1' },
+    { label: 'School', color: '#ee964b' },
+    { label: 'Shelter', color: '#f95738' },
+  ];
+
+  const proportionalItems = [
+    { value: 1400, label: '1,400' },
+    { value: 600, label: '600' },
+    { value: 150, label: '150' },
+    { value: 0, label: '0' },
   ];
 </script>
 
 <Story
   name="Threshold"
   args={{
-    title: 'Rent Burden (%)',
+    title: 'Rent Burden',
     mode: 'threshold',
     items: thresholdItems,
   }}
@@ -101,32 +138,53 @@
 <Story
   name="Diverging Midpoint"
   args={{
-    title: 'Change Since 2020',
+    title: "Today's difference from the normal high of 1961-1990",
     mode: 'diverging',
     items: divergingItems,
     midpoint: 0,
-    midpointLabel: 'No change',
+    midpointLabel: '±0°',
+    formatter: signedDegrees,
+  }}
+/>
+
+<Story
+  name="Categorical"
+  args={{
+    title: 'Site Type',
+    mode: 'categorical',
+    items: categoricalItems,
+  }}
+/>
+
+<Story
+  name="Proportional Symbols"
+  args={{
+    title: 'Population',
+    subtitle: 'in million inh.',
+    mode: 'proportional-symbols',
+    items: proportionalItems,
   }}
 />
 
 <Story name="Map Layout" asChild>
   <div class="map-layout-story">
+    <Legend
+      title="Today's difference from the normal high of 1961-1990"
+      mode="diverging"
+      items={divergingItems}
+      midpoint={0}
+      midpointLabel="±0°"
+      formatter={signedDegrees}
+    />
+
     <div class="map-layout-main">
       <Map
         longitude={-74.006}
         latitude={40.7128}
         zoom={10}
-        caption="Example map with a legend placed alongside the viewport."
+        caption="Example map with a legend placed above the viewport."
       />
     </div>
-
-    <Legend
-      title="Change Since 2020"
-      mode="diverging"
-      items={divergingItems}
-      midpoint={0}
-      midpointLabel="No change"
-    />
   </div>
 </Story>
 
@@ -134,15 +192,9 @@
   @use '$lib/styles' as *;
 
   .map-layout-story {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 18rem;
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-md);
-    align-items: start;
-  }
-
-  @include mobile {
-    .map-layout-story {
-      grid-template-columns: 1fr;
-    }
+    align-items: stretch;
   }
 </style>

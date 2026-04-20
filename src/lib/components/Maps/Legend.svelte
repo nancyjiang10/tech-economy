@@ -1,11 +1,13 @@
 <!--
 @component
-Legend.svelte — Quantitative legend for maps and data displays
+Legend.svelte — Quantitative and categorical legend for maps and data displays
 
-Renders one of three quantitative legend types:
+Renders one of five legend types:
 - threshold: discrete bins with color swatches
 - continuous: a continuous gradient with ticks
 - diverging: threshold bins with a highlighted midpoint
+- categorical: square swatches with labels in a horizontal row
+- proportional-symbols: nested circles with leader lines and labels
 
 The component is presentational and can be placed anywhere in page layout.
 
@@ -23,7 +25,13 @@ USAGE EXAMPLE:
 />
 -->
 <script>
-  const VALID_MODES = new Set(['threshold', 'continuous', 'diverging']);
+  const VALID_MODES = new Set([
+    'threshold',
+    'continuous',
+    'diverging',
+    'categorical',
+    'proportional-symbols',
+  ]);
 
   const numberFormatter = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
@@ -169,6 +177,70 @@ USAGE EXAMPLE:
     return normalizedStops;
   }
 
+  function normalizeCategoricalItems(items) {
+    if (!Array.isArray(items) || items.length === 0) {
+      throw new Error(
+        'Legend requires a non-empty "items" array for categorical mode.'
+      );
+    }
+
+    return items.map((item) => {
+      if (!item || typeof item !== 'object') {
+        throw new Error(
+          'Categorical legend items must be objects with color and label values.'
+        );
+      }
+
+      const { color, label } = item;
+      if (typeof color !== 'string' || color.trim() === '') {
+        throw new Error(
+          'Categorical legend items require a non-empty string "color" value.'
+        );
+      }
+
+      if (typeof label !== 'string' || label.trim() === '') {
+        throw new Error(
+          'Categorical legend items require a non-empty string "label" value.'
+        );
+      }
+
+      return {
+        color,
+        label,
+      };
+    });
+  }
+
+  function normalizeProportionalItems(items, formatter) {
+    if (!Array.isArray(items) || items.length === 0) {
+      throw new Error(
+        'Legend requires a non-empty "items" array for proportional-symbols mode.'
+      );
+    }
+
+    const normalizedItems = items.map((item) => {
+      if (!item || typeof item !== 'object') {
+        throw new Error(
+          'Proportional symbol legend items must be objects with numeric values.'
+        );
+      }
+
+      const { value, label = '' } = item;
+      if (!isFiniteNumber(value) || value < 0) {
+        throw new Error(
+          'Proportional symbol legend items require a non-negative numeric "value".'
+        );
+      }
+
+      return {
+        value,
+        label: label || formatValue(value, formatter),
+      };
+    });
+
+    return [...normalizedItems].sort((left, right) => right.value - left.value);
+  }
+
   function normalizeTicks(ticks, min, max, formatter) {
     if (!Array.isArray(ticks) || ticks.length === 0) {
       return [
@@ -249,8 +321,129 @@ USAGE EXAMPLE:
     });
   }
 
+  function buildBoundaryTicks(
+    items,
+    formatter,
+    midpoint = null,
+    midpointLabel = ''
+  ) {
+    const values = items
+      .flatMap((item) => [item.from, item.to])
+      .filter((value) => isFiniteNumber(value));
+
+    const uniqueValues = [...new Set(values)].sort(
+      (left, right) => left - right
+    );
+
+    return uniqueValues.map((value) => ({
+      value,
+      label:
+        midpoint !== null && value === midpoint
+          ? midpointLabel || formatValue(value, formatter)
+          : formatValue(value, formatter),
+    }));
+  }
+
+  function buildThresholdSegments(items) {
+    const segmentWidth = 100 / items.length;
+
+    return items.map((item, index) => ({
+      ...item,
+      width: segmentWidth,
+      position: segmentWidth * index + segmentWidth / 2,
+    }));
+  }
+
+  function buildThresholdBreakTicks(items, formatter) {
+    const segmentWidth = 100 / items.length;
+    const finiteBounds = items
+      .flatMap((item) => [item.from, item.to])
+      .filter((value) => isFiniteNumber(value));
+    const isNonNegativeScale = finiteBounds.every((value) => value >= 0);
+
+    const startTick =
+      items[0]?.from !== null && isFiniteNumber(items[0]?.from)
+        ? {
+            value: items[0].from,
+            label: formatValue(items[0].from, formatter),
+            position: 0,
+          }
+        : isNonNegativeScale
+          ? {
+              value: 0,
+              label: formatValue(0, formatter),
+              position: 0,
+            }
+          : null;
+
+    const breakTicks = items
+      .slice(0, -1)
+      .map((item, index) => {
+        if (!isFiniteNumber(item.to)) {
+          return null;
+        }
+
+        return {
+          value: item.to,
+          label: formatValue(item.to, formatter),
+          position: segmentWidth * (index + 1),
+        };
+      })
+      .filter(Boolean);
+
+    return startTick ? [startTick, ...breakTicks] : breakTicks;
+  }
+
+  function buildProportionalSymbolLayout(items) {
+    const nonZeroItems = items.filter((item) => item.value > 0);
+    const maxValue = nonZeroItems[0]?.value ?? 0;
+    const maxRadius = 58;
+    const leftPad = 8;
+    const topPad = 6;
+    const rightPad = 96;
+    const bottomPad = 6;
+    const centerX = leftPad + maxRadius;
+    const baselineY = topPad + maxRadius * 2;
+    const chartWidth = centerX + maxRadius + rightPad;
+    const chartHeight = baselineY + bottomPad;
+    const leaderStartX = centerX + maxRadius + 4;
+    const labelX = leaderStartX + 8;
+
+    const symbols = items.map((item) => {
+      if (item.value === 0 || maxValue === 0) {
+        return {
+          ...item,
+          radius: 0,
+          centerX,
+          centerY: baselineY,
+          lineY: baselineY,
+        };
+      }
+
+      const radius = maxRadius * Math.sqrt(item.value / maxValue);
+      return {
+        ...item,
+        radius,
+        centerX,
+        centerY: baselineY - radius,
+        lineY: baselineY - radius * 2,
+      };
+    });
+
+    return {
+      symbols,
+      chartWidth,
+      chartHeight,
+      baselineY,
+      centerX,
+      leaderStartX,
+      labelX,
+    };
+  }
+
   let {
     title = '',
+    subtitle = '',
     mode = 'threshold',
     items = [],
     stops = [],
@@ -263,7 +456,7 @@ USAGE EXAMPLE:
   const validatedMode = $derived.by(() => {
     if (!VALID_MODES.has(mode)) {
       throw new Error(
-        'Legend mode must be one of "threshold", "continuous", or "diverging".'
+        'Legend mode must be one of "threshold", "continuous", "diverging", "categorical", or "proportional-symbols".'
       );
     }
 
@@ -282,6 +475,16 @@ USAGE EXAMPLE:
   const normalizedItems = $derived(
     validatedMode === 'threshold' || validatedMode === 'diverging'
       ? normalizeThresholdItems(items, formatter)
+      : []
+  );
+
+  const categoricalItems = $derived(
+    validatedMode === 'categorical' ? normalizeCategoricalItems(items) : []
+  );
+
+  const proportionalItems = $derived(
+    validatedMode === 'proportional-symbols'
+      ? normalizeProportionalItems(items, formatter)
       : []
   );
 
@@ -364,6 +567,39 @@ USAGE EXAMPLE:
         )
       : []
   );
+
+  const divergingTicks = $derived(
+    validatedMode === 'diverging'
+      ? buildBoundaryTicks(
+          normalizedItems,
+          formatter,
+          validatedMidpoint,
+          divergingMidpointLabel
+        ).map((tick) => ({
+          ...tick,
+          position:
+            ((tick.value - divergingDomain.min) /
+              (divergingDomain.max - divergingDomain.min || 1)) *
+            100,
+        }))
+      : []
+  );
+
+  const thresholdSegments = $derived(
+    validatedMode === 'threshold' ? buildThresholdSegments(normalizedItems) : []
+  );
+
+  const thresholdBreakTicks = $derived(
+    validatedMode === 'threshold'
+      ? buildThresholdBreakTicks(normalizedItems, formatter)
+      : []
+  );
+
+  const proportionalLayout = $derived(
+    validatedMode === 'proportional-symbols'
+      ? buildProportionalSymbolLayout(proportionalItems)
+      : null
+  );
 </script>
 
 <section
@@ -371,25 +607,38 @@ USAGE EXAMPLE:
   class:is-threshold={validatedMode === 'threshold'}
   class:is-continuous={validatedMode === 'continuous'}
   class:is-diverging={validatedMode === 'diverging'}
+  class:is-categorical={validatedMode === 'categorical'}
+  class:is-proportional={validatedMode === 'proportional-symbols'}
   aria-labelledby={headingId}
 >
   {#if title}
-    <h3 class="legend-title" id={headingId}>{title}</h3>
+    <div class="legend-heading">
+      <h3 class="legend-title" id={headingId}>{title}</h3>
+      {#if subtitle}
+        <p class="legend-subtitle">{subtitle}</p>
+      {/if}
+    </div>
   {/if}
 
   {#if validatedMode === 'threshold'}
-    <ul class="legend-list" aria-label={title || 'Threshold legend'}>
-      {#each normalizedItems as item (`${item.color}-${item.label}`)}
-        <li class="legend-item">
+    <div class="threshold-legend" aria-label={title || 'Threshold legend'}>
+      <div class="threshold-bar" aria-hidden="true">
+        {#each thresholdSegments as segment (`${segment.color}-${segment.label}`)}
           <span
-            class="legend-swatch"
-            style:background-color={item.color}
-            aria-hidden="true"
+            class="threshold-segment"
+            style:width={`${segment.width}%`}
+            style:background-color={segment.color}
           ></span>
-          <span class="legend-label">{item.label}</span>
-        </li>
-      {/each}
-    </ul>
+        {/each}
+      </div>
+      <div class="scale-labels threshold-scale-labels">
+        {#each thresholdBreakTicks as tick (tick.value)}
+          <span class="scale-label" style:left={`${tick.position}%`}
+            >{tick.label}</span
+          >
+        {/each}
+      </div>
+    </div>
   {/if}
 
   {#if validatedMode === 'continuous'}
@@ -429,29 +678,68 @@ USAGE EXAMPLE:
           style:left={`${divergingMidpointPosition}%`}
         ></span>
       </div>
-      <div class="diverging-axis-labels">
-        <span class="axis-label axis-label-start"
-          >{formatValue(divergingDomain.min, formatter)}</span
-        >
-        <span class="axis-label axis-label-midpoint"
-          >{divergingMidpointLabel}</span
-        >
-        <span class="axis-label axis-label-end"
-          >{formatValue(divergingDomain.max, formatter)}</span
-        >
-      </div>
-      <ul class="legend-list">
-        {#each normalizedItems as item (`${item.color}-${item.label}`)}
-          <li class="legend-item">
-            <span
-              class="legend-swatch"
-              style:background-color={item.color}
-              aria-hidden="true"
-            ></span>
-            <span class="legend-label">{item.label}</span>
-          </li>
+      <div class="scale-labels diverging-scale-labels">
+        {#each divergingTicks as tick (tick.value)}
+          <span class="scale-label" style:left={`${tick.position}%`}
+            >{tick.label}</span
+          >
         {/each}
-      </ul>
+      </div>
+    </div>
+  {/if}
+
+  {#if validatedMode === 'categorical'}
+    <div class="categorical-legend" aria-label={title || 'Categorical legend'}>
+      {#each categoricalItems as item (`${item.color}-${item.label}`)}
+        <div class="categorical-item">
+          <span
+            class="categorical-swatch"
+            style:background-color={item.color}
+            aria-hidden="true"
+          ></span>
+          <span class="categorical-label">{item.label}</span>
+        </div>
+      {/each}
+    </div>
+  {/if}
+
+  {#if validatedMode === 'proportional-symbols'}
+    <div
+      class="proportional-legend"
+      aria-label={title || 'Proportional symbol legend'}
+    >
+      <svg
+        class="proportional-chart"
+        viewBox={`0 0 ${proportionalLayout.chartWidth} ${proportionalLayout.chartHeight}`}
+        role="img"
+        aria-hidden="true"
+      >
+        {#each proportionalLayout.symbols as symbol (symbol.label)}
+          {#if symbol.radius > 0}
+            <circle
+              cx={symbol.centerX}
+              cy={symbol.centerY}
+              r={symbol.radius}
+              class="proportional-circle"
+            />
+          {/if}
+          <line
+            x1={proportionalLayout.centerX}
+            y1={symbol.lineY}
+            x2={proportionalLayout.leaderStartX}
+            y2={symbol.lineY}
+            class="proportional-leader"
+          />
+          <text
+            x={proportionalLayout.labelX}
+            y={symbol.lineY}
+            class="proportional-label"
+            dominant-baseline="middle"
+          >
+            {symbol.label}
+          </text>
+        {/each}
+      </svg>
     </div>
   {/if}
 </section>
@@ -461,140 +749,181 @@ USAGE EXAMPLE:
 
   .legend {
     width: 100%;
-    max-width: 30rem;
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-sm);
+    max-width: 52rem;
     background: var(--color-white);
-    padding: var(--spacing-sm);
-    box-shadow: 0 2px 8px var(--color-shadow);
+    padding: var(--spacing-xs) 0;
   }
 
   .legend-title {
-    margin-bottom: var(--spacing-sm);
     font-family: var(--font-sans);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-base);
     font-weight: var(--font-weight-bold);
-    letter-spacing: var(--letter-spacing-wider);
     line-height: var(--leading-tight);
-    text-transform: uppercase;
+    text-align: left;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-xxs);
   }
 
-  .legend-list {
-    list-style: none;
+  .legend-heading {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: 0.0625rem;
+    margin-bottom: var(--spacing-xs);
   }
 
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-sm);
-    line-height: var(--leading-caption);
-  }
-
-  .legend-swatch {
-    flex: 0 0 1rem;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-  }
-
-  .legend-label {
+  .legend-subtitle {
+    font-size: var(--font-size-base);
+    line-height: 1.2;
     color: var(--color-text);
   }
 
+  .threshold-legend,
   .continuous-legend,
-  .diverging-legend {
+  .diverging-legend,
+  .categorical-legend,
+  .proportional-legend {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
   }
 
+  .categorical-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .threshold-bar,
   .continuous-bar,
   .diverging-bar {
     position: relative;
     width: 100%;
-    height: 1rem;
-    border-radius: 999px;
+    height: 1.125rem;
+    border-radius: 0.1875rem;
     overflow: hidden;
   }
 
+  .threshold-bar,
   .continuous-bar {
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 0;
+  }
+
+  .threshold-bar {
+    display: flex;
   }
 
   .diverging-bar {
     display: flex;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 0;
   }
 
+  .threshold-segment,
   .diverging-segment {
     display: block;
     height: 100%;
   }
 
+  .categorical-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .categorical-swatch {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: 0 0 0.875rem;
+    border-radius: 0.125rem;
+  }
+
+  .categorical-label {
+    font-size: var(--font-size-base);
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .proportional-chart {
+    width: 100%;
+    max-width: 17rem;
+    overflow: visible;
+  }
+
+  .proportional-circle {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.72);
+    stroke-width: 1.5;
+  }
+
+  .proportional-leader {
+    stroke: rgba(0, 0, 0, 0.6);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+  }
+
+  .proportional-label {
+    font-size: 12px;
+    fill: var(--color-text);
+    font-family: var(--font-sans);
+  }
+
   .diverging-midpoint {
     position: absolute;
-    top: -0.2rem;
-    bottom: -0.2rem;
-    width: 2px;
-    background: var(--color-dark);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.9);
     transform: translateX(-50%);
   }
 
   .legend-axis {
     position: relative;
-    height: 0.5rem;
+    height: 0.375rem;
   }
 
   .legend-tick {
     position: absolute;
     top: 0;
     width: 1px;
-    height: 0.5rem;
+    height: 0.375rem;
     background: var(--color-medium-gray);
     transform: translateX(-50%);
   }
 
   .legend-tick-labels,
-  .diverging-axis-labels {
+  .scale-labels {
     position: relative;
     min-height: 1.25rem;
-    font-size: var(--font-size-xs);
-    color: var(--color-medium-gray);
+    font-size: var(--font-size-base);
+    color: #8a8d91;
+    line-height: 1.2;
   }
 
-  .legend-tick-label {
+  .legend-tick-label,
+  .scale-label {
     position: absolute;
     transform: translateX(-50%);
     white-space: nowrap;
   }
 
-  .axis-label {
-    position: absolute;
-    white-space: nowrap;
+  .diverging-scale-labels {
+    margin-top: -0.125rem;
   }
 
-  .axis-label-start {
-    left: 0;
+  .threshold-scale-labels {
+    margin-top: -0.125rem;
   }
 
-  .axis-label-midpoint {
-    left: 50%;
-    transform: translateX(-50%);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text);
+  .is-diverging {
+    max-width: 56rem;
   }
 
-  .axis-label-end {
-    right: 0;
+  .is-diverging .legend-title {
+    text-align: center;
   }
 
-  .is-diverging .legend-list {
-    margin-top: var(--spacing-xs);
+  .is-diverging .legend-heading {
+    align-items: center;
   }
 
   @include mobile {
@@ -603,8 +932,14 @@ USAGE EXAMPLE:
     }
 
     .legend-tick-labels,
-    .diverging-axis-labels {
-      min-height: 1.5rem;
+    .scale-labels {
+      min-height: 1.125rem;
+    }
+
+    .threshold-bar,
+    .continuous-bar,
+    .diverging-bar {
+      height: 1rem;
     }
   }
 </style>

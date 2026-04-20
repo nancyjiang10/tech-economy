@@ -387,9 +387,10 @@ describe('Legend', () => {
     });
 
     expect(screen.getByText('Rent Burden')).toBeTruthy();
-    expect(screen.getByText('Under 10')).toBeTruthy();
-    expect(screen.getByText('10–25')).toBeTruthy();
-    expect(screen.getByText('25+')).toBeTruthy();
+    expect(screen.getByText('0')).toBeTruthy();
+    expect(screen.getByText('10')).toBeTruthy();
+    expect(screen.getByText('25')).toBeTruthy();
+    expect(screen.queryByText('Under 10')).toBeNull();
   });
 
   it('renders a continuous gradient with explicit tick labels', () => {
@@ -432,10 +433,50 @@ describe('Legend', () => {
     });
 
     expect(screen.getByText('No change')).toBeTruthy();
-    expect(screen.getByText('Under -15')).toBeTruthy();
-    expect(screen.getByText('-15–0')).toBeTruthy();
-    expect(screen.getByText('0–15')).toBeTruthy();
-    expect(screen.getByText('15+')).toBeTruthy();
+    expect(screen.getByText('-15')).toBeTruthy();
+    expect(screen.getByText('15')).toBeTruthy();
+  });
+
+  it('renders a categorical legend as swatches with labels in a row', () => {
+    render(Legend, {
+      props: {
+        title: 'Site Type',
+        mode: 'categorical',
+        items: [
+          { label: 'Hospital', color: '#0033a1' },
+          { label: 'School', color: '#ee964b' },
+          { label: 'Shelter', color: '#f95738' },
+        ],
+      },
+    });
+
+    expect(screen.getByText('Site Type')).toBeTruthy();
+    expect(screen.getByText('Hospital')).toBeTruthy();
+    expect(screen.getByText('School')).toBeTruthy();
+    expect(screen.getByText('Shelter')).toBeTruthy();
+  });
+
+  it('renders proportional symbols with a subtitle and value labels', () => {
+    render(Legend, {
+      props: {
+        title: 'Population',
+        subtitle: 'in million inh.',
+        mode: 'proportional-symbols',
+        items: [
+          { value: 1400, label: '1,400' },
+          { value: 600, label: '600' },
+          { value: 150, label: '150' },
+          { value: 0, label: '0' },
+        ],
+      },
+    });
+
+    expect(screen.getByText('Population')).toBeTruthy();
+    expect(screen.getByText('in million inh.')).toBeTruthy();
+    expect(screen.getByText('1,400')).toBeTruthy();
+    expect(screen.getByText('600')).toBeTruthy();
+    expect(screen.getByText('150')).toBeTruthy();
+    expect(screen.getByText('0')).toBeTruthy();
   });
 
   it('throws when diverging mode midpoint is outside the legend domain', () => {
@@ -466,5 +507,27 @@ describe('Legend', () => {
         },
       })
     ).toThrow(/ascending value/i);
+  });
+
+  it('throws when categorical items are missing labels', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'categorical',
+          items: [{ color: '#0033a1' }],
+        },
+      })
+    ).toThrow(/label/i);
+  });
+
+  it('throws when proportional symbol items have negative values', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'proportional-symbols',
+          items: [{ value: -1, label: 'Invalid' }],
+        },
+      })
+    ).toThrow(/non-negative/i);
   });
 });
