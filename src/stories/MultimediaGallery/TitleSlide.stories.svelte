@@ -44,7 +44,7 @@
   args={{
     headline: 'Life on the L Train',
     intro:
-      'A photo essay documenting the commuters, musicians, and everyday moments on New York\'s busiest crosstown subway line.',
+      "A photo essay documenting the commuters, musicians, and everyday moments on New York's busiest crosstown subway line.",
     byline: 'By Jane Doe',
   }}
 />

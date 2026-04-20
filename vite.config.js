@@ -24,9 +24,9 @@ export default defineConfig(({ mode }) => ({
     include: ['src/**/*.test.js'],
     setupFiles: ['src/tests/setup.js'],
     alias: {
-      '$lib': fileURLToPath(new URL('./src/lib', import.meta.url)),
+      $lib: fileURLToPath(new URL('./src/lib', import.meta.url)),
       '$app/paths': fileURLToPath(
-        new URL('./src/lib/__mocks__/$app/paths.js', import.meta.url),
+        new URL('./src/lib/__mocks__/$app/paths.js', import.meta.url)
       ),
     },
   },

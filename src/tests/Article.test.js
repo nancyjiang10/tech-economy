@@ -8,7 +8,7 @@ describe('Headline', () => {
   it('renders the headline text', () => {
     render(Headline, { props: { text: 'Breaking News' } });
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      'Breaking News',
+      'Breaking News'
     );
   });
 

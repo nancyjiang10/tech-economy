@@ -97,7 +97,8 @@
     longitude: -73.9914662,
     latitude: 40.7555711,
     zoom: 14,
-    caption: 'Midtown Manhattan, home of the Craig Newmark Graduate School of Journalism.',
+    caption:
+      'Midtown Manhattan, home of the Craig Newmark Graduate School of Journalism.',
     credit: 'OpenFreeMap / OpenStreetMap contributors',
   }}
 />

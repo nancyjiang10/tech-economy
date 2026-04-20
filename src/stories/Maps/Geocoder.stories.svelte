@@ -31,8 +31,7 @@
       },
       debounceMs: {
         control: { type: 'number', min: 100, max: 2000, step: 100 },
-        description:
-          'Debounce delay in milliseconds before querying Nominatim',
+        description: 'Debounce delay in milliseconds before querying Nominatim',
       },
       onresult: {
         action: 'result',

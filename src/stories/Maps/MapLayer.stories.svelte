@@ -44,7 +44,7 @@
       },
       {
         type: 'Feature',
-        geometry: { type: 'Point', coordinates: [-73.9855, 40.7580] },
+        geometry: { type: 'Point', coordinates: [-73.9855, 40.758] },
         properties: { name: 'Times Square' },
       },
       {
@@ -75,7 +75,7 @@
           coordinates: [
             [-73.9969, 40.7061],
             [-73.9944, 40.7038],
-            [-73.9910, 40.7017],
+            [-73.991, 40.7017],
             [-73.9871, 40.6998],
           ],
         },
@@ -94,7 +94,7 @@
           coordinates: [
             [
               [-73.9819, 40.7681],
-              [-73.9580, 40.8006],
+              [-73.958, 40.8006],
               [-73.9493, 40.7968],
               [-73.9732, 40.7644],
               [-73.9819, 40.7681],
@@ -109,7 +109,10 @@
 
 <!-- Circle Points: NYC landmarks as circle markers -->
 <Story name="Circle Points" asChild>
-  <Map longitude={-73.99} latitude={40.735} zoom={11}
+  <Map
+    longitude={-73.99}
+    latitude={40.735}
+    zoom={11}
     caption="NYC landmarks as circle markers."
   >
     <MapLayer
@@ -128,7 +131,10 @@
 
 <!-- Line Layer: Brooklyn Bridge path -->
 <Story name="Line Layer" asChild>
-  <Map longitude={-73.992} latitude={40.703} zoom={14}
+  <Map
+    longitude={-73.992}
+    latitude={40.703}
+    zoom={14}
     caption="The Brooklyn Bridge drawn as a line layer."
   >
     <MapLayer
@@ -149,7 +155,10 @@
 
 <!-- Fill Layer: Central Park polygon -->
 <Story name="Fill Layer" asChild>
-  <Map longitude={-73.965} latitude={40.783} zoom={13}
+  <Map
+    longitude={-73.965}
+    latitude={40.783}
+    zoom={13}
     caption="Central Park rendered as a filled polygon."
   >
     <MapLayer
@@ -175,7 +184,10 @@
 
 <!-- Popup: Click a landmark to see a popup -->
 <Story name="Popup" asChild>
-  <Map longitude={-73.99} latitude={40.735} zoom={11}
+  <Map
+    longitude={-73.99}
+    latitude={40.735}
+    zoom={11}
     caption="Click a landmark to see a popup."
   >
     <MapLayer
@@ -195,7 +207,10 @@
 
 <!-- Multiple Layers: Combining several layer types -->
 <Story name="Multiple Layers" asChild>
-  <Map longitude={-73.975} latitude={40.755} zoom={12}
+  <Map
+    longitude={-73.975}
+    latitude={40.755}
+    zoom={12}
     caption="Multiple layer types overlaid on the same map."
   >
     <MapLayer

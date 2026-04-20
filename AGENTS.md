@@ -89,10 +89,13 @@ production even though it works in `npm run dev`.
   import { base } from '$app/paths';
 </script>
 
-<img src="{base}/photos/{photo.filename}" alt="…" /> <!-- ✅ -->
-<a href="{base}/about">About</a>                    <!-- ✅ -->
+<img src="{base}/photos/{photo.filename}" alt="…" />
+<!-- ✅ -->
+<a href="{base}/about">About</a>
+<!-- ✅ -->
 
-<img src="/photos/hero.jpg" />                      <!-- ❌ breaks in prod -->
+<img src="/photos/hero.jpg" />
+<!-- ❌ breaks in prod -->
 ```
 
 `BASE_PATH` is set automatically by the deploy workflow; locally it is empty,
@@ -119,9 +122,9 @@ remove, or change any of the following, update `DesignTokens.mdx` in the same
 change:
 
 - A CSS custom property in the `:root` block of [src/app.scss](src/app.scss)
-- A SCSS variable in [src/lib/styles/_variables.scss](src/lib/styles/_variables.scss)
-- A SCSS mixin in [src/lib/styles/_mixins.scss](src/lib/styles/_mixins.scss)
-- The barrel file [src/lib/styles/_index.scss](src/lib/styles/_index.scss)
+- A SCSS variable in [src/lib/styles/\_variables.scss](src/lib/styles/_variables.scss)
+- A SCSS mixin in [src/lib/styles/\_mixins.scss](src/lib/styles/_mixins.scss)
+- The barrel file [src/lib/styles/\_index.scss](src/lib/styles/_index.scss)
   (e.g., a new partial is added)
 
 | Change                              | What to update in DesignTokens.mdx                                     |
@@ -200,6 +203,6 @@ When a student is stuck:
 - Point them at the Storybook gallery (`npm run storybook`, then
   http://localhost:6006) as the canonical reference for available components
   and their props.
-- Explain *why* a change matters (base paths, design tokens, Svelte 5 runes)
+- Explain _why_ a change matters (base paths, design tokens, Svelte 5 runes)
   rather than just applying it silently — the goal is learning, not just a
   working site.

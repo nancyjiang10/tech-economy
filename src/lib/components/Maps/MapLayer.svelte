@@ -45,9 +45,13 @@ USAGE EXAMPLE:
     popup = null, // Optional function (feature) => htmlString
   } = $props();
 
-  if (typeof id !== 'string' || id.trim() === '') {
-    throw new Error('MapLayer requires a non-empty string "id" prop.');
-  }
+  const validatedId = $derived.by(() => {
+    if (typeof id !== 'string' || id.trim() === '') {
+      throw new Error('MapLayer requires a non-empty string "id" prop.');
+    }
+
+    return id;
+  });
 
   const ctx = getContext('maplibre-map');
   if (!ctx) {
@@ -94,26 +98,26 @@ USAGE EXAMPLE:
     if (!map) return;
 
     // Remove existing source/layer if already present (e.g. after style reload)
-    if (map.getLayer(id)) map.removeLayer(id);
-    if (map.getSource(id)) map.removeSource(id);
+    if (map.getLayer(validatedId)) map.removeLayer(validatedId);
+    if (map.getSource(validatedId)) map.removeSource(validatedId);
 
-    map.addSource(id, {
+    map.addSource(validatedId, {
       type: 'geojson',
       data,
     });
 
     map.addLayer({
-      id,
+      id: validatedId,
       type,
-      source: id,
+      source: validatedId,
       paint,
       layout,
     });
 
     if (popup) {
-      map.on('click', id, handleClick);
-      map.on('mouseenter', id, handleMouseEnter);
-      map.on('mouseleave', id, handleMouseLeave);
+      map.on('click', validatedId, handleClick);
+      map.on('mouseenter', validatedId, handleMouseEnter);
+      map.on('mouseleave', validatedId, handleMouseLeave);
     }
   }
 
@@ -123,13 +127,13 @@ USAGE EXAMPLE:
     if (!map) return;
 
     if (popup) {
-      map.off('click', id, handleClick);
-      map.off('mouseenter', id, handleMouseEnter);
-      map.off('mouseleave', id, handleMouseLeave);
+      map.off('click', validatedId, handleClick);
+      map.off('mouseenter', validatedId, handleMouseEnter);
+      map.off('mouseleave', validatedId, handleMouseLeave);
     }
 
-    if (map.getLayer(id)) map.removeLayer(id);
-    if (map.getSource(id)) map.removeSource(id);
+    if (map.getLayer(validatedId)) map.removeLayer(validatedId);
+    if (map.getSource(validatedId)) map.removeSource(validatedId);
 
     if (openPopup) {
       openPopup.remove();
@@ -152,32 +156,32 @@ USAGE EXAMPLE:
     const map = ctx.getMap();
     if (!map) return;
     const currentData = data; // read reactive prop
-    const source = map.getSource(id);
+    const source = map.getSource(validatedId);
     if (source) {
       source.setData(currentData);
     }
   });
 
   // Track previous paint keys so we can unset removed properties
-  let previousPaintKeys = Object.keys(paint);
+  let previousPaintKeys = [];
 
   // Reactively update paint properties when paint prop changes
   $effect(() => {
     const map = ctx.getMap();
-    if (!map || !map.getLayer(id)) return;
+    if (!map || !map.getLayer(validatedId)) return;
     const currentPaint = paint; // read reactive prop
     const currentKeys = Object.keys(currentPaint);
 
     // Unset any paint properties that were removed
     for (const key of previousPaintKeys) {
       if (!(key in currentPaint)) {
-        map.setPaintProperty(id, key, undefined);
+        map.setPaintProperty(validatedId, key, undefined);
       }
     }
 
     // Apply current paint properties
     for (const [key, value] of Object.entries(currentPaint)) {
-      map.setPaintProperty(id, key, value);
+      map.setPaintProperty(validatedId, key, value);
     }
 
     previousPaintKeys = currentKeys;

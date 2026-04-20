@@ -144,10 +144,7 @@ USAGE EXAMPLE:
   });
 </script>
 
-<figure
-  class="map-figure"
-  style:width={width ? `${width}px` : undefined}
->
+<figure class="map-figure" style:width={width ? `${width}px` : undefined}>
   <div
     class="map-container"
     class:has-border={border}
