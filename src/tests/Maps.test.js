@@ -427,8 +427,7 @@ describe('Legend', () => {
           { from: 0, to: 15, color: '#67a9cf' },
           { from: 15, color: '#2166ac' },
         ],
-        midpoint: 0,
-        midpointLabel: 'No change',
+        midpoint: { value: 0, label: 'No change' },
       },
     });
 
@@ -489,7 +488,7 @@ describe('Legend', () => {
           { from: 10, to: 25, color: '#ee964b' },
           { from: 25, color: '#f95738' },
         ],
-        noData: 'Data not available',
+        noData: { label: 'Data not available' },
       },
     });
 
@@ -505,7 +504,7 @@ describe('Legend', () => {
           { label: 'Hospital', color: '#0033a1' },
           { label: 'School', color: '#ee964b' },
         ],
-        noData: 'Data not available',
+        noData: { label: 'Data not available' },
       },
     });
 
@@ -522,7 +521,23 @@ describe('Legend', () => {
             { from: -10, to: 0, color: '#ef8a62' },
             { from: 0, to: 10, color: '#67a9cf' },
           ],
-          midpoint: 25,
+          midpoint: { value: 25 },
+        },
+      })
+    ).toThrow(/midpoint/i);
+  });
+
+  it('throws when diverging mode midpoint is not an object', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'diverging',
+          items: [
+            { to: -10, color: '#b2182b' },
+            { from: -10, to: 0, color: '#ef8a62' },
+            { from: 0, to: 10, color: '#67a9cf' },
+          ],
+          midpoint: 0,
         },
       })
     ).toThrow(/midpoint/i);
@@ -574,5 +589,17 @@ describe('Legend', () => {
         },
       })
     ).toThrow(/noData.*label/i);
+  });
+
+  it('throws when noData is a string', () => {
+    expect(() =>
+      render(Legend, {
+        props: {
+          mode: 'categorical',
+          items: [{ label: 'Hospital', color: '#0033a1' }],
+          noData: 'Data not available',
+        },
+      })
+    ).toThrow(/noData/i);
   });
 });

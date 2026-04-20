@@ -24,7 +24,7 @@ USAGE EXAMPLE:
     { from: 0, to: 10, color: '#67a9cf' },
     { from: 10, color: '#2166ac' },
   ]}
-  midpoint={0}
+  midpoint={{ value: 0, label: 'No change' }}
 />
 -->
 <script>
@@ -39,6 +39,10 @@ USAGE EXAMPLE:
   const numberFormatter = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
   });
+
+  function buildKey(...parts) {
+    return parts.join('-');
+  }
 
   function isFiniteNumber(value) {
     return typeof value === 'number' && Number.isFinite(value);
@@ -129,6 +133,7 @@ USAGE EXAMPLE:
       }
 
       return {
+        key: buildKey('range', color, lowerBound, upperBound),
         color,
         from,
         to,
@@ -165,6 +170,7 @@ USAGE EXAMPLE:
       }
 
       return {
+        key: buildKey('stop', value, color),
         value,
         color,
         label: label || formatValue(value, formatter),
@@ -208,6 +214,7 @@ USAGE EXAMPLE:
       }
 
       return {
+        key: buildKey('category', color, label),
         color,
         label,
       };
@@ -236,6 +243,7 @@ USAGE EXAMPLE:
       }
 
       return {
+        key: buildKey('symbol', value, label || formatValue(value, formatter)),
         value,
         label: label || formatValue(value, formatter),
       };
@@ -249,20 +257,9 @@ USAGE EXAMPLE:
       return null;
     }
 
-    if (typeof noData === 'string') {
-      if (noData.trim() === '') {
-        throw new Error('Legend noData labels must be non-empty strings.');
-      }
-
-      return {
-        label: noData,
-        color: 'var(--color-light-gray)',
-      };
-    }
-
     if (typeof noData !== 'object') {
       throw new Error(
-        'Legend noData must be a string label or an object with label and optional color.'
+        'Legend noData must be an object with label and optional color.'
       );
     }
 
@@ -366,12 +363,7 @@ USAGE EXAMPLE:
     });
   }
 
-  function buildBoundaryTicks(
-    items,
-    formatter,
-    midpoint = null,
-    midpointLabel = ''
-  ) {
+  function buildBoundaryTicks(items, formatter, midpoint = null) {
     const values = items
       .flatMap((item) => [item.from, item.to])
       .filter((value) => isFiniteNumber(value));
@@ -383,8 +375,8 @@ USAGE EXAMPLE:
     return uniqueValues.map((value) => ({
       value,
       label:
-        midpoint !== null && value === midpoint
-          ? midpointLabel || formatValue(value, formatter)
+        midpoint !== null && value === midpoint.value
+          ? midpoint.label
           : formatValue(value, formatter),
     }));
   }
@@ -454,7 +446,7 @@ USAGE EXAMPLE:
     const leaderStartX = centerX + maxRadius + 4;
     const labelX = leaderStartX + 8;
 
-    const symbols = items.map((item) => {
+    const entries = items.map((item) => {
       if (item.value === 0 || maxValue === 0) {
         return {
           ...item,
@@ -476,7 +468,7 @@ USAGE EXAMPLE:
     });
 
     return {
-      symbols,
+      entries,
       chartWidth,
       chartHeight,
       baselineY,
@@ -484,6 +476,119 @@ USAGE EXAMPLE:
       leaderStartX,
       labelX,
     };
+  }
+
+  function normalizeMidpoint(midpoint, domain, formatter) {
+    if (!midpoint || typeof midpoint !== 'object') {
+      throw new Error(
+        'Legend diverging mode requires a "midpoint" object with a numeric "value".'
+      );
+    }
+
+    const { value, label = '' } = midpoint;
+    const normalizedLabel = typeof label === 'string' ? label.trim() : label;
+
+    if (
+      normalizedLabel !== '' &&
+      (typeof normalizedLabel !== 'string' || normalizedLabel === '')
+    ) {
+      throw new Error(
+        'Legend midpoint labels must be non-empty strings when provided.'
+      );
+    }
+
+    if (!isFiniteNumber(value) || value < domain.min || value > domain.max) {
+      throw new Error(
+        'Legend diverging mode requires a midpoint value within the legend domain.'
+      );
+    }
+
+    return {
+      value,
+      label: normalizedLabel || formatValue(value, formatter),
+    };
+  }
+
+  function buildLegendState({
+    mode,
+    items,
+    stops,
+    ticks,
+    midpoint,
+    formatter,
+  }) {
+    switch (mode) {
+      case 'threshold': {
+        const normalizedItems = normalizeThresholdItems(items, formatter);
+
+        return {
+          entries: buildThresholdSegments(normalizedItems),
+          ticks: buildThresholdBreakTicks(normalizedItems, formatter),
+        };
+      }
+
+      case 'continuous': {
+        const entries = normalizeStops(stops, formatter);
+        const domain = {
+          min: entries[0].value,
+          max: entries[entries.length - 1].value,
+        };
+
+        return {
+          entries,
+          gradient: buildGradient(entries, domain.min, domain.max),
+          ticks: normalizeTicks(ticks, domain.min, domain.max, formatter),
+        };
+      }
+
+      case 'diverging': {
+        const normalizedItems = normalizeThresholdItems(items, formatter);
+        const domain = getDomainFromItems(normalizedItems);
+        const normalizedMidpoint = normalizeMidpoint(
+          midpoint,
+          domain,
+          formatter
+        );
+
+        return {
+          entries: buildDivergingSegments(
+            normalizedItems,
+            domain.min,
+            domain.max
+          ),
+          midpoint: {
+            ...normalizedMidpoint,
+            position:
+              ((normalizedMidpoint.value - domain.min) /
+                (domain.max - domain.min || 1)) *
+              100,
+          },
+          ticks: buildBoundaryTicks(
+            normalizedItems,
+            formatter,
+            normalizedMidpoint
+          ).map((tick) => ({
+            ...tick,
+            position:
+              ((tick.value - domain.min) / (domain.max - domain.min || 1)) *
+              100,
+          })),
+        };
+      }
+
+      case 'categorical':
+        return {
+          entries: normalizeCategoricalItems(items),
+        };
+
+      case 'proportional-symbols':
+        return buildProportionalSymbolLayout(
+          normalizeProportionalItems(items, formatter)
+        );
+
+      default:
+        return {};
+    }
   }
 
   let {
@@ -494,7 +599,6 @@ USAGE EXAMPLE:
     stops = [],
     ticks = [],
     midpoint = null,
-    midpointLabel = '',
     formatter = null,
     noData = null,
   } = $props();
@@ -518,133 +622,15 @@ USAGE EXAMPLE:
       : null
   );
 
-  const normalizedItems = $derived(
-    validatedMode === 'threshold' || validatedMode === 'diverging'
-      ? normalizeThresholdItems(items, formatter)
-      : []
-  );
-
-  const categoricalItems = $derived(
-    validatedMode === 'categorical' ? normalizeCategoricalItems(items) : []
-  );
-
-  const proportionalItems = $derived(
-    validatedMode === 'proportional-symbols'
-      ? normalizeProportionalItems(items, formatter)
-      : []
-  );
-
-  const continuousStops = $derived(
-    validatedMode === 'continuous' ? normalizeStops(stops, formatter) : []
-  );
-
-  const continuousDomain = $derived(
-    validatedMode === 'continuous'
-      ? {
-          min: continuousStops[0].value,
-          max: continuousStops[continuousStops.length - 1].value,
-        }
-      : null
-  );
-
-  const continuousTicks = $derived(
-    validatedMode === 'continuous'
-      ? normalizeTicks(
-          ticks,
-          continuousDomain.min,
-          continuousDomain.max,
-          formatter
-        )
-      : []
-  );
-
-  const continuousGradient = $derived(
-    validatedMode === 'continuous'
-      ? buildGradient(
-          continuousStops,
-          continuousDomain.min,
-          continuousDomain.max
-        )
-      : ''
-  );
-
-  const divergingDomain = $derived(
-    validatedMode === 'diverging' ? getDomainFromItems(normalizedItems) : null
-  );
-
-  const validatedMidpoint = $derived.by(() => {
-    if (validatedMode !== 'diverging') {
-      return null;
-    }
-
-    if (
-      !isFiniteNumber(midpoint) ||
-      midpoint < divergingDomain.min ||
-      midpoint > divergingDomain.max
-    ) {
-      throw new Error(
-        'Legend diverging mode requires a midpoint within the legend domain.'
-      );
-    }
-
-    return midpoint;
-  });
-
-  const divergingMidpointLabel = $derived(
-    validatedMode === 'diverging'
-      ? midpointLabel || formatValue(validatedMidpoint, formatter)
-      : ''
-  );
-
-  const divergingMidpointPosition = $derived(
-    validatedMode === 'diverging'
-      ? ((validatedMidpoint - divergingDomain.min) /
-          (divergingDomain.max - divergingDomain.min || 1)) *
-          100
-      : 0
-  );
-
-  const divergingSegments = $derived(
-    validatedMode === 'diverging'
-      ? buildDivergingSegments(
-          normalizedItems,
-          divergingDomain.min,
-          divergingDomain.max
-        )
-      : []
-  );
-
-  const divergingTicks = $derived(
-    validatedMode === 'diverging'
-      ? buildBoundaryTicks(
-          normalizedItems,
-          formatter,
-          validatedMidpoint,
-          divergingMidpointLabel
-        ).map((tick) => ({
-          ...tick,
-          position:
-            ((tick.value - divergingDomain.min) /
-              (divergingDomain.max - divergingDomain.min || 1)) *
-            100,
-        }))
-      : []
-  );
-
-  const thresholdSegments = $derived(
-    validatedMode === 'threshold' ? buildThresholdSegments(normalizedItems) : []
-  );
-
-  const thresholdBreakTicks = $derived(
-    validatedMode === 'threshold'
-      ? buildThresholdBreakTicks(normalizedItems, formatter)
-      : []
-  );
-
-  const proportionalLayout = $derived(
-    validatedMode === 'proportional-symbols'
-      ? buildProportionalSymbolLayout(proportionalItems)
-      : null
+  const legendState = $derived.by(() =>
+    buildLegendState({
+      mode: validatedMode,
+      items,
+      stops,
+      ticks,
+      midpoint,
+      formatter,
+    })
   );
 
   const noDataItem = $derived(normalizeNoData(noData));
@@ -671,7 +657,7 @@ USAGE EXAMPLE:
   {#if validatedMode === 'threshold'}
     <div class="threshold-legend" aria-label={title || 'Threshold legend'}>
       <div class="threshold-bar" aria-hidden="true">
-        {#each thresholdSegments as segment (`${segment.color}-${segment.label}`)}
+        {#each legendState.entries as segment (segment.key)}
           <span
             class="threshold-segment"
             style:width={`${segment.width}%`}
@@ -680,7 +666,7 @@ USAGE EXAMPLE:
         {/each}
       </div>
       <div class="scale-labels threshold-scale-labels">
-        {#each thresholdBreakTicks as tick (tick.value)}
+        {#each legendState.ticks as tick (tick.value)}
           <span class="scale-label" style:left={`${tick.position}%`}
             >{tick.label}</span
           >
@@ -693,16 +679,16 @@ USAGE EXAMPLE:
     <div class="continuous-legend" aria-label={title || 'Continuous legend'}>
       <div
         class="continuous-bar"
-        style:background-image={continuousGradient}
+        style:background-image={legendState.gradient}
         aria-hidden="true"
       ></div>
       <div class="legend-axis" aria-hidden="true">
-        {#each continuousTicks as tick (tick.value)}
+        {#each legendState.ticks as tick (tick.value)}
           <span class="legend-tick" style:left={`${tick.position}%`}></span>
         {/each}
       </div>
       <div class="legend-tick-labels">
-        {#each continuousTicks as tick (tick.value)}
+        {#each legendState.ticks as tick (tick.value)}
           <span class="legend-tick-label" style:left={`${tick.position}%`}
             >{tick.label}</span
           >
@@ -714,7 +700,7 @@ USAGE EXAMPLE:
   {#if validatedMode === 'diverging'}
     <div class="diverging-legend" aria-label={title || 'Diverging legend'}>
       <div class="diverging-bar" aria-hidden="true">
-        {#each divergingSegments as segment (`${segment.color}-${segment.label}`)}
+        {#each legendState.entries as segment (segment.key)}
           <span
             class="diverging-segment"
             style:width={`${segment.width}%`}
@@ -723,11 +709,11 @@ USAGE EXAMPLE:
         {/each}
         <span
           class="diverging-midpoint"
-          style:left={`${divergingMidpointPosition}%`}
+          style:left={`${legendState.midpoint.position}%`}
         ></span>
       </div>
       <div class="scale-labels diverging-scale-labels">
-        {#each divergingTicks as tick (tick.value)}
+        {#each legendState.ticks as tick (tick.value)}
           <span class="scale-label" style:left={`${tick.position}%`}
             >{tick.label}</span
           >
@@ -738,7 +724,7 @@ USAGE EXAMPLE:
 
   {#if validatedMode === 'categorical'}
     <div class="categorical-legend" aria-label={title || 'Categorical legend'}>
-      {#each categoricalItems as item (`${item.color}-${item.label}`)}
+      {#each legendState.entries as item (item.key)}
         <div class="categorical-item">
           <span
             class="categorical-swatch"
@@ -768,11 +754,11 @@ USAGE EXAMPLE:
     >
       <svg
         class="proportional-chart"
-        viewBox={`0 0 ${proportionalLayout.chartWidth} ${proportionalLayout.chartHeight}`}
+        viewBox={`0 0 ${legendState.chartWidth} ${legendState.chartHeight}`}
         role="img"
         aria-hidden="true"
       >
-        {#each proportionalLayout.symbols as symbol (symbol.label)}
+        {#each legendState.entries as symbol (symbol.key)}
           {#if symbol.radius > 0}
             <circle
               cx={symbol.centerX}
@@ -782,14 +768,14 @@ USAGE EXAMPLE:
             />
           {/if}
           <line
-            x1={proportionalLayout.centerX}
+            x1={legendState.centerX}
             y1={symbol.lineY}
-            x2={proportionalLayout.leaderStartX}
+            x2={legendState.leaderStartX}
             y2={symbol.lineY}
             class="proportional-leader"
           />
           <text
-            x={proportionalLayout.labelX}
+            x={legendState.labelX}
             y={symbol.lineY}
             class="proportional-label"
             dominant-baseline="middle"

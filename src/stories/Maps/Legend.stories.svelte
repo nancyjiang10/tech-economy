@@ -42,12 +42,9 @@
         description: 'Optional tick values and labels for continuous mode.',
       },
       midpoint: {
-        control: 'number',
-        description: 'Explicit midpoint value for diverging mode.',
-      },
-      midpointLabel: {
-        control: 'text',
-        description: 'Optional label displayed at the diverging midpoint.',
+        control: 'object',
+        description:
+          'Diverging midpoint object with a numeric value and optional label.',
       },
       subtitle: {
         control: 'text',
@@ -56,7 +53,7 @@
       noData: {
         control: 'object',
         description:
-          'Optional fallback swatch for missing values. Accepts a string label or an object with label and optional color.',
+          'Optional fallback swatch for missing values as an object with label and optional color.',
       },
     },
   });
@@ -127,7 +124,7 @@
     title: 'Rent Burden',
     mode: 'threshold',
     items: thresholdItems,
-    noData: 'Data not available',
+    noData: { label: 'Data not available' },
   }}
 />
 
@@ -147,8 +144,7 @@
     title: "Today's difference from the normal high of 1961-1990",
     mode: 'diverging',
     items: divergingItems,
-    midpoint: 0,
-    midpointLabel: '±0°',
+    midpoint: { value: 0, label: '±0°' },
     formatter: signedDegrees,
   }}
 />
@@ -159,7 +155,7 @@
     title: 'Site Type',
     mode: 'categorical',
     items: categoricalItems,
-    noData: 'Data not available',
+    noData: { label: 'Data not available' },
   }}
 />
 
@@ -179,8 +175,7 @@
       title="Today's difference from the normal high of 1961-1990"
       mode="diverging"
       items={divergingItems}
-      midpoint={0}
-      midpointLabel="±0°"
+      midpoint={{ value: 0, label: '±0°' }}
       formatter={signedDegrees}
     />
 
