@@ -370,6 +370,18 @@ describe('Map', () => {
     await vi.advanceTimersByTimeAsync(0);
     expect(container.querySelector('figcaption')).toBeNull();
   });
+
+  it('uses the fiord theme URL when theme="fiord"', async () => {
+    const { container } = render(Map, { props: { theme: 'fiord' } });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('[role="application"]')).toBeTruthy();
+  });
+
+  it('uses the dark theme URL when theme="dark"', async () => {
+    const { container } = render(Map, { props: { theme: 'dark' } });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(container.querySelector('[role="application"]')).toBeTruthy();
+  });
 });
 
 describe('Legend', () => {
