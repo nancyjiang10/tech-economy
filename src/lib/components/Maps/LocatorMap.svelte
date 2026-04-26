@@ -44,7 +44,7 @@ USAGE EXAMPLE:
   let map = $state(null);
 
   // Tracks the style URL currently applied to the map, to avoid redundant setStyle calls
-  let appliedStyleUrl = styleUrl;
+  let appliedStyleUrl = null;
 
   // Build a descriptive label for screen readers from the caption or coordinates
   const ariaLabel = $derived(
@@ -90,9 +90,11 @@ USAGE EXAMPLE:
     import('maplibre-gl')
       .then(({ Map }) => {
         if (!mounted) return;
+        const currentStyleUrl = styleUrl;
+        appliedStyleUrl = currentStyleUrl;
         map = new Map({
           container: mapContainer,
-          style: styleUrl,
+          style: currentStyleUrl,
           center: [longitude, latitude],
           zoom,
           interactive: false, // Static locator map — no pan or zoom by the user

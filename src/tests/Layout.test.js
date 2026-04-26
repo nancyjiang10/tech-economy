@@ -36,9 +36,9 @@ describe('SiteFooter', () => {
   it('renders the CUNY logo', () => {
     render(SiteFooter);
     expect(
-      screen.getByAltText(
-        'Craig Newmark Graduate School of Journalism at CUNY',
-      ),
+      screen.getByLabelText(
+        'Craig Newmark Graduate School of Journalism at CUNY'
+      )
     ).toBeTruthy();
   });
 

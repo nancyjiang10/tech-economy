@@ -15,9 +15,41 @@ USAGE EXAMPLE:
   let {
     children, // The content passed between opening/closing tags
   } = $props();
+
+  /**
+   * Svelte action: wraps the first visible character of each `p.dropcap`
+   * in a `<span class="dropcap-letter">` so we can apply an animated
+   * gradient that `::first-letter` alone cannot support.
+   */
+  function initDropcap(node) {
+    const paragraphs = node.querySelectorAll('p.dropcap');
+    for (const p of paragraphs) {
+      if (p.querySelector('.dropcap-letter')) continue;
+      const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+      let textNode = walker.nextNode();
+      while (textNode && textNode.textContent.trim() === '') {
+        textNode = walker.nextNode();
+      }
+      if (!textNode) continue;
+
+      const text = textNode.textContent;
+      const idx = text.search(/\S/);
+      if (idx === -1) continue;
+
+      const span = document.createElement('span');
+      span.className = 'dropcap-letter';
+      span.textContent = text[idx];
+
+      textNode.textContent = text.slice(idx + 1);
+      if (idx > 0) {
+        p.insertBefore(document.createTextNode(text.slice(0, idx)), textNode);
+      }
+      p.insertBefore(span, textNode);
+    }
+  }
 </script>
 
-<article class="article-body">
+<article class="article-body" use:initDropcap>
   {@render children()}
 </article>
 
@@ -95,6 +127,29 @@ USAGE EXAMPLE:
 
   .article-body :global(li) {
     margin-bottom: var(--spacing-xs);
+  }
+
+  /* Dropcap: apply class="dropcap" to the opening <p> */
+  .article-body :global(p.dropcap > .dropcap-letter) {
+    font-family: var(--font-serif);
+    font-size: var(--dropcap-font-size);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--dropcap-line-height);
+    float: left;
+    margin-right: var(--dropcap-margin-right);
+    /* Animated gradient matching the site header */
+    background: linear-gradient(
+      90deg,
+      var(--color-cuny-blue-dark) 0%,
+      var(--color-accent) 50%,
+      var(--color-cuny-blue-light) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--dropcap-color);
+    animation: dropcap-gradient 6s ease-in-out infinite;
   }
 
   /* Strong/Bold text */

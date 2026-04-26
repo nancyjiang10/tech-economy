@@ -58,7 +58,7 @@ This is your page!
 
   <!-- Article Body: The main story text with proper typography -->
   <ArticleBody>
-    <p>
+    <p class="dropcap">
       At the Craig Newmark Graduate School of Journalism at the City University
       of New York, change is in our DNA. That comes of being born in 2006, as
       the digital revolution was transforming our profession in ways none of us

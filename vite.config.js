@@ -13,21 +13,21 @@
  */
 import { sveltekit } from '@sveltejs/kit/vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => ({
   plugins: [mode === 'test' ? svelte({ hot: false }) : sveltekit()],
-  resolve: {
-    conditions: mode === 'test' ? ['browser'] : [],
-  },
+  ...(mode === 'test' ? { resolve: { conditions: ['browser'] } } : {}),
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.js'],
     setupFiles: ['src/tests/setup.js'],
     alias: {
-      '$lib': new URL('./src/lib', import.meta.url).pathname,
-      '$app/paths': new URL('./src/lib/__mocks__/$app/paths.js', import.meta.url)
-        .pathname,
+      $lib: fileURLToPath(new URL('./src/lib', import.meta.url)),
+      '$app/paths': fileURLToPath(
+        new URL('./src/lib/__mocks__/$app/paths.js', import.meta.url)
+      ),
     },
   },
 }));

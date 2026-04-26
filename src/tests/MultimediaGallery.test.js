@@ -26,7 +26,7 @@ describe('TitleSlide', () => {
         byline: 'By Test',
       },
     });
-    expect(screen.getByText('Scroll to begin ↓')).toBeTruthy();
+    expect(screen.getByText('Tap to begin →')).toBeTruthy();
   });
 
   it('renders the headline in an h1', () => {
@@ -84,8 +84,8 @@ describe('TextSlide', () => {
     expect(screen.getByText('The Commute')).toBeTruthy();
     expect(
       screen.getByText(
-        'More than 400,000 riders depend on the L train every day.',
-      ),
+        'More than 400,000 riders depend on the L train every day.'
+      )
     ).toBeTruthy();
   });
 

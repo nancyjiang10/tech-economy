@@ -35,7 +35,7 @@
   and a large animated Lottie data graphic on the right, rendered
   by DatabaseHeader.
 -->
-<Story name="Default">
+<Story name="Default" asChild>
   <SiteHeader />
 
   <DatabaseHeader

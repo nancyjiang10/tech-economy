@@ -39,7 +39,7 @@ USAGE EXAMPLE:
     <p class="intro">{intro}</p>
     <p class="byline">{byline}</p>
   </div>
-  <p class="scroll-hint">Tap to begin →</p>
+  <div class="scroll-hint">Tap to begin →</div>
 </div>
 
 <style lang="scss">
@@ -79,6 +79,12 @@ USAGE EXAMPLE:
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .masthead {
+      animation: none;
+    }
+  }
+
   .logo {
     display: inline-block;
     text-decoration: none;
@@ -86,6 +92,11 @@ USAGE EXAMPLE:
 
   .logo:hover {
     text-decoration: none;
+  }
+
+  .logo:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
   }
 
   .logo-text {
@@ -136,6 +147,10 @@ USAGE EXAMPLE:
     line-height: 1.2;
     margin: 0 0 1rem;
     color: white;
+
+    @container (min-width: 768px) {
+      font-size: 3.5rem;
+    }
   }
 
   .intro {
@@ -143,20 +158,30 @@ USAGE EXAMPLE:
     line-height: 1.6;
     opacity: 0.85;
     margin: 0 0 1.5rem;
+
+    @container (min-width: 768px) {
+      font-size: 1.375rem;
+      line-height: 1.7;
+    }
   }
 
   .byline {
     font-size: 0.875rem;
     opacity: 0.6;
     margin: 0;
+
+    @container (min-width: 768px) {
+      font-size: 1.125rem;
+    }
   }
 
   .scroll-hint {
     font-size: 0.8125rem;
-    opacity: 0.4;
+    opacity: 0.6;
     margin: 0;
     padding-bottom: 3.5rem;
-    text-align: center;
     color: white;
+    display: flex;
+    justify-content: center;
   }
 </style>

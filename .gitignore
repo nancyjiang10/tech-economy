@@ -3,3 +3,5 @@ build/
 .svelte-kit/
 .DS_Store
 .claude/
+.lighthouseci/
+*.log

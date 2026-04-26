@@ -2,8 +2,9 @@
   SlideGallery.stories.svelte
 
   Stories for the SlideGallery container component.
-  SlideGallery provides full-screen vertical scroll-snapping and a photo
-  counter overlay. It wraps TitleSlide, PhotoSlide, TextSlide, and
+  SlideGallery shows one slide at a time in a horizontal track, with
+  tap/click zones to move forward and backward and dot indicators for
+  the current position. It wraps TitleSlide, PhotoSlide, TextSlide, and
   CreditsSlide components.
 
   Props:
