@@ -7,6 +7,7 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import Profile from '$lib/components/Portfolio/Profile.svelte';
   import Card from '$lib/components/Data/Card.svelte';
+  import CardGrid from '$lib/components/Data/CardGrid.svelte';
   import Kicker from '$lib/components/Article/Kicker.svelte';
   import Headline from '$lib/components/Article/Headline.svelte';
   import Image from '$lib/components/Media/Image.svelte';
@@ -47,14 +48,14 @@
         <h2>Selected Work</h2>
       </div>
 
-      <div class="card-grid">
+      <CardGrid>
         {#each data.clips as clip (clip.title)}
           <Card href={clip.href} image={clip.image} imageAlt={clip.title}>
             <h3>{clip.title}</h3>
             <p>{clip.description}</p>
           </Card>
         {/each}
-      </div>
+      </CardGrid>
     </div>
   </div>
 </Story>
@@ -100,29 +101,6 @@
 
     h2 {
       margin: 0;
-    }
-  }
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-
-    // Match all thumbnails to the suffragettes image proportion.
-    :global(.card-image img) {
-      width: 100%;
-      aspect-ratio: 749 / 566;
-      object-fit: cover;
-      object-position: top;
-    }
-
-    @include tablet {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include desktop {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
 

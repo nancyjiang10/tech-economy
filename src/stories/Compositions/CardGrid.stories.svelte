@@ -11,6 +11,7 @@
   import SearchInput from '$lib/components/Forms/SearchInput.svelte';
   import DropdownInput from '$lib/components/Forms/DropdownInput.svelte';
   import Card from '$lib/components/Data/Card.svelte';
+  import CardGrid from '$lib/components/Data/CardGrid.svelte';
   import MethodologyBox from '$lib/components/Article/MethodologyBox.svelte';
 
   const PROGRAMS = [
@@ -147,7 +148,7 @@
       {filtered.length} program{filtered.length !== 1 ? 's' : ''} found
     </p>
 
-    <div class="card-grid">
+    <CardGrid>
       {#each filtered as program (program.title)}
         <Card href={program.href}>
           <h3>{program.title}</h3>
@@ -161,7 +162,7 @@
           {/snippet}
         </Card>
       {/each}
-    </div>
+    </CardGrid>
 
     {#if filtered.length === 0}
       <p class="no-results">
@@ -205,25 +206,6 @@
     font-size: var(--font-size-sm, 0.875rem);
     color: var(--color-medium-gray, #666);
     margin-bottom: var(--spacing-sm, 0.75rem);
-  }
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md, 1rem);
-    margin-bottom: var(--spacing-lg, 2rem);
-  }
-
-  @media (min-width: 600px) {
-    .card-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 900px) {
-    .card-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   .category-tag {
