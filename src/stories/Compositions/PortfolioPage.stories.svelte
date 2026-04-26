@@ -69,7 +69,7 @@
       <Image src={detail.image} alt={detail.title} />
 
       <Rule />
-      <TagList label="Skills" tags={detail.skills.map((s) => ({ text: s }))} />
+      <TagList label="Skills" tags={detail.skills} />
       <TagList
         label="View Project"
         tags={[{ text: new URL(detail.url).hostname, href: detail.url }]}

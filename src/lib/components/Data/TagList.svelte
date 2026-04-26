@@ -8,7 +8,7 @@ USAGE EXAMPLE:
   tags={[
     { text: "Investigative reporting" },
     { text: "Court records analysis" },
-    { text: "marxists.org", href: "https://marxists.org" },
+    { text: "cuny.edu", href: "https://cuny.edu" },
   ]}
 />
 -->
@@ -16,6 +16,10 @@ USAGE EXAMPLE:
   import Tag from './Tag.svelte';
 
   let { label = '', tags = [] } = $props();
+
+  const normalized = $derived(
+    tags.map((t) => (typeof t === 'string' ? { text: t } : t))
+  );
 </script>
 
 <div class="tag-list">
@@ -23,7 +27,7 @@ USAGE EXAMPLE:
     <h3 class="tag-list-label">{label}</h3>
   {/if}
   <div class="tag-list-items">
-    {#each tags as tag (tag.text)}
+    {#each normalized as tag (tag.text)}
       <Tag text={tag.text} href={tag.href ?? ''} />
     {/each}
   </div>
