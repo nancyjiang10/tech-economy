@@ -7,41 +7,18 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import Profile from '$lib/components/Portfolio/Profile.svelte';
   import Card from '$lib/components/Data/Card.svelte';
+  import Kicker from '$lib/components/Article/Kicker.svelte';
+  import Headline from '$lib/components/Article/Headline.svelte';
+  import Image from '$lib/components/Media/Image.svelte';
+  import ArticleBody from '$lib/components/Article/ArticleBody.svelte';
+  import TagList from '$lib/components/Data/TagList.svelte';
+  import Rule from '$lib/components/Layout/Rule.svelte';
+  import data from './portfolio-data.yaml';
 
-  const BYLINE = 'Max Eastman';
-
-  const BIO =
-    "I am the editor of The Masses, a monthly socialist magazine based in New York City. My writing covers politics, art, the labor movement and the fight for civil liberties.\n\nI am completing a translation of Leon Trotsky's writings for American readers and reporting on the prosecution of anti-war journalists like myself under the Espionage Act.";
-
-  const CLIPS = [
-    {
-      title: 'The Trial of The Masses',
-      description:
-        "A first-hand account of the federal government's attempt to silence New York's most radical publication.",
-      category: 'Investigative',
-      href: 'https://www.marxists.org/archive/eastman/',
-      image: '/photos/max-eastman-masses-trial.jpg',
-    },
-    {
-      title: 'The Suffragettes of Washington Square',
-      description:
-        "Reporting on the organizers who turned Greenwich Village into the center of New York's suffrage movement.",
-      category: 'News',
-      href: 'https://www.marxists.org/archive/eastman/',
-      image: '/photos/suffragettes-nyt-1921.jpg',
-    },
-    {
-      title: 'Since Lenin Died',
-      description:
-        'Reflections on the failure of the Russian Revolution and the rise of Stalinism',
-      category: 'Feature',
-      href: 'https://www.marxists.org/archive/eastman/',
-      image: '/photos/stalin-1920-1.jpg',
-    },
-  ];
+  const detail = data.clips[0];
 
   const { Story } = defineMeta({
-    title: 'Compositions/Portfolio Page',
+    title: 'Compositions/Personal Portfolio',
     tags: ['autodocs'],
     parameters: {
       layout: 'fullscreen',
@@ -52,18 +29,18 @@
 <script>
 </script>
 
-<Story name="Default" asChild>
+<Story name="Homepage" asChild>
   <div>
     <div class="container">
       <Profile
-        name={BYLINE}
-        tagline="Editor · Poet · Reformed revolutionary"
-        photo="/photos/max-eastman.jpg"
-        photoAlt="Max Eastman, circa 1913. Bain News Service, Library of Congress."
-        email="max.eastman@themasses.org"
-        github="maxeastman"
-        linkedin="maxeastman"
-        nowNext={BIO}
+        name={data.name}
+        tagline={data.tagline}
+        photo={data.photo}
+        photoAlt={data.photoAlt}
+        email={data.email}
+        github={data.github}
+        linkedin={data.linkedin}
+        nowNext={data.bio}
       />
 
       <div class="clips-header">
@@ -71,13 +48,43 @@
       </div>
 
       <div class="card-grid">
-        {#each CLIPS as clip (clip.title)}
+        {#each data.clips as clip (clip.title)}
           <Card href={clip.href} image={clip.image} imageAlt={clip.title}>
             <h3>{clip.title}</h3>
             <p>{clip.description}</p>
           </Card>
         {/each}
       </div>
+    </div>
+  </div>
+</Story>
+
+<!-- Project Detail: what a dedicated page for a single clip looks like -->
+<Story name="Project Detail" asChild>
+  <div>
+    <div class="detail-container">
+      <Kicker text="{data.name}'s Portfolio" />
+      <Headline text={detail.title} />
+
+      <Image
+        src={detail.image}
+        alt={detail.title}
+        caption={detail.description}
+      />
+
+      <Rule />
+      <TagList label="Skills" tags={detail.skills.map((s) => ({ text: s }))} />
+      <TagList
+        label="View Project"
+        tags={[{ text: new URL(detail.url).hostname, href: detail.url }]}
+      />
+      <Rule />
+
+      <ArticleBody>
+        {#each detail.body.trim().split('\n\n') as paragraph, i (i)}
+          <p class={i === 0 ? 'dropcap' : ''}>{paragraph}</p>
+        {/each}
+      </ArticleBody>
     </div>
   </div>
 </Story>
@@ -121,5 +128,18 @@
     @include desktop {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  .detail-container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .detail-container :global(.image) {
+    max-height: 400px;
+    object-fit: cover;
+    object-position: top;
   }
 </style>

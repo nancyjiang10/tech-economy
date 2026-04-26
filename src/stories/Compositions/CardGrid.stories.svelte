@@ -1,7 +1,5 @@
 <!--
-  CardGrid.stories.svelte
-
-  Composition story: a standard article layout with search and dropdown
+  A standard article layout with search and dropdown
   inputs that filter a responsive grid of Card components.
 -->
 <script module>
