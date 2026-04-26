@@ -13,7 +13,7 @@ USAGE EXAMPLE:
   email="jane@example.com"
   github="janesmith"
   linkedin="janesmith"
-  nowNext="Currently reporting on evictions for The City.
+  bio="Currently reporting on evictions for The City.
 
 Next, I'm exploring machine learning tools for document analysis."
 />
@@ -26,7 +26,7 @@ Next, I'm exploring machine learning tools for document analysis."
   import ProfileContactLink from './ProfileContactLink.svelte';
   import ProfileBio from './ProfileBio.svelte';
 
-  let { name, tagline, photo, photoAlt, email, github, linkedin, nowNext } =
+  let { name, tagline, photo, photoAlt, email, github, linkedin, bio } =
     $props();
 
   const contacts = $derived(
@@ -78,7 +78,7 @@ Next, I'm exploring machine learning tools for document analysis."
         {/each}
       </ul>
 
-      <ProfileBio text={nowNext} />
+      <ProfileBio text={bio} />
     </div>
 
     {#if photo}

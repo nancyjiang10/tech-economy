@@ -13,7 +13,7 @@
   - email: Optional email address (renders a mailto: link)
   - github: Optional GitHub username (renders a link to github.com/{username})
   - linkedin: Optional LinkedIn username (renders a link to linkedin.com/in/{username})
-  - nowNext: Optional multi-paragraph bio text (blank lines separate paragraphs)
+  - bio: Optional multi-paragraph bio text (blank lines separate paragraphs)
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
@@ -32,7 +32,7 @@
       email: 'max.eastman@example.com',
       github: 'maxeastman',
       linkedin: 'maxeastman',
-      nowNext: '',
+      bio: '',
     },
     argTypes: {
       name: {
@@ -66,7 +66,7 @@
         description:
           'Optional LinkedIn username. Renders as a link to linkedin.com/in/{username}.',
       },
-      nowNext: {
+      bio: {
         control: 'text',
         description:
           'Optional bio text. Separate paragraphs with a blank line.',
@@ -93,7 +93,7 @@
     email: '',
     github: '',
     linkedin: '',
-    nowNext: '',
+    bio: '',
   }}
 >
   {#snippet children(args)}
@@ -107,7 +107,7 @@
 <Story
   name="With Bio"
   args={{
-    nowNext:
+    bio:
       "I am the editor of The Masses, a monthly socialist magazine covering politics, art, and culture from New York City.\n\nNext, I am reporting on labor conditions in the garment district and translating Trotsky's writings for American readers.",
   }}
 >
@@ -124,7 +124,7 @@
   args={{
     tagline: 'Editor, poet, and political journalist',
     photo: '',
-    nowNext: '',
+    bio: '',
   }}
 >
   {#snippet children(args)}

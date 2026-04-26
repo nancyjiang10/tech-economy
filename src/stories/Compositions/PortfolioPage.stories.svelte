@@ -40,7 +40,7 @@
         email={data.email}
         github={data.github}
         linkedin={data.linkedin}
-        nowNext={data.bio}
+        bio={data.bio}
       />
 
       <div class="clips-header">

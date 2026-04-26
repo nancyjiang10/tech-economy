@@ -81,18 +81,18 @@ describe('Profile', () => {
     expect(img.getAttribute('src')).toBe('https://example.com/max.jpg');
   });
 
-  it('renders nowNext bio paragraphs', () => {
+  it('renders bio bio paragraphs', () => {
     render(Profile, {
       props: {
         name: 'Max Eastman',
-        nowNext: 'Currently editing The Masses.\n\nNext, translating Trotsky.',
+        bio: 'Currently editing The Masses.\n\nNext, translating Trotsky.',
       },
     });
     expect(screen.getByText('Currently editing The Masses.')).toBeTruthy();
     expect(screen.getByText('Next, translating Trotsky.')).toBeTruthy();
   });
 
-  it('does not render the bio section when nowNext is omitted', () => {
+  it('does not render the bio section when bio is omitted', () => {
     const { container } = render(Profile, { props: { name: 'Max Eastman' } });
     expect(container.querySelector('.now-next')).toBeNull();
   });
