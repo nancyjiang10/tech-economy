@@ -66,11 +66,7 @@
       <Kicker text="{data.name}'s Portfolio" />
       <Headline text={detail.title} />
 
-      <Image
-        src={detail.image}
-        alt={detail.title}
-        caption={detail.description}
-      />
+      <Image src={detail.image} alt={detail.title} />
 
       <Rule />
       <TagList label="Skills" tags={detail.skills.map((s) => ({ text: s }))} />
