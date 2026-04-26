@@ -1,14 +1,7 @@
 <!--
   PortfolioPage.stories.svelte
 
-  Composition story: a full personal portfolio page combining the Profile
-  hero component with a responsive card grid of work samples.
-
-  The story is seeded with data for Max Eastman — editor of The Masses,
-  poet, and political journalist — as a realistic classroom example.
-
-  This file does NOT map to a single component — it shows how Profile and
-  Card fit together in a complete portfolio layout.
+  A personal portfolio page combining the Profile hero component with a responsive card grid of work samples.
 -->
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';

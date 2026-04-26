@@ -27,13 +27,13 @@ and an icon snippet.
   .contact-item a {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: var(--spacing-xs);
     text-decoration: none;
     color: var(--color-text);
     font-size: var(--font-size-sm);
     border: var(--border-width-thin) solid var(--color-border);
     background: var(--color-white);
-    padding: 0.35rem 0.55rem;
+    padding: var(--spacing-xxs) var(--spacing-xs);
     transition: var(--transition-color);
 
     &:hover {
@@ -43,8 +43,8 @@ and an icon snippet.
   }
 
   .contact-item :global(svg) {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: var(--font-size-lg);
+    height: var(--font-size-lg);
     flex-shrink: 0;
   }
 </style>

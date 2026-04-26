@@ -93,7 +93,7 @@ Next, I'm exploring machine learning tools for document analysis."
   @use '$lib/styles' as *;
 
   .profile {
-    border-top: 8px solid var(--color-accent);
+    border-top: calc(var(--border-width-accent) * 2) solid var(--color-accent);
     border-bottom: var(--border-width-divider) solid var(--color-border);
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-md) 0;
@@ -104,7 +104,7 @@ Next, I'm exploring machine learning tools for document analysis."
     gap: var(--spacing-md);
 
     @include tablet {
-      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-columns: minmax(0, 1fr) var(--max-width-image-small);
       align-items: start;
     }
   }
@@ -117,7 +117,7 @@ Next, I'm exploring machine learning tools for document analysis."
     margin-bottom: var(--spacing-xxs);
 
     @include mobile {
-      font-size: 3rem;
+      font-size: var(--font-size-display);
     }
   }
 
@@ -135,7 +135,7 @@ Next, I'm exploring machine learning tools for document analysis."
     padding: var(--spacing-xs);
 
     @include mobile {
-      max-width: 320px;
+      max-width: var(--max-width-image-small);
     }
   }
 
