@@ -14,18 +14,21 @@ Shown when SvelteKit encounters a page that doesn't exist.
 
 <div class="error-page">
   <div class="error-content">
-    <!-- Animated glitch-style status code -->
-    <h1 class="error-code" aria-hidden="true" data-text={page.status}>
-      {page.status}
-    </h1>
+    <!-- Accessible status announcement for screen readers -->
+    <span class="sr-only">Error {page.status}:</span>
 
-    <p class="error-headline">
+    <!-- Animated glitch-style status code (decorative duplicate) -->
+    <p class="error-code" aria-hidden="true" data-text={page.status}>
+      {page.status}
+    </p>
+
+    <h1 class="error-headline">
       {#if page.status === 404}
         This page got lost in the newsroom.
       {:else}
         Something went wrong.
       {/if}
-    </p>
+    </h1>
 
     <p class="error-message">
       {#if page.error?.message}
@@ -53,6 +56,18 @@ Shown when SvelteKit encounters a page that doesn't exist.
 
   .error-content {
     max-width: 600px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* Large animated status code with pseudo-element glitch layers */
