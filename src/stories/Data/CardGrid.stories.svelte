@@ -17,7 +17,10 @@
   <CardGrid>
     <Card>
       <h3>M.A. in Journalism</h3>
-      <p>Our flagship program trains reporters, editors, and multimedia journalists.</p>
+      <p>
+        Our flagship program trains reporters, editors, and multimedia
+        journalists.
+      </p>
     </Card>
     <Card>
       <h3>Engagement Journalism</h3>

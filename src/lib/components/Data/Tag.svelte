@@ -7,7 +7,18 @@ Tag.svelte — A small pill label for skills, categories, or linked resources.
 </script>
 
 {#if href}
-  <a class="tag" {href} target="_blank" rel="noopener noreferrer">{text}<svg class="arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="tag" {href} target="_blank" rel="noopener noreferrer"
+    >{text}<svg class="arrow" viewBox="0 0 12 12" aria-hidden="true"
+      ><path
+        d="M2 10L10 2M10 2H4M10 2v6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      /></svg
+    ></a
+  >
 {:else}
   <span class="tag">{text}</span>
 {/if}

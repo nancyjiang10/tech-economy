@@ -8,10 +8,5 @@
     stroke="currentColor"
     stroke-width="1.6"
   />
-  <path
-    d="M3 6l9 7 9-7"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.6"
-  />
+  <path d="M3 6l9 7 9-7" fill="none" stroke="currentColor" stroke-width="1.6" />
 </svg>

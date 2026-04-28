@@ -361,8 +361,6 @@ USAGE EXAMPLE:
     color: var(--color-dark);
   }
 
-
-
   @include tablet {
     .geocoder-field {
       font-size: var(--font-size-lg);
