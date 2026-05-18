@@ -25,20 +25,28 @@ USAGE EXAMPLE:
 
 <style lang="scss">
   .kicker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-brand-navy);
+    color: var(--color-white);
     font-family: var(--font-sans);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
-    color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wider);
-    margin: 0 0 var(--spacing-xxs);
+    line-height: 1.2;
+    margin: 0 auto var(--spacing-sm);
 
     a {
       color: inherit;
       text-decoration: none;
 
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
       }
     }
   }

@@ -6,8 +6,8 @@ SiteHeader.svelte — NYCity News Service Style Header
   let {
     navLinks = [
       {
-        label: 'Arts & Culture',
-        href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/',
+        label: 'Economy',
+        href: 'https://issuenumberone.journalism.cuny.edu/',
       },
       {
         label: 'Business',
@@ -80,26 +80,7 @@ SiteHeader.svelte — NYCity News Service Style Header
 
   /* Full-width blue background with animated dark-to-light gradient */
   .masthead-wrapper {
-    background: linear-gradient(
-      90deg,
-      var(--color-cuny-blue-dark) 0%,
-      var(--color-accent) 50%,
-      var(--color-cuny-blue-light) 100%
-    );
-    background-size: 200% 100%;
-    animation: gradient-sweep 6s ease-in-out infinite;
-  }
-
-  @keyframes gradient-sweep {
-    0% {
-      background-position: 0% 0%;
-    }
-    50% {
-      background-position: 100% 0%;
-    }
-    100% {
-      background-position: 0% 0%;
-    }
+    background: var(--color-brand-navy);
   }
 
   /* Compact Masthead - Mobile: centered */
@@ -129,7 +110,7 @@ SiteHeader.svelte — NYCity News Service Style Header
 
   .logo-nycity {
     background-color: var(--color-white);
-    color: var(--color-accent);
+    color: var(--color-brand-navy);
     font-family: var(--font-sans);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-extrabold);

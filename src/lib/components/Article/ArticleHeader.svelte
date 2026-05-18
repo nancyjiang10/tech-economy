@@ -37,57 +37,12 @@ USAGE EXAMPLE:
     <div class="meta">
       {#if byline}
         <div class="meta-item meta-byline">
-          <svg
-            class="meta-icon"
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            aria-hidden="true"
-          >
-            <path
-              d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-            <circle
-              cx="12"
-              cy="7"
-              r="4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-          </svg>
           <Byline {byline} />
         </div>
       {/if}
 
       {#if pubDate}
         <div class="meta-item meta-date">
-          <svg
-            class="meta-icon"
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            aria-hidden="true"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-            <path
-              d="M12 6v6l4 2"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
           <Pubdate date={pubDate} />
         </div>
       {/if}
@@ -103,52 +58,39 @@ USAGE EXAMPLE:
   }
 
   .meta {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-xs);
-    padding: var(--font-size-xs) var(--spacing-sm);
-    border-left: var(--border-width-accent) solid var(--color-accent);
-    background-color: var(--color-light-gray);
+    align-items: center;
+    gap: var(--spacing-xxs);
+    margin-top: var(--spacing-sm);
   }
 
   .meta-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
+    display: block;
   }
 
-  .meta-icon {
-    color: var(--color-accent);
-    flex-shrink: 0;
+  .meta-byline {
+    text-align: center;
   }
 
-  /* Override Byline styles inside the meta box */
-  .meta-byline :global(.byline) {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-dark);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wide);
-    margin: 0;
-  }
-
-  /* Override Pubdate styles inside the meta box */
   .meta-date :global(.pubdate) {
     font-size: var(--font-size-sm);
-    color: var(--color-medium-gray);
+    color: var(--color-dark);
+    font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wide);
+    letter-spacing: var(--letter-spacing-wider);
     margin: 0;
+    text-align: center;
   }
 
   /* Tablet and up: inline meta */
   @include tablet {
+    .article-header {
+      margin-bottom: var(--spacing-lg);
+    }
+
     .meta {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-xxs);
     }
   }
 </style>

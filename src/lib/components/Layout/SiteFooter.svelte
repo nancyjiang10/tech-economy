@@ -12,8 +12,8 @@ USAGE EXAMPLE:
   let {
     navLinks = [
       {
-        label: 'Arts & Culture',
-        href: 'https://www.nycitynewsservice.com/nycns_topics/arts-culture/',
+        label: 'Economy',
+        href: 'https://issuenumberone.journalism.cuny.edu/',
       },
       {
         label: 'Business',
@@ -246,7 +246,7 @@ USAGE EXAMPLE:
   }
 
   .footer-main {
-    background-color: var(--color-cuny-blue-dark);
+    background-color: var(--color-brand-navy);
     padding: var(--spacing-xl) var(--spacing-md);
   }
 
