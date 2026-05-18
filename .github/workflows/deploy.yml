@@ -48,11 +48,6 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}
 
-      - name: Build Storybook
-        run: npm run build-storybook
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
