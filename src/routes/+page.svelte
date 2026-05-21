@@ -112,17 +112,9 @@ This is your page!
       <p>
         In the current “low-hire, low-fire” economy, unemployment and layoffs but also hiring are low overall. Employers are slow to invest in budding talent, and competition for entry-level tech positions is fierce, especially as job postings dwindle compared to what they used to be.
       </p>
-<div class="flourish-wrap">
-        <div class="flourish-embed flourish-chart" data-src="visualisation/29028181">
-          <noscript>
-            <img
-              src="https://public.flourish.studio/visualisation/29028181/thumbnail"
-              width="100%"
-              alt="chart visualization"
-            />
-          </noscript>
-        </div>
-      </div>
+      <iframe title="Job openings look very different across sectors" aria-label="Line chart" id="datawrapper-chart-WldqN" src="https://datawrapper.dwcdn.net/WldqN/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="517" data-external="1"></iframe><script type="text/javascript">(function(){function e(){window.addEventListener(`message`,function(e){if(e.data[`datawrapper-height`]!==void 0){var t=document.querySelectorAll(`iframe`);for(var n in e.data[`datawrapper-height`])for(var r=0,i;i=t[r];r++)if(i.contentWindow===e.source){var a=e.data[`datawrapper-height`][n]+`px`;i.style.height=a}}})}e()})();</script>
+<iframe title="Indeed job postings also look different across sectors" aria-label="Line chart" id="datawrapper-chart-1qU6z" src="https://datawrapper.dwcdn.net/1qU6z/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="469" data-external="1"></iframe><script type="text/javascript">(function(){function e(){window.addEventListener(`message`,function(e){if(e.data[`datawrapper-height`]!==void 0){var t=document.querySelectorAll(`iframe`);for(var n in e.data[`datawrapper-height`])for(var r=0,i;i=t[r];r++)if(i.contentWindow===e.source){var a=e.data[`datawrapper-height`][n]+`px`;i.style.height=a}}})}e()})();</script>
+
 
       <p>
         “There’s too much supply and not enough demand for tech labor,” said Gad Levanon, an economist at the Burning Glass Institute, a labor market research firm.
@@ -229,8 +221,9 @@ Snider, the University of Kansas student, is still holding out hope, putting all
   <!-- Methodology Box: Explanation of reporting process -->
   <MethodologyBox>
     <p>
-      Data on unemployment rates for recent college graduates comes from the U.S. Federal Reserve and the Federal Reserve Bank of New York. Job postings data is sourced from Indeed Hiring Lab. Information
-      about tech layoffs is compiled from Layoffs.fyi, a crowdsourced database tracking workforce reductions in the tech industry since 2020.
+
+      I used Python to analyze jobs data from Indeed and the Bureau of Labor Statistics starting in 2020. I used the JOLTS (Job Openings and Labor Turnover Survey) across retail, healthcare, and information, which includes tech. </p> 
+      <p>To make the datasets comparable, each variable was converted into a zero-index measure using 2020 as the baseline. Percentage change from 2020 shows how the job market changed across sectors over time through March 2026. I did the same using jobs postings data from Indeed, which tracks the number of job listings across the platform, but which starts from February 2020 and ends on May 8, 2026.
     </p>
   </MethodologyBox>
 
