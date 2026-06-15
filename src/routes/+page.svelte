@@ -223,8 +223,8 @@ Snider, the University of Kansas student, is still holding out hope, putting all
     <p>
 
       I used Python to analyze jobs data from Indeed and the Bureau of Labor Statistics starting in 2020. I used the JOLTS (Job Openings and Labor Turnover Survey) across retail, healthcare, and information, which includes tech. </p> 
-      <p>To make the datasets comparable, each variable was converted into a zero-index measure using 2020 as the baseline. Percentage change from 2020 shows how the job market changed across sectors over time through March 2026. I did the same using jobs postings data from Indeed, which tracks the number of job listings across the platform, but which starts from February 2020 and ends on May 8, 2026.
-    </p>
+      <p>To make the datasets comparable, each variable was converted into a zero-index measure using 2020 as the baseline. Percentage change from 2020 shows how the job market changed across sectors over time through March 2026. I did the same using jobs postings data from Indeed, which tracks the number of job listings across the platform, but which starts from February 2020 and ends on May 8, 2026. </p> 
+      <p>This story was edited by The New York Times' chief economics correspondent, Ben Casselman.</p>
   </MethodologyBox>
 
   <!-- Related Stories: Links to other articles -->
